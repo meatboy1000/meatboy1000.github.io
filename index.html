@@ -3,239 +3,330 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Сайты и Telegram-боты для бизнеса · Волжский</title>
-<meta name="description" content="Делаю сайты и Telegram-ботов онлайн-записи для салонов, барбершопов, автосервисов и детских центров Волжского и Волгограда. От 7 000 ₽, срок 2–3 дня.">
-<meta property="og:title" content="Сайты и Telegram-боты для бизнеса Волжского">
-<meta property="og:description" content="Онлайн-запись без абонентской платы. Примеры, цены, живое демо бота.">
+<title>Сайт+Бот · Волжский</title>
+<meta name="description" content="Сайты и Telegram-боты онлайн-записи для салонов, барбершопов, автосервисов и детских центров Волжского и Волгограда. От 7 000 ₽, срок 2–3 дня, без абонентской платы.">
+<meta property="og:title" content="Сайт+Бот · онлайн-запись для бизнеса Волжского">
+<meta property="og:description" content="Бот записи за 2 дня и без абонентки. Попробуйте демо прямо на сайте.">
 <meta property="og:image" content="https://meatboy1000.github.io/assets/img/barber-hero.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Unbounded:wght@900&display=swap">
 <style>
-/* Layout: river-blue "Volga" band carries the hero with the live bot beside the pitch; demos as large photo cards; agency comparison as a real table. */
+/* Concept: an order form printed on paper — every block is a cell ruled by hairlines, one red accent, type does the work.
+   Left column holds the "object" (live bot, photos), right column holds the words; a vertical nav runs down the right edge. */
 :root {
-  --bg: #f5f6f8; --paper: #ffffff; --ink: #101828; --muted: #556074; --line: #dfe3ea;
-  --volga: #1747c9; --volga-deep: #0d2b80; --sand: #f2c14e; --ok: #12805c;
-  --display: "Unbounded", "Arial Black", sans-serif;
-  --body: "Golos Text", "Segoe UI", Roboto, Arial, sans-serif;
-  --mono: "JetBrains Mono", Consolas, monospace;
+  --paper: #f7f7f2; --ink: #0b0b0b; --muted: #5e5e57; --rule: #0b0b0b; --red: #e1392c; --on-red: #fff8f2;
+  --logo: "Unbounded", "Arial Black", sans-serif;
+  --sans: "Onest", "Helvetica Neue", Arial, sans-serif;
+  --hair: 1px;
+  --nav-w: 64px;
 }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #0c111c; --paper: #141b2a; --ink: #edf1f8; --muted: #a2adc2; --line: #263049; --ok: #3fc495; color-scheme: dark; } }
-:root[data-theme="dark"] { --bg: #0c111c; --paper: #141b2a; --ink: #edf1f8; --muted: #a2adc2; --line: #263049; --ok: #3fc495; color-scheme: dark; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #121210; --ink: #f2f1ea; --muted: #a8a79d; --rule: #f2f1ea; --red: #ec5145; color-scheme: dark; } }
+:root[data-theme="dark"] { --paper: #121210; --ink: #f2f1ea; --muted: #a8a79d; --rule: #f2f1ea; --red: #ec5145; color-scheme: dark; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 var(--body); }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 18px/1.45 var(--sans); }
 img { max-width: 100%; display: block; }
-a { color: inherit; }
-:focus-visible { outline: 3px solid var(--sand); outline-offset: 3px; }
-.wrap { max-width: 1160px; margin: 0 auto; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
-h1, h2, h3 { margin: 0; text-wrap: balance; }
-h1, h2 { font-family: var(--display); font-weight: 700; line-height: 1.12; letter-spacing: -.01em; }
-h2 { font-size: clamp(1.5rem, 3.4vw, 2.3rem); }
-.eyebrow { font-family: var(--mono); font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--volga); }
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 15px 26px; border-radius: 14px; font: 700 1rem var(--body); text-decoration: none; border: 0; cursor: pointer; }
-.btn.sand { background: var(--sand); color: #1d1500; }
-.btn.line { border: 2px solid rgba(255,255,255,.45); color: #fff; }
-.btn.blue { background: var(--volga); color: #fff; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 3px solid var(--red); outline-offset: 2px; }
+::selection { background: var(--red); color: var(--on-red); }
+h1, h2, h3, p { margin: 0; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
 
-.hero { background: radial-gradient(1200px 500px at 85% -10%, #2f63f0 0%, transparent 60%), linear-gradient(160deg, var(--volga) 0%, var(--volga-deep) 100%); color: #fff; position: relative; overflow: hidden; }
-.hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 60px; background: var(--bg);
-  -webkit-mask: radial-gradient(40px 22px at 50% 0, transparent 98%, #000) 0 0/80px 60px repeat-x; mask: radial-gradient(40px 22px at 50% 0, transparent 98%, #000) 0 0/80px 60px repeat-x; }
-.hero .top { display: flex; justify-content: space-between; align-items: center; padding-block: 20px; gap: 12px; flex-wrap: wrap; }
-.brand { font-family: var(--display); font-size: 1rem; }
-.brand span { color: var(--sand); }
-.hero .grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 48px; align-items: center; padding-block: 30px 110px; }
-.hero h1 { font-size: clamp(2rem, 4.6vw, 3.5rem); }
-.hero h1 mark { background: none; color: var(--sand); }
-.hero p { margin: 0; color: #d6e0ff; font-size: 1.12rem; max-width: 48ch; }
-.pitch { display: grid; gap: 22px; }
-.btns { display: flex; gap: 12px; flex-wrap: wrap; }
-.proof { display: flex; gap: 28px; flex-wrap: wrap; }
-.proof b { display: block; font-family: var(--display); font-size: 1.5rem; color: var(--sand); }
-.proof span { color: #c3d0f7; font-size: .92rem; }
-.hero .bot-wrap { color: #fff; }
-.hero .bot-wrap .bd-reset { color: #fff; }
-.bot-cap { text-align: center; font-size: .9rem; color: #c3d0f7; margin-bottom: 10px; }
-@media (max-width: 920px) { .hero .grid { grid-template-columns: 1fr; padding-bottom: 90px; } }
+/* frame: content + vertical nav rail */
+.frame { display: grid; grid-template-columns: 1fr var(--nav-w); min-height: 100vh; padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
+.rail { border-left: var(--hair) solid var(--rule); position: sticky; top: 0; height: 100vh; display: grid; grid-template-rows: auto 1fr auto; }
+.rail .lang { font-size: .7rem; text-align: center; padding: 14px 0; border-bottom: var(--hair) solid var(--rule); }
+.rail nav { display: flex; flex-direction: column; }
+.rail nav a { writing-mode: vertical-rl; padding: 22px 0; border-bottom: var(--hair) solid var(--rule); text-align: left; display: flex; align-items: center; justify-content: flex-start; font-size: 1rem; text-transform: uppercase; letter-spacing: .02em; flex: 1; }
+.rail nav a:hover { background: var(--ink); color: var(--paper); }
+.rail .go { writing-mode: vertical-rl; background: var(--red); color: var(--on-red); padding: 22px 0; display: flex; align-items: center; font-size: 1rem; text-transform: uppercase; }
 
-section { padding-block: 76px; }
-.head { display: grid; gap: 10px; margin-bottom: 32px; max-width: 64ch; }
-.head p { margin: 0; color: var(--muted); }
+.row { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); border-bottom: var(--hair) solid var(--rule); }
+.row > * { min-width: 0; }
+.cell { padding: 28px; }
+.cell + .cell { border-left: var(--hair) solid var(--rule); }
+.label { font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
 
-.offers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-.offer { background: var(--paper); border: 1px solid var(--line); border-radius: 22px; padding: 26px; display: grid; gap: 12px; align-content: start; }
-.offer.main { border: 2px solid var(--volga); }
-.offer .tag { justify-self: start; font-family: var(--mono); font-size: .75rem; background: var(--volga); color: #fff; border-radius: 6px; padding: 2px 8px; }
-.offer h3 { font-size: 1.25rem; }
-.offer .price { font-family: var(--display); font-size: 1.7rem; }
-.offer .price small { font-family: var(--body); font-size: .95rem; color: var(--muted); }
-.offer ul { margin: 0; padding-left: 20px; color: var(--muted); }
-.offer .term { font-family: var(--mono); font-size: .85rem; color: var(--ok); }
-@media (max-width: 900px) { .offers { grid-template-columns: 1fr; } }
+/* masthead */
+.mast .logo { font-family: var(--logo); font-weight: 900; font-size: clamp(2.6rem, 7.4vw, 6.4rem); line-height: .86; letter-spacing: -.04em; padding: 18px 28px 14px; }
+.mast .logo span { color: var(--red); }
+.mast .side { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; font-size: clamp(1.5rem, 3.4vw, 3rem); text-transform: uppercase; line-height: 1; padding: 18px 28px; }
+.mast .side small { font-size: .8rem; text-transform: none; color: var(--muted); max-width: 22ch; line-height: 1.35; }
 
-.demos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-.demo-card { position: relative; border-radius: 22px; overflow: hidden; min-height: 360px; display: grid; align-content: end; color: #fff; text-decoration: none; isolation: isolate; }
-.demo-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform .6s ease; }
-.demo-card::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, transparent 30%, rgba(8,12,24,.9)); }
-.demo-card:hover img { transform: scale(1.05); }
-.demo-card .in { padding: 22px; display: grid; gap: 6px; }
-.demo-card .niche { font-family: var(--mono); font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; color: var(--sand); }
-.demo-card h3 { font-family: var(--display); font-size: 1.2rem; font-weight: 700; }
-.demo-card p { margin: 0; color: #d6dcea; font-size: .95rem; }
-.demo-card .go { font-weight: 700; margin-top: 4px; }
-@media (max-width: 900px) { .demos { grid-template-columns: 1fr; } .demo-card { min-height: 280px; } }
-@media (prefers-reduced-motion: reduce) { .demo-card img { transition: none; } }
+/* hero */
+.hero .obj { background: var(--ink); padding: 34px 28px 28px; display: grid; gap: 14px; align-content: start; }
+.hero .obj .label { color: #b9b8ae; }
+.hero .obj .bd-reset { color: #f2f1ea; }
+.hero .words { display: grid; grid-template-rows: 1fr auto; padding: 0; position: relative; }
+.hero .words .top { padding: 28px; display: grid; align-content: end; gap: 26px; min-height: 420px; }
+.hero h1 { font-weight: 500; font-size: clamp(2.3rem, 5.4vw, 4.9rem); line-height: .98; text-transform: uppercase; letter-spacing: -.02em; text-wrap: balance; }
+.hero h1 em { font-style: normal; color: var(--red); }
+.hero .sub { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; color: var(--muted); font-size: 1rem; max-width: 760px; }
+.hero .sub b { color: var(--ink); font-weight: 600; display: block; font-size: 1.6rem; line-height: 1.1; }
+.hero .showall { border-top: var(--hair) solid var(--rule); padding: 16px 28px; font-size: 1.4rem; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
+.hero .showall:hover { background: var(--ink); color: var(--paper); }
 
-.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; counter-reset: s; }
-.step { border-top: 3px solid var(--volga); padding-top: 16px; display: grid; gap: 6px; align-content: start; }
-.step::before { counter-increment: s; content: "Шаг " counter(s); font-family: var(--mono); font-size: .8rem; color: var(--volga); }
-.step h3 { font-size: 1.1rem; }
-.step p { margin: 0; color: var(--muted); font-size: .95rem; }
-@media (max-width: 900px) { .steps { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
+.badge { position: absolute; top: 28px; right: 28px; width: 116px; height: 116px; }
+.badge svg { width: 100%; height: 100%; animation: spin 14s linear infinite; }
+.badge text { font: 500 11.5px var(--sans); letter-spacing: 2.6px; text-transform: uppercase; fill: var(--ink); }
+.badge .dot { position: absolute; inset: 0; display: grid; place-items: center; font-size: 1.6rem; color: var(--red); }
+.badge:hover svg { animation-duration: 4s; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-.cmp-wrap { overflow-x: auto; background: var(--paper); border: 1px solid var(--line); border-radius: 22px; }
-table { width: 100%; border-collapse: collapse; min-width: 560px; }
-th, td { padding: 16px 20px; text-align: left; border-bottom: 1px solid var(--line); }
-th { font-family: var(--mono); font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
-td:first-child { font-weight: 700; }
-tr:last-child td { border-bottom: 0; }
-td.me { color: var(--ok); font-weight: 700; }
-.cmp-note { color: var(--muted); font-size: .85rem; margin: 12px 0 0; }
+/* statement */
+.state .mark { display: grid; gap: 18px; align-content: start; }
+.state .mark svg { width: 92px; height: 70px; }
+.state .big { font-size: clamp(2.2rem, 5vw, 4.4rem); line-height: .98; text-transform: uppercase; color: var(--red); letter-spacing: -.02em; }
+.state .text { display: grid; align-content: end; gap: 22px; font-size: clamp(1.25rem, 2.2vw, 1.75rem); line-height: 1.25; }
+.state .text p:last-child { font-size: 1rem; color: var(--muted); max-width: 52ch; line-height: 1.5; }
 
-.faq { display: grid; gap: 10px; max-width: 800px; }
-.faq details { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 16px 20px; }
-.faq summary { font-weight: 700; cursor: pointer; }
-.faq p { margin: 10px 0 0; color: var(--muted); }
+/* demos: hover-reveal list */
+.demos .pic { position: relative; min-height: 460px; overflow: hidden; padding: 0; }
+.demos .pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .35s ease; }
+.demos .pic img.on { opacity: 1; }
+.demos .pic .label { position: absolute; left: 20px; bottom: 18px; background: var(--paper); color: var(--ink); padding: 4px 10px; }
+.list { display: grid; padding: 0; }
+.list .head { padding: 28px; border-bottom: var(--hair) solid var(--rule); display: flex; justify-content: space-between; align-items: end; gap: 16px; }
+.list .head h2 { font-weight: 500; font-size: clamp(1.8rem, 3.6vw, 3rem); text-transform: uppercase; line-height: 1; }
+.item { display: grid; grid-template-columns: 1fr auto; gap: 6px 18px; padding: 20px 28px; border-bottom: var(--hair) solid var(--rule); align-items: baseline; }
+.item:last-child { border-bottom: 0; }
+.item .n { font-size: clamp(1.4rem, 2.6vw, 2.1rem); line-height: 1.05; }
+.item .arr { font-size: 1.6rem; transition: transform .2s; }
+.item .d { grid-column: 1 / -1; color: var(--muted); font-size: .95rem; }
+.item:hover, .item:focus-visible { background: var(--ink); color: var(--paper); }
+.item:hover .d, .item:focus-visible .d { color: #b9b8ae; }
+.item:hover .arr { transform: translateX(6px); }
 
-.cta { background: var(--volga-deep); color: #fff; border-radius: 28px; padding: 44px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 28px; align-items: center; }
-.cta p { margin: 0; color: #c3d0f7; }
-.cta .btns { justify-content: flex-end; }
-@media (max-width: 800px) { .cta { grid-template-columns: 1fr; padding: 30px 22px; } .cta .btns { justify-content: flex-start; } }
+/* prices as order-form lines */
+.prices .intro { display: grid; gap: 16px; align-content: start; }
+.prices .intro h2 { font-weight: 500; font-size: clamp(1.8rem, 3.6vw, 3rem); text-transform: uppercase; line-height: 1; }
+.prices .intro p { color: var(--muted); font-size: 1rem; max-width: 40ch; }
+.lines { padding: 0; }
+.line { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px 26px; padding: 22px 28px; border-bottom: var(--hair) solid var(--rule); align-items: baseline; }
+.line:last-child { border-bottom: 0; }
+.line .t { font-size: 1.35rem; font-weight: 500; }
+.line .p { font-size: 1.35rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.line .w { color: var(--muted); font-size: .9rem; white-space: nowrap; }
+.line .inc { grid-column: 1 / -1; color: var(--muted); font-size: .95rem; }
+.line.hot .p { color: var(--red); }
+.line.hot .t::after { content: "выгоднее всего"; font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; border: var(--hair) solid var(--red); color: var(--red); padding: 2px 8px; margin-left: 12px; vertical-align: middle; border-radius: 999px; }
 
-footer { padding-block: 30px 44px; color: var(--muted); font-size: .88rem; }
-footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+/* comparison */
+.cmp { padding: 0; overflow-x: auto; }
+.cmp table { width: 100%; min-width: 560px; border-collapse: collapse; }
+.cmp th, .cmp td { text-align: left; padding: 16px 28px; border-bottom: var(--hair) solid var(--rule); font-size: 1rem; }
+.cmp tr:last-child td { border-bottom: 0; }
+.cmp th { font-weight: 400; color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; }
+.cmp td.me { color: var(--red); font-weight: 600; }
+.cmp-intro { display: grid; gap: 16px; align-content: space-between; }
+.cmp-intro h2 { font-weight: 500; font-size: clamp(1.6rem, 3vw, 2.5rem); text-transform: uppercase; line-height: 1.02; }
+.cmp-intro p { color: var(--muted); font-size: .85rem; }
+
+/* steps */
+.steps .ph { padding: 0; min-height: 420px; position: relative; }
+.steps .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.steps ol { list-style: none; margin: 0; padding: 0; counter-reset: s; }
+.steps li { counter-increment: s; padding: 22px 28px; border-bottom: var(--hair) solid var(--rule); display: grid; grid-template-columns: 3.2ch 1fr; gap: 4px 14px; }
+.steps li:last-child { border-bottom: 0; }
+.steps li::before { content: counter(s, decimal-leading-zero) "."; font-size: clamp(1.3rem, 2.4vw, 1.9rem); grid-row: span 2; }
+.steps li b { font-weight: 500; font-size: clamp(1.3rem, 2.4vw, 1.9rem); line-height: 1.1; }
+.steps li span { color: var(--muted); font-size: .98rem; }
+
+/* faq */
+.faq { padding: 0; }
+.faq details { border-bottom: var(--hair) solid var(--rule); }
+.faq details:last-child { border-bottom: 0; }
+.faq summary { list-style: none; cursor: pointer; padding: 20px 28px; font-size: 1.25rem; display: flex; justify-content: space-between; gap: 16px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; color: var(--red); font-size: 1.5rem; line-height: 1; }
+.faq details[open] summary::after { content: "−"; }
+.faq p { padding: 0 28px 22px; color: var(--muted); max-width: 64ch; }
+
+/* marquee + footer */
+.marquee { overflow: hidden; border-bottom: var(--hair) solid var(--rule); white-space: nowrap; }
+.marquee .track { display: inline-flex; animation: run 32s linear infinite; }
+.marquee span { font-size: clamp(1.8rem, 4vw, 3.2rem); text-transform: uppercase; padding: 10px 0; display: inline-flex; align-items: center; gap: 22px; padding-right: 22px; }
+.marquee span b { font-family: var(--logo); font-weight: 900; letter-spacing: -.04em; }
+.marquee span i { font-style: normal; color: var(--red); }
+@keyframes run { to { transform: translateX(-50%); } }
+.foot { background: var(--red); color: var(--on-red); }
+.foot .cta { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); border-bottom: var(--hair) solid rgba(255,248,242,.5); }
+.foot .cta a { padding: 28px; font-size: clamp(2.2rem, 6vw, 5.4rem); line-height: .95; text-transform: uppercase; letter-spacing: -.02em; display: block; }
+.foot .cta a:hover { background: var(--on-red); color: var(--red); }
+.foot .cta p { padding: 28px; border-left: var(--hair) solid rgba(255,248,242,.5); font-size: 1.05rem; align-self: stretch; display: grid; align-content: end; }
+.foot .small { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; padding: 16px 28px calc(20px + env(safe-area-inset-bottom, 0px)); font-size: .8rem; text-transform: uppercase; }
+.foot .small div:last-child { text-align: right; }
+
+@media (max-width: 900px) {
+  :root { --nav-w: 0px; }
+  .frame { grid-template-columns: 1fr; }
+  .rail { position: static; height: auto; border-left: 0; grid-template-rows: auto; order: -1; border-bottom: var(--hair) solid var(--rule); }
+  .rail .lang { display: none; }
+  .rail nav { flex-direction: row; overflow-x: auto; }
+  .rail nav a, .rail .go { writing-mode: horizontal-tb; padding: 12px 16px; border-bottom: 0; border-right: var(--hair) solid var(--rule); flex: none; font-size: .85rem; }
+  .rail { display: flex; }
+  .rail .go { margin-left: auto; }
+  .row, .foot .cta { grid-template-columns: 1fr; }
+  .cell + .cell, .foot .cta p { border-left: 0; border-top: var(--hair) solid var(--rule); }
+  .foot .cta p { border-top-color: rgba(255,248,242,.5); }
+  .cell, .list .head, .item, .line, .steps li, .faq summary, .hero .words .top, .hero .showall, .mast .logo, .mast .side, .foot .cta a, .foot .cta p { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .faq p { padding-left: 16px; padding-right: 16px; }
+  .hero .words .top { min-height: 0; padding-top: 150px; }
+  .badge { top: 18px; right: 16px; width: 104px; height: 104px; }
+  .hero .obj { order: 2; }
+  .demos .pic { display: none; }
+  .steps .ph { min-height: 220px; }
+  .hero .sub { grid-template-columns: 1fr; }
+  .foot .small { grid-template-columns: 1fr; }
+  .foot .small div:last-child { text-align: left; }
+}
 </style>
 </head>
 <body>
+<div class="frame">
+<main>
 
-<div class="hero">
-  <div class="wrap">
-    <div class="top">
-      <div class="brand">Сайты<span>+</span>боты · Волжский</div>
-      <a class="btn line" href="https://vk.com/id176709636" target="_blank" rel="noopener">Написать в ВК</a>
+  <header class="row mast">
+    <div class="logo" aria-label="Сайт плюс бот">САЙТ<span>+</span><br>БОТ</div>
+    <div class="side cell"><span>Волжский<br>Волгоград</span><small>Онлайн-запись для местного бизнеса. Один исполнитель, без агентской наценки.</small></div>
+  </header>
+
+  <section class="row hero">
+    <div class="obj">
+      <div class="label">Демо · нажимайте кнопки</div>
+      <div id="bot"></div>
     </div>
-    <div class="grid">
-      <div class="pitch">
-        <div class="eyebrow" style="color:var(--sand)">Для салонов, барбершопов, автосервисов, детских центров</div>
-        <h1>Онлайн-запись для вашего бизнеса <mark>за 2 дня</mark> и без абонентки</h1>
-        <p>Делаю Telegram-ботов записи и сайты для бизнеса Волжского и Волгограда. Клиент сам выбирает время, вы получаете уведомление, клиент — напоминание. Платите один раз.</p>
-        <div class="btns">
-          <a class="btn sand" href="#demos">Смотреть примеры</a>
-          <a class="btn line" href="#prices">Цены</a>
-        </div>
-        <div class="proof">
-          <div><b>от 7 000 ₽</b><span>бот записи под ключ</span></div>
-          <div><b>2–3 дня</b><span>от заявки до запуска</span></div>
-          <div><b>0 ₽/мес</b><span>за пользование ботом</span></div>
+    <div class="words">
+      <a class="badge" href="https://vk.com/id176709636" target="_blank" rel="noopener" aria-label="Написать в ВКонтакте">
+        <svg viewBox="0 0 120 120" aria-hidden="true"><defs><path id="c" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs><circle cx="60" cy="60" r="58" fill="none" stroke="currentColor" stroke-width="1"/><text><textPath href="#c">Написать в ВК · Написать в ВК · </textPath></text></svg>
+        <span class="dot">→</span>
+      </a>
+      <div class="top">
+        <h1>Клиенты записываются сами. <em>Вы&nbsp;работаете.</em></h1>
+        <div class="sub">
+          <p><b>2–3 дня</b>от первого сообщения до работающего бота с вашими услугами.</p>
+          <p><b>0 ₽ в месяц</b>за пользование. Платите один раз — и только после запуска.</p>
         </div>
       </div>
-      <div class="bot-wrap">
-        <div class="bot-cap">👇 Попробуйте сами — это работает как настоящий бот</div>
-        <div id="bot"></div>
-      </div>
+      <a class="showall" href="#demos">Смотреть примеры <span>→</span></a>
     </div>
-  </div>
-</div>
+  </section>
 
-<section id="demos" style="padding-top:40px">
-  <div class="wrap">
-    <div class="head"><div class="eyebrow">Примеры</div><h2>Три демо-сайта под разные ниши</h2><p>Каждый с живым ботом записи. Откройте тот, что ближе к вашему бизнесу — ваш будет с вашими услугами, ценами и фото.</p></div>
-    <div class="demos">
-      <a class="demo-card" href="/barbershop/"><img src="/assets/img/barber-hero.jpg" alt="" loading="lazy"><div class="in"><span class="niche">Барбершоп · салон</span><h3>Стрижка у Волги</h3><p>Прайс, галерея работ, мастера, запись к конкретному мастеру.</p><span class="go">Открыть демо →</span></div></a>
-      <a class="demo-card" href="/autoservice/"><img src="/assets/img/auto-hero.jpg" alt="" loading="lazy"><div class="in"><span class="niche">Автосервис · шиномонтаж</span><h3>Гараж 34</h3><p>Калькулятор переобувки по радиусу, запись в бокс с типом авто.</p><span class="go">Открыть демо →</span></div></a>
-      <a class="demo-card" href="/kids/"><img src="/assets/img/kids-decor.jpg" alt="" loading="lazy"><div class="in"><span class="niche">Детский лофт · праздники</span><h3>Лофт «Облако»</h3><p>Пакеты праздников, калькулятор стоимости, бронь свободных дат.</p><span class="go">Открыть демо →</span></div></a>
+  <section class="row state">
+    <div class="cell mark">
+      <svg viewBox="0 0 92 70" aria-hidden="true"><path d="M8 62 C2 40 18 6 40 6 C52 6 54 22 44 34 C58 20 82 18 86 34 C90 52 60 66 46 50" fill="none" stroke="var(--red)" stroke-width="13" stroke-linecap="round"/></svg>
+      <p class="big">Без абонентки.<br>Без агентства.</p>
     </div>
-  </div>
-</section>
-
-<section id="prices">
-  <div class="wrap">
-    <div class="head"><div class="eyebrow">Цены</div><h2>Что можно заказать</h2><p>Цена фиксируется до начала работы. Оплата — после запуска, когда вы всё проверили.</p></div>
-    <div class="offers">
-      <div class="offer"><h3>Telegram-бот записи</h3><div class="price">7–12 тыс ₽</div><ul><li>Ваши услуги, цены, мастера, часы</li><li>Уведомления вам, напоминания клиентам</li><li>Отмена записи, список на день</li></ul><div class="term">1–2 дня</div></div>
-      <div class="offer main"><span class="tag">Выгоднее всего</span><h3>Сайт + бот</h3><div class="price">15–22 тыс ₽</div><ul><li>Сайт с прайсом, фото и контактами</li><li>Бот записи, связанный с сайтом</li><li>Помогу разместить в 2ГИС и Яндекс Картах</li></ul><div class="term">3–4 дня</div></div>
-      <div class="offer"><h3>Сайт-визитка</h3><div class="price">8–15 тыс ₽</div><ul><li>Одна страница, адаптирована под телефон</li><li>Прайс, галерея, карта, кнопки мессенджеров</li><li>Калькулятор цены — по желанию</li></ul><div class="term">2–3 дня</div></div>
+    <div class="cell text">
+      <p>Делаю Telegram-ботов онлайн-записи и сайты для салонов, барбершопов, автосервисов и детских центров. Клиент видит свободное время и записывается ночью, в выходные, между делом — пока вы работаете.</p>
+      <p>Вам приходит уведомление с именем, телефоном и услугой. Клиенту — напоминание за 2 часа. Отмена в два нажатия, план на день по команде /today.</p>
     </div>
-  </div>
-</section>
+  </section>
 
-<section style="padding-top:20px">
-  <div class="wrap">
-    <div class="head"><div class="eyebrow">Сравнение</div><h2>Почему не агентство и не сервис по подписке</h2></div>
-    <div class="cmp-wrap">
+  <section class="row demos" id="demos">
+    <div class="cell pic" aria-hidden="true">
+      <img src="/assets/img/barber-hero.jpg" alt="" class="on" data-k="barber">
+      <img src="/assets/img/auto-hero.jpg" alt="" data-k="auto" loading="lazy">
+      <img src="/assets/img/kids-decor.jpg" alt="" data-k="kids" loading="lazy">
+      <span class="label" id="picLabel">Барбершоп</span>
+    </div>
+    <div class="cell list">
+      <div class="head"><h2>Примеры</h2><span class="label">3 ниши · живой бот в каждом</span></div>
+      <a class="item" href="/barbershop/" data-k="barber" data-l="Барбершоп"><span class="n">Барбершоп «Стрижка у Волги»</span><span class="arr">→</span><span class="d">Прайс, галерея работ, мастера, запись к конкретному мастеру</span></a>
+      <a class="item" href="/autoservice/" data-k="auto" data-l="Автосервис"><span class="n">Автосервис «Гараж 34»</span><span class="arr">→</span><span class="d">Калькулятор переобувки по радиусу, запись в бокс с типом авто</span></a>
+      <a class="item" href="/kids/" data-k="kids" data-l="Детский лофт"><span class="n">Детский лофт «Облако»</span><span class="arr">→</span><span class="d">Пакеты праздников, калькулятор стоимости, бронь свободных дат</span></a>
+    </div>
+  </section>
+
+  <section class="row prices" id="prices">
+    <div class="cell intro">
+      <span class="label">Цены</span>
+      <h2>Что можно заказать</h2>
+      <p>Цена фиксируется до начала работы. Оплата после запуска, когда вы всё проверили сами.</p>
+    </div>
+    <div class="cell lines">
+      <div class="line"><span class="t">Telegram-бот записи</span><span class="w">1–2 дня</span><span class="p">7–12 тыс ₽</span><span class="inc">Ваши услуги, цены и мастера · уведомления вам · напоминания клиентам · отмена · план на день</span></div>
+      <div class="line hot"><span class="t">Сайт + бот</span><span class="w">3–4 дня</span><span class="p">15–22 тыс ₽</span><span class="inc">Сайт с прайсом, фото и контактами · бот записи · помощь с карточками в 2ГИС и Яндекс Картах</span></div>
+      <div class="line"><span class="t">Сайт-визитка</span><span class="w">2–3 дня</span><span class="p">8–15 тыс ₽</span><span class="inc">Одна страница под телефон · прайс, галерея, кнопки мессенджеров · калькулятор цены по желанию</span></div>
+    </div>
+  </section>
+
+  <section class="row">
+    <div class="cell cmp-intro">
+      <h2>Почему не агентство и не сервис по подписке</h2>
+      <p>Цены агентств — по каталогу Workspace для Волгограда, 2026. Тарифы сервисов записи зависят от числа сотрудников.</p>
+    </div>
+    <div class="cell cmp">
       <table>
-        <thead><tr><th></th><th>Агентство</th><th>Сервис записи по подписке</th><th>Я</th></tr></thead>
+        <thead><tr><th></th><th>Агентство</th><th>Сервис по подписке</th><th>Сайт+Бот</th></tr></thead>
         <tbody>
-          <tr><td>Цена бота</td><td>от 25 000 ₽</td><td>бесплатно на старте</td><td class="me">7 000–12 000 ₽</td></tr>
-          <tr><td>Ежемесячно</td><td>поддержка по договору</td><td>ежемесячная подписка</td><td class="me">0 ₽ (только сервер ~200 ₽)</td></tr>
+          <tr><td>Цена бота</td><td>от 25 000 ₽</td><td>бесплатно на старте</td><td class="me">7–12 тыс ₽</td></tr>
+          <tr><td>Каждый месяц</td><td>поддержка по договору</td><td>подписка</td><td class="me">0 ₽ + сервер ~200 ₽</td></tr>
           <tr><td>Срок</td><td>2–4 недели</td><td>настраиваете сами</td><td class="me">2–3 дня</td></tr>
-          <tr><td>Под ваш бизнес</td><td>да</td><td>шаблон</td><td class="me">да, ваши услуги и тексты</td></tr>
+          <tr><td>Под ваш бизнес</td><td>да</td><td>шаблон</td><td class="me">ваши услуги и тексты</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="cmp-note">Цены агентств — по каталогу Workspace для Волгограда, 2026. Тарифы сервисов записи зависят от числа сотрудников.</p>
-  </div>
-</section>
+  </section>
 
-<section>
-  <div class="wrap">
-    <div class="head"><div class="eyebrow">Как работаем</div><h2>От сообщения до запуска</h2></div>
-    <div class="steps">
-      <div class="step"><h3>Пишете мне</h3><p>Рассказываете про бизнес: услуги, цены, мастера, часы работы.</p></div>
-      <div class="step"><h3>Показываю демо</h3><p>Через день присылаю бота уже с вашими услугами — можно потыкать.</p></div>
-      <div class="step"><h3>Правки</h3><p>Меняем тексты, цены, кнопки — сколько нужно, до запуска.</p></div>
-      <div class="step"><h3>Запуск и оплата</h3><p>Бот работает на сервере 24/7. Вы платите только после запуска.</p></div>
+  <section class="row steps" id="how">
+    <div class="cell ph"><img src="/assets/img/barber-tools.jpg" alt="Инструменты барбера на тёмной доске" loading="lazy"></div>
+    <div class="cell" style="padding:0">
+      <ol>
+        <li><b>Пишете мне</b><span>Название бизнеса, услуги с ценами, мастера, часы работы.</span></li>
+        <li><b>Получаете демо</b><span>Через день — бот уже с вашими услугами. Можно потыкать до оплаты.</span></li>
+        <li><b>Правим</b><span>Тексты, цены, кнопки — сколько нужно, до запуска.</span></li>
+        <li><b>Запускаем</b><span>Бот работает на сервере 24/7. Оплата — после запуска.</span></li>
+      </ol>
     </div>
-  </div>
-</section>
+  </section>
 
-<section style="padding-top:10px">
-  <div class="wrap">
-    <div class="head"><div class="eyebrow">Вопросы</div><h2>Частые вопросы</h2></div>
-    <div class="faq">
-      <details open><summary>А если клиенты не пользуются Telegram?</summary><p>Сайт с формой записи работает в любом браузере, а заявки с него тоже приходят вам в Telegram. Звонки никуда не денутся — бот просто снимает часть нагрузки.</p></details>
+  <section class="row" id="faq">
+    <div class="cell"><span class="label">Вопросы</span></div>
+    <div class="cell faq">
+      <details><summary>А если клиенты не пользуются Telegram?</summary><p>Сайт с формой записи работает в любом браузере, а заявки с него тоже приходят вам в Telegram. Звонки никуда не денутся — бот просто снимает часть нагрузки.</p></details>
       <details><summary>Что нужно от меня?</summary><p>Список услуг с ценами и длительностью, имена мастеров, часы работы и пара фото. Остальное сделаю сам.</p></details>
       <details><summary>Можно потом менять цены и услуги?</summary><p>Да. Небольшие правки в первый месяц бесплатно, дальше — по договорённости или сами, по инструкции.</p></details>
-      <details><summary>Где будет работать бот?</summary><p>На недорогом российском сервере (около 200 ₽ в месяц). Помогу оформить на вас, доступы остаются у вас.</p></details>
+      <details><summary>Где будет работать бот?</summary><p>На недорогом российском сервере, около 200 ₽ в месяц. Помогу оформить на вас — доступы остаются у вас.</p></details>
     </div>
-  </div>
-</section>
+  </section>
 
-<section style="padding-top:10px">
-  <div class="wrap">
+  <div class="marquee" aria-hidden="true"><div class="track">
+    <span><b>САЙТ+БОТ</b> Волжский <i>●</i> <b>САЙТ+БОТ</b> Волгоград <i>●</i> <b>САЙТ+БОТ</b> Онлайн-запись <i>●</i></span>
+    <span><b>САЙТ+БОТ</b> Волжский <i>●</i> <b>САЙТ+БОТ</b> Волгоград <i>●</i> <b>САЙТ+БОТ</b> Онлайн-запись <i>●</i></span>
+  </div></div>
+
+  <footer class="foot">
     <div class="cta">
-      <div style="display:grid;gap:12px"><h2>Покажу, как бот будет выглядеть с вашими услугами</h2><p>Напишите название бизнеса — пришлю бесплатное демо за день.</p></div>
-      <div class="btns"><a class="btn sand" href="https://vk.com/id176709636" target="_blank" rel="noopener">Написать в ВКонтакте</a></div>
+      <a href="https://vk.com/id176709636" target="_blank" rel="noopener">Написать в&nbsp;ВК →</a>
+      <p>Пришлите название бизнеса — за день сделаю бесплатное демо бота с вашими услугами.</p>
     </div>
-  </div>
-</section>
+    <div class="small"><div>© 2026 Сайт+Бот</div><div>Волжский · Волгоград</div><div>Демо-компании вымышленные · фото Unsplash</div></div>
+  </footer>
 
-<footer>
-  <div class="wrap">
-    <span>Сайты и боты для бизнеса · Волжский и Волгоград</span>
-    <span>Демо-сайты с вымышленными компаниями · фото: Unsplash</span>
-  </div>
-</footer>
+</main>
+<aside class="rail" aria-label="Навигация">
+  <div class="lang">RU</div>
+  <nav><a href="#demos">Примеры</a><a href="#prices">Цены</a><a href="#how">Как работаем</a></nav>
+  <a class="go" href="https://vk.com/id176709636" target="_blank" rel="noopener">Написать</a>
+</aside>
+</div>
 
 <script src="/assets/bot-demo.js"></script>
 <script>
 BotDemo.mount(document.getElementById("bot"), {
-  name: "Ваш бизнес · демо", avatar: "★", color: "#f2c14e",
-  welcome: "Здравствуйте! Так ваш бот встретит клиента 👋\nНажмите «Записаться» и пройдите запись — ниже увидите, что придёт вам.",
+  name: "Ваш бизнес · демо", avatar: "+", color: "#e1392c",
+  welcome: "Здравствуйте! Так ваш бот встретит клиента 👋\nНажмите «Записаться» — внизу увидите уведомление, которое придёт вам.",
   contacts: "Здесь будут ваш адрес, часы работы и телефон.",
   services: [{ name: "Стрижка", price: 900, min: 45 }, { name: "Маникюр", price: 1500, min: 90 }, { name: "Шиномонтаж", price: 1600, min: 40 }],
-  staff: ["Анна", "Ирина"], staffQuestion: "Выберите мастера", sampleName: "Алексей"
+  staff: ["Анна", "Ирина"], sampleName: "Алексей"
+});
+// hover-reveal photos for the demo list
+const pics = document.querySelectorAll(".demos .pic img"), lbl = document.getElementById("picLabel");
+document.querySelectorAll(".item").forEach(a => {
+  const show = () => { pics.forEach(p => p.classList.toggle("on", p.dataset.k === a.dataset.k)); lbl.textContent = a.dataset.l; };
+  a.addEventListener("mouseenter", show); a.addEventListener("focus", show);
 });
 </script>
 </body>
