@@ -79,6 +79,16 @@ section { padding-block: 110px 0; }
 .step::before { counter-increment: s; content: counter(s); width: 44px; height: 44px; border-radius: 50%; background: var(--card); border: 1px solid var(--line); display: grid; place-items: center; font-weight: 600; margin-bottom: 6px; }
 .step h3 { font-weight: 600; font-size: 1.15rem; }
 .step p { color: var(--soft); font-size: 1rem; }
+.step ul { margin: 2px 0 0; padding-left: 18px; color: var(--soft); font-size: .95rem; display: grid; gap: 3px; }
+.step .hint { font-size: .9rem; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; margin-top: 4px; }
+.extras { margin-top: 28px; background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 26px 30px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 20px 40px; align-items: start; }
+.extras h3 { font-weight: 600; font-size: 1.2rem; }
+.extras h3 small { display: block; font-weight: 400; color: var(--soft); font-size: .95rem; margin-top: 6px; }
+.extras dl { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; }
+.extras dt, .extras dd { margin: 0; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.extras dd { font-weight: 600; text-align: right; white-space: nowrap; padding-left: 16px; }
+.extras dl > :nth-last-child(-n+2) { border-bottom: 0; }
+@media (max-width: 760px) { .extras { grid-template-columns: 1fr; padding: 22px; } }
 @media (max-width: 860px) { .steps { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
 
@@ -157,9 +167,19 @@ footer .wrap { border-top: 1px solid #2c2b28; padding-block: 22px calc(22px + en
   <section id="how">
     <div class="head"><h2>Как работаем</h2></div>
     <div class="steps">
-      <div class="step"><h3>Вы пишете</h3><p>Название бизнеса, услуги и цены, часы работы.</p></div>
+      <div class="step"><h3>Вы присылаете</h3>
+        <ul>
+          <li>название и адрес</li>
+          <li>услуги: цена и длительность каждой</li>
+          <li>мастеров или боксы (если есть)</li>
+          <li>часы работы и выходные</li>
+          <li>Telegram, куда слать заявки</li>
+          <li>3–5 фото — по желанию</li>
+        </ul>
+        <p class="hint">Проще — ссылку на ваш ВК или 2ГИС: остальное соберу сам.</p>
+      </div>
       <div class="step"><h3>Я делаю демо</h3><p>Через день — бот с вашими услугами. Можно попробовать до оплаты.</p></div>
-      <div class="step"><h3>Правим</h3><p>Тексты, цены, кнопки — сколько нужно.</p></div>
+      <div class="step"><h3>Правим</h3><p>До запуска — сколько нужно и бесплатно: тексты, цены, кнопки. После запуска — по прайсу ниже.</p></div>
       <div class="step"><h3>Запуск</h3><p>Бот работает круглосуточно. Оплата — после запуска.</p></div>
     </div>
   </section>
@@ -171,6 +191,15 @@ footer .wrap { border-top: 1px solid #2c2b28; padding-block: 22px calc(22px + en
       <div class="price main"><span class="tag">Выгоднее всего</span><h3>Сайт + бот</h3><div class="sum">15–22 тыс ₽</div><div class="term">3–4 дня</div><ul><li>Сайт с прайсом и фото</li><li>Бот записи</li><li>Помощь с 2ГИС и Яндекс Картами</li></ul></div>
       <div class="price"><h3>Сайт-визитка</h3><div class="sum">8–15 тыс ₽</div><div class="term">2–3 дня</div><ul><li>Одна страница под телефон</li><li>Прайс, галерея, контакты</li><li>Калькулятор — по желанию</li></ul></div>
     </div>
+    <div class="extras">
+      <h3>Правки после запуска<small>Первый месяц мелкие правки — бесплатно.</small></h3>
+      <dl>
+        <dt>Поменять цены, текст или часы работы</dt><dd>500 ₽</dd>
+        <dt>Добавить услугу или мастера</dt><dd>500 ₽</dd>
+        <dt>Новый раздел сайта или функция бота</dt><dd>от 1 500 ₽</dd>
+        <dt>Поддержка: все мелкие правки + следим за сервером</dt><dd>1 500 ₽/мес</dd>
+      </dl>
+    </div>
     <p class="note">Для сравнения: агентства в Волгограде берут за бота от 25 000 ₽, сервисы записи — ежемесячную подписку.</p>
   </section>
 
@@ -179,7 +208,7 @@ footer .wrap { border-top: 1px solid #2c2b28; padding-block: 22px calc(22px + en
     <div class="faq">
       <details><summary>А если клиенты не пользуются Telegram?</summary><p>Сайт с формой записи работает в любом браузере, заявки с него тоже приходят вам в Telegram. Звонки никуда не денутся — бот снимает часть нагрузки.</p></details>
       <details><summary>Что нужно от меня?</summary><p>Список услуг с ценами и длительностью, имена мастеров, часы работы и пара фото. Остальное сделаю сам.</p></details>
-      <details><summary>Можно потом менять цены и услуги?</summary><p>Да. Небольшие правки в первый месяц бесплатно.</p></details>
+      <details><summary>Можно потом менять цены и услуги?</summary><p>Да. В первый месяц мелкие правки бесплатно, дальше — 500 ₽ за правку или поддержка 1 500 ₽ в месяц, где все мелкие правки уже включены.</p></details>
       <details><summary>Где будет работать бот?</summary><p>На недорогом российском сервере, около 200 ₽ в месяц. Доступы остаются у вас.</p></details>
     </div>
   </section>
