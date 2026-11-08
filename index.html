@@ -10,7 +10,7 @@
 <meta property="og:image" content="https://meatboy1000.github.io/assets/img/barber-hero.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;600&family=Unbounded:wght@900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;600&family=Unbounded:wght@900&family=JetBrains+Mono:wght@400;700&display=swap">
 <style>
 /* Concept: one screen, one thing to look at. Calm paper background, generous space, a single left edge for all text,
    red reserved for the one action on each screen. No rules, rails or tickers competing for the eye. Light only by design. */
@@ -81,27 +81,58 @@ section { padding-block: 110px 0; }
 .step p { color: var(--soft); font-size: 1rem; }
 .step ul { margin: 2px 0 0; padding-left: 18px; color: var(--soft); font-size: .95rem; display: grid; gap: 3px; }
 .step .hint { font-size: .9rem; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; margin-top: 4px; }
-.extras { margin-top: 28px; background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 26px 30px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 20px 40px; align-items: start; }
-.extras h3 { font-weight: 600; font-size: 1.2rem; }
-.extras h3 small { display: block; font-weight: 400; color: var(--soft); font-size: .95rem; margin-top: 6px; }
-.extras dl { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; }
-.extras dt, .extras dd { margin: 0; padding: 10px 0; border-bottom: 1px solid var(--line); }
-.extras dd { font-weight: 600; text-align: right; white-space: nowrap; padding-left: 16px; }
-.extras dl > :nth-last-child(-n+2) { border-bottom: 0; }
-@media (max-width: 760px) { .extras { grid-template-columns: 1fr; padding: 22px; } }
+
 @media (max-width: 860px) { .steps { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
 
-/* prices: three plain blocks, the middle one carries the accent */
-.prices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: stretch; }
-.price { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 30px; display: grid; gap: 14px; align-content: start; }
-.price.main { border: 2px solid var(--red); }
-.price .tag { justify-self: start; background: var(--red); color: #fff; font-size: .8rem; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
-.price h3 { font-weight: 600; font-size: 1.2rem; }
-.price .sum { font-weight: 600; font-size: 2rem; letter-spacing: -.02em; line-height: 1; }
-.price .term { color: var(--soft); font-size: .95rem; }
-.price ul { margin: 0; padding-left: 20px; color: var(--soft); font-size: 1rem; display: grid; gap: 4px; }
-@media (max-width: 860px) { .prices { grid-template-columns: 1fr; } }
+/* prices: build-your-order on the left, a paper receipt printing itself on the right */
+.order { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 48px; align-items: start; }
+.pick { display: grid; gap: 26px; }
+.pick .lbl { font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; color: var(--soft); font-weight: 600; margin-bottom: 10px; display: block; }
+.base { display: grid; gap: 10px; }
+.base label, .adds label { position: relative; display: grid; grid-template-columns: 26px 1fr auto; gap: 4px 14px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+.base input, .adds input { position: absolute; opacity: 0; pointer-events: none; }
+.base .dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--line); }
+.adds .dot { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--line); display: grid; place-items: center; font-size: .8rem; color: #fff; }
+.base b, .adds b { font-weight: 600; font-size: 1.08rem; }
+.base small, .adds small { grid-column: 2 / 3; color: var(--soft); font-size: .92rem; }
+.base .p, .adds .p { grid-row: 1 / span 2; grid-column: 3; font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.base input:checked + .dot { border-color: var(--red); box-shadow: inset 0 0 0 4px var(--card), inset 0 0 0 11px var(--red); }
+.adds input:checked + .dot { border-color: var(--red); background: var(--red); }
+.adds input:checked + .dot::after { content: "✓"; }
+.base label:has(input:checked), .adds label:has(input:checked) { border-color: var(--red); box-shadow: 0 0 0 1px var(--red); }
+.base label:has(input:focus-visible), .adds label:has(input:focus-visible) { outline: 3px solid var(--red); outline-offset: 2px; }
+.adds { display: grid; gap: 8px; }
+.adds label { padding: 12px 16px; }
+.adds label.off { opacity: .4; cursor: not-allowed; }
+
+.receipt-wrap { position: sticky; top: 20px; }
+.receipt { --zz: 10px; position: relative; background: #fffefb; color: #1a1a1a; font: 400 14px/1.5 "JetBrains Mono", Consolas, monospace; padding: 26px 24px calc(26px + var(--zz));
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(var(--zz) * 2) 100%;
+          mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(var(--zz) * 2) 100%; }
+.receipt-tilt { transform: rotate(-.8deg); filter: drop-shadow(0 16px 26px rgba(18,18,18,.14)); }
+.receipt .hd { text-align: center; display: grid; gap: 2px; padding-bottom: 14px; border-bottom: 1px dashed #9a978e; }
+.receipt .hd b { font-family: var(--logo); font-size: 1.15rem; letter-spacing: -.02em; }
+.receipt .hd b span { color: var(--red); }
+.receipt .hd small { color: #6d6a62; font-size: 12px; }
+.receipt .lines { list-style: none; margin: 0; padding: 14px 0; display: grid; gap: 6px; border-bottom: 1px dashed #9a978e; min-height: 120px; align-content: start; }
+.receipt .lines li { display: flex; align-items: baseline; gap: 6px; animation: print .35s ease-out; }
+.receipt .lines li .n { flex: none; max-width: 68%; }
+.receipt .lines li .dots { flex: 1; border-bottom: 1px dotted #9a978e; transform: translateY(-4px); min-width: 12px; }
+.receipt .lines li .v { flex: none; font-variant-numeric: tabular-nums; }
+.receipt .lines li.free .v { color: #12805c; }
+@keyframes print { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+.receipt .tot { display: flex; justify-content: space-between; align-items: baseline; padding-top: 14px; font-weight: 700; }
+.receipt .tot .sum { font-size: 1.9rem; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.receipt .meta { display: grid; gap: 2px; padding: 10px 0 14px; color: #3d3b36; border-bottom: 1px dashed #9a978e; }
+.receipt .fine { padding-top: 12px; font-size: 12px; color: #6d6a62; display: grid; gap: 3px; }
+.receipt .fine b { color: #1a1a1a; font-weight: 700; }
+.receipt .fine span { display: flex; gap: 6px; }
+.receipt .fine i { flex: 1; border-bottom: 1px dotted #b9b6ad; transform: translateY(-4px); font-style: normal; }
+.receipt .stamp { position: absolute; right: 18px; top: 74px; border: 2px solid var(--red); color: var(--red); border-radius: 8px; padding: 4px 9px; font: 700 11px/1.2 "JetBrains Mono", monospace; text-transform: uppercase; transform: rotate(9deg); background: #fffefbd9; }
+.receipt-wrap .btn { margin-top: 24px; width: 100%; justify-content: center; }
+@media (max-width: 900px) { .order { grid-template-columns: 1fr; } .receipt-wrap { position: static; } }
+@media (prefers-reduced-motion: reduce) { .receipt .lines li { animation: none; } }
 .note { color: var(--soft); font-size: .95rem; margin-top: 18px; }
 
 /* faq */
@@ -185,20 +216,45 @@ footer .wrap { border-top: 1px solid #2c2b28; padding-block: 22px calc(22px + en
   </section>
 
   <section id="prices">
-    <div class="head"><h2>Цены</h2><p>Цена фиксируется до начала работы.</p></div>
-    <div class="prices">
-      <div class="price"><h3>Бот записи</h3><div class="sum">7–12 тыс ₽</div><div class="term">1–2 дня</div><ul><li>Ваши услуги, цены, мастера</li><li>Уведомления вам</li><li>Напоминания клиентам</li></ul></div>
-      <div class="price main"><span class="tag">Выгоднее всего</span><h3>Сайт + бот</h3><div class="sum">15–22 тыс ₽</div><div class="term">3–4 дня</div><ul><li>Сайт с прайсом и фото</li><li>Бот записи</li><li>Помощь с 2ГИС и Яндекс Картами</li></ul></div>
-      <div class="price"><h3>Сайт-визитка</h3><div class="sum">8–15 тыс ₽</div><div class="term">2–3 дня</div><ul><li>Одна страница под телефон</li><li>Прайс, галерея, контакты</li><li>Калькулятор — по желанию</li></ul></div>
-    </div>
-    <div class="extras">
-      <h3>Правки после запуска<small>Первый месяц мелкие правки — бесплатно.</small></h3>
-      <dl>
-        <dt>Поменять цены, текст или часы работы</dt><dd>500 ₽</dd>
-        <dt>Добавить услугу или мастера</dt><dd>500 ₽</dd>
-        <dt>Новый раздел сайта или функция бота</dt><dd>от 1 500 ₽</dd>
-        <dt>Поддержка: все мелкие правки + следим за сервером</dt><dd>1 500 ₽/мес</dd>
-      </dl>
+    <div class="head"><h2>Соберите свой чек</h2><p>Отметьте, что нужно, — чек справа посчитает цену и срок. Цена фиксируется до начала работы.</p></div>
+    <div class="order">
+      <form class="pick" id="order" aria-label="Собрать заказ">
+        <div>
+          <span class="lbl">Что нужно</span>
+          <div class="base">
+            <label><input type="radio" name="base" value="bot" checked><span class="dot"></span><b>Бот записи</b><small>Telegram · 1–2 дня</small><span class="p">7 000 ₽</span></label>
+            <label><input type="radio" name="base" value="both"><span class="dot"></span><b>Сайт + бот</b><small>всё вместе · 3–4 дня · карты в подарок</small><span class="p">15 000 ₽</span></label>
+            <label><input type="radio" name="base" value="site"><span class="dot"></span><b>Сайт-визитка</b><small>одна страница под телефон · 2–3 дня</small><span class="p">8 000 ₽</span></label>
+          </div>
+        </div>
+        <div>
+          <span class="lbl">Добавить</span>
+          <div class="adds">
+            <label data-for="bot"><input type="checkbox" name="pay"><span class="dot"></span><b>Предоплата в боте</b><small>клиент вносит аванс при записи</small><span class="p">+3 000 ₽</span></label>
+            <label data-for="bot"><input type="checkbox" name="staff"><span class="dot"></span><b>Больше 3 мастеров или боксов</b><small>у каждого своё расписание</small><span class="p">+2 000 ₽</span></label>
+            <label data-for="site"><input type="checkbox" name="calc"><span class="dot"></span><b>Калькулятор цены на сайте</b><small>как у шиномонтажа в примере</small><span class="p">+2 000 ₽</span></label>
+            <label data-for="any"><input type="checkbox" name="maps"><span class="dot"></span><b>Карточки в 2ГИС и Яндекс Картах</b><small>оформлю и добавлю ссылку на запись</small><span class="p" id="mapsP">+1 500 ₽</span></label>
+            <label data-for="any"><input type="checkbox" name="support"><span class="dot"></span><b>Поддержка</b><small>все мелкие правки + слежу за сервером</small><span class="p">1 500 ₽/мес</span></label>
+          </div>
+        </div>
+      </form>
+      <div class="receipt-wrap">
+        <div class="receipt-tilt"><div class="receipt" aria-live="polite">
+          <div class="hd"><b>САЙТ<span>+</span>БОТ</b><small>Волжский · Волгоград</small><small id="rDate"></small></div>
+          <ul class="lines" id="rLines"></ul>
+          <div class="tot"><span>ИТОГО</span><span class="sum" id="rSum">0 ₽</span></div>
+          <div class="meta"><span id="rTerm"></span><span id="rMonthly"></span><span>Оплата: после запуска</span></div>
+          <div class="fine">
+            <span><b>Правки после запуска</b></span>
+            <span>первый месяц<i></i>бесплатно</span>
+            <span>цены, текст, часы<i></i>500 ₽</span>
+            <span>услуга или мастер<i></i>500 ₽</span>
+            <span>раздел или функция<i></i>от 1 500 ₽</span>
+          </div>
+          <div class="stamp">демо<br>бесплатно</div>
+        </div></div>
+        <a class="btn" href="https://vk.com/id176709636" target="_blank" rel="noopener">Обсудить этот чек в ВК →</a>
+      </div>
     </div>
     <p class="note">Для сравнения: агентства в Волгограде берут за бота от 25 000 ₽, сервисы записи — ежемесячную подписку.</p>
   </section>
@@ -233,6 +289,33 @@ BotDemo.mount(document.getElementById("bot"), {
   services: [{ name: "Стрижка", price: 900, min: 45 }, { name: "Маникюр", price: 1500, min: 90 }, { name: "Шиномонтаж", price: 1600, min: 40 }],
   staff: ["Анна", "Ирина"], sampleName: "Алексей"
 });
+
+// --- receipt
+(function () {
+  const f = document.getElementById("order"); if (!f) return;
+  const base = { bot: ["Бот записи", 7000, "1–2 дня"], site: ["Сайт-визитка", 8000, "2–3 дня"], both: ["Сайт + бот", 15000, "3–4 дня"] };
+  const adds = { pay: ["Предоплата в боте", 3000], staff: ["Больше 3 мастеров", 2000], calc: ["Калькулятор на сайте", 2000], maps: ["2ГИС и Яндекс Карты", 1500] };
+  const fmt = n => n.toLocaleString("ru-RU") + " ₽";
+  const d = new Date(); document.getElementById("rDate").textContent = "чек от " + String(d.getDate()).padStart(2, "0") + "." + String(d.getMonth() + 1).padStart(2, "0") + "." + d.getFullYear();
+  function render() {
+    const b = f.base.value, hasBot = b !== "site", hasSite = b !== "bot";
+    f.querySelectorAll(".adds label").forEach(l => {
+      const k = l.dataset.for, ok = k === "any" || (k === "bot" && hasBot) || (k === "site" && hasSite);
+      l.classList.toggle("off", !ok); const i = l.querySelector("input"); i.disabled = !ok; if (!ok) i.checked = false;
+    });
+    document.getElementById("mapsP").textContent = b === "both" ? "в подарок" : "+1 500 ₽";
+    const lines = [[base[b][0], base[b][1]]];
+    if (hasBot) lines.push(["Напоминания клиентам", 0]);
+    for (const [k, [n, p]] of Object.entries(adds)) if (f[k].checked) lines.push([n, k === "maps" && b === "both" ? 0 : p]);
+    lines.push(["Демо до оплаты", 0]);
+    document.getElementById("rLines").innerHTML = lines.map(([n, p]) =>
+      '<li class="' + (p ? "" : "free") + '"><span class="n">' + n + '</span><span class="dots"></span><span class="v">' + (p ? fmt(p) : "0 ₽") + "</span></li>").join("");
+    document.getElementById("rSum").textContent = fmt(lines.reduce((s, x) => s + x[1], 0));
+    document.getElementById("rTerm").textContent = "Срок: " + base[b][2] + (f.pay.checked ? " +1 день на оплату" : "");
+    document.getElementById("rMonthly").textContent = f.support.checked ? "Поддержка: 1 500 ₽ в месяц" : "Каждый месяц: 0 ₽";
+  }
+  f.addEventListener("change", render); render();
+})();
 </script>
 </body>
 </html>
