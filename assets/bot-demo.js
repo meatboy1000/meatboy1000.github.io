@@ -35,25 +35,24 @@
   .bd-owner .note{white-space:pre-line;background:#263243;border-radius:10px;padding:9px 11px;animation:bdin .25s ease-out}
   .bd-owner .empty{color:#93a4b8}
   .bd-reset{justify-self:center;border:1px solid currentColor;background:transparent;color:inherit;border-radius:999px;padding:7px 16px;font-family:inherit;font-weight:600;font-size:13px;line-height:1;cursor:pointer;opacity:.75}
-  .bd.paper{--tg-bg:#efefe8;--tg-head:#f7f7f2;--tg-in:#ffffff;--tg-out:#e1392c;--tg-ink:#0b0b0b;--tg-mut:#55554f;--tg-acc:#0b0b0b;--tg-btn:#f7f7f2}
-  .bd.paper .bd-phone{background:#0b0b0b;border-radius:6px;padding:8px;box-shadow:none}
-  .bd.paper .bd-screen{border-radius:2px}
-  .bd.paper .bd-head{border-bottom:1px solid #0b0b0b}
-  .bd.paper .bd-msg{border-radius:0;box-shadow:none;border:1px solid #0b0b0b}
-  .bd.paper .bd-msg.out{color:#fff8f2;border-color:#e1392c}
-  .bd.paper .bd-msg.out .bd-time{color:#ffd9d4}
-  .bd.paper .bd-kb button{border-radius:0;box-shadow:none;border:1px solid #0b0b0b;font-weight:400}
-  .bd.paper .bd-kb button:hover{background:#0b0b0b;color:#f7f7f2}
-  .bd.paper .bd-input{border-top:1px solid #0b0b0b}
-  .bd.paper .bd-input input{border-radius:0;background:#fff;border:1px solid #0b0b0b}
-  .bd.paper .bd-send{border-radius:0;background:#e1392c}
-  .bd.paper .bd-typing{border-radius:0;border:1px solid #0b0b0b}
+  .bd.paper{--tg-bg:var(--bd-bg,#efefe8);--tg-head:var(--bd-paper,#f7f7f2);--tg-in:#ffffff;--tg-out:var(--bd-acc,#e1392c);--tg-ink:var(--bd-ink,#0b0b0b);--tg-mut:#55554f;--tg-acc:var(--bd-ink,#0b0b0b);--tg-btn:var(--bd-paper,#f7f7f2)}
+  .bd.paper .bd-phone{background:var(--bd-ink,#0b0b0b);border-radius:calc(var(--bd-r,0px) + 6px);padding:8px;box-shadow:var(--bd-shadow,none)}
+  .bd.paper .bd-screen{border-radius:var(--bd-r,2px)}
+  .bd.paper .bd-head{border-bottom:1px solid var(--bd-ink,#0b0b0b)}
+  .bd.paper .bd-msg{border-radius:var(--bd-r,0px);box-shadow:none;border:1px solid var(--bd-ink,#0b0b0b)}
+  .bd.paper .bd-msg.out{color:var(--bd-out-ink,#fff8f2);border-color:var(--bd-acc,#e1392c)}
+  .bd.paper .bd-msg.out .bd-time{color:var(--bd-out-ink,#ffd9d4);opacity:.75}
+  .bd.paper .bd-kb button{border-radius:var(--bd-r,0px);box-shadow:none;border:1px solid var(--bd-ink,#0b0b0b);font-weight:400}
+  .bd.paper .bd-kb button:hover{background:var(--bd-ink,#0b0b0b);color:var(--bd-paper,#f7f7f2)}
+  .bd.paper .bd-input{border-top:1px solid var(--bd-ink,#0b0b0b)}
+  .bd.paper .bd-input input{border-radius:var(--bd-r,0px);background:#fff;border:1px solid var(--bd-ink,#0b0b0b)}
+  .bd.paper .bd-send{border-radius:var(--bd-r,0px);background:var(--bd-acc,#e1392c);color:var(--bd-out-ink,#fff)}
+  .bd.paper .bd-typing{border-radius:var(--bd-r,0px);border:1px solid var(--bd-ink,#0b0b0b)}
   .bd.paper .bd-log{background-image:none}
-  .bd.paper .bd-owner{border-radius:0;background:#f7f7f2;color:#0b0b0b;border:1px solid #f7f7f2}
-  .bd.paper .bd-owner .lbl{color:#55554f}
-  .bd.paper .bd-owner .note{background:#fff;border:1px solid #0b0b0b;border-radius:0}
-  .bd.paper .bd-owner .empty{color:#55554f}
-  .bd.paper .bd-reset{border-radius:0}
+  .bd.paper .bd-owner{border-radius:var(--bd-r,0px);background:var(--bd-paper,#f7f7f2);color:var(--bd-ink,#0b0b0b);border:1px solid var(--bd-ink,#0b0b0b)}
+  .bd.paper .bd-owner .lbl,.bd.paper .bd-owner .empty{color:var(--bd-ink,#0b0b0b);opacity:.7}
+  .bd.paper .bd-owner .note{background:#fff;border:1px solid var(--bd-ink,#0b0b0b);border-radius:var(--bd-r,0px)}
+  .bd.paper .bd-reset{border-radius:var(--bd-r,0px)}
   @keyframes bdin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   @keyframes bddot{0%,60%,100%{opacity:.3}30%{opacity:1}}
   @media (prefers-reduced-motion:reduce){.bd-msg,.bd-owner .note{animation:none}.bd-typing i{animation:none}}
@@ -73,7 +72,7 @@
   function mount(root, cfg) {
     injectCss();
     root.innerHTML = `
-      <div class="bd${cfg.theme ? " " + cfg.theme : ""}">
+      <div class="bd${cfg.theme ? " " + cfg.theme : ""}" style="${cfg.vars ? Object.entries(cfg.vars).map(([k, v]) => "--bd-" + k + ":" + v).join(";") : ""}">
         <div class="bd-phone"><div class="bd-screen">
           <div class="bd-head"><div class="bd-ava" style="background:${cfg.color || "#3390ec"}">${esc(cfg.avatar || cfg.name[0])}</div>
             <div><div class="bd-title">${esc(cfg.name)}</div><div class="bd-sub">бот</div></div></div>
