@@ -10,12 +10,12 @@
 <meta property="og:image" content="https://meatboy1000.github.io/assets/img/barber-hero.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Unbounded:wght@900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400&family=Unbounded:wght@900&display=swap">
 <style>
 /* Concept: an order form printed on paper — every block is a cell ruled by hairlines, one red accent, type does the work.
    Left column holds the "object" (live bot, photos), right column holds the words; a vertical nav runs down the right edge. */
 :root {
-  --paper: #f7f7f2; --ink: #0b0b0b; --muted: #5e5e57; --rule: #0b0b0b; --red: #e1392c; --on-red: #fff8f2;
+  --paper: #f7f7f2; --ink: #0b0b0b; --muted: #2e2e2a; --rule: #0b0b0b; --red: #e1392c; --on-red: #fff8f2;
   --logo: "Unbounded", "Arial Black", sans-serif;
   --sans: "Onest", "Helvetica Neue", Arial, sans-serif;
   --hair: 1px;
@@ -62,10 +62,10 @@ main { min-width: 0; }
 .hero .obj .bd-reset { color: #f2f1ea; }
 .hero .words { display: grid; grid-template-rows: 1fr auto; padding: 0; position: relative; }
 .hero .words .top { padding: 28px; display: grid; align-content: end; gap: 26px; min-height: 380px; padding-right: 170px; }
-.hero h1 { font-weight: 500; font-size: clamp(2.3rem, 5.4vw, 4.9rem); line-height: .98; text-transform: uppercase; letter-spacing: -.02em; text-wrap: balance; }
+.hero h1 { font-weight: 400; font-size: clamp(2.3rem, 5.4vw, 4.9rem); line-height: .98; text-transform: uppercase; letter-spacing: -.02em; text-wrap: balance; }
 .hero h1 em { font-style: normal; color: var(--red); }
 .hero .sub { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; color: var(--muted); font-size: 1rem; max-width: 760px; }
-.hero .sub b { color: var(--ink); font-weight: 600; display: block; font-size: 1.6rem; line-height: 1.1; }
+.hero .sub b { color: var(--ink); font-weight: 400; display: block; font-size: 2.1rem; line-height: 1.1; }
 .hero .showall { border-top: var(--hair) solid var(--rule); padding: 16px 28px; font-size: 1.4rem; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
 .hero .showall:hover { background: var(--ink); color: var(--paper); }
 
@@ -90,7 +90,7 @@ main { min-width: 0; }
 .demos .pic .label { position: absolute; left: 20px; bottom: 18px; background: var(--paper); color: var(--ink); padding: 4px 10px; }
 .list { display: grid; padding: 0; }
 .list .head { padding: 28px; border-bottom: var(--hair) solid var(--rule); display: flex; justify-content: space-between; align-items: end; gap: 16px; }
-.list .head h2 { font-weight: 500; font-size: clamp(1.8rem, 3.6vw, 3rem); text-transform: uppercase; line-height: 1; }
+.list .head h2 { font-weight: 400; font-size: clamp(1.8rem, 3.6vw, 3rem); text-transform: uppercase; line-height: 1; }
 .item { display: grid; grid-template-columns: 1fr auto; gap: 6px 18px; padding: 20px 28px; border-bottom: var(--hair) solid var(--rule); align-items: baseline; }
 .item:last-child { border-bottom: 0; }
 .item .n { font-size: clamp(1.4rem, 2.6vw, 2.1rem); line-height: 1.05; }
@@ -102,12 +102,12 @@ main { min-width: 0; }
 
 /* prices as order-form lines */
 .prices .intro { display: grid; gap: 16px; align-content: start; }
-.prices .intro h2 { font-weight: 500; font-size: clamp(1.8rem, 3.6vw, 3rem); text-transform: uppercase; line-height: 1; }
+.prices .intro h2 { font-weight: 400; font-size: clamp(1.8rem, 3.6vw, 3rem); text-transform: uppercase; line-height: 1; }
 .prices .intro p { color: var(--muted); font-size: 1rem; max-width: 40ch; }
 .lines { padding: 0; }
 .line { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px 26px; padding: 22px 28px; border-bottom: var(--hair) solid var(--rule); align-items: baseline; }
 .line:last-child { border-bottom: 0; }
-.line .t { font-size: 1.35rem; font-weight: 500; }
+.line .t { font-size: 1.35rem; font-weight: 400; }
 .line .p { font-size: 1.35rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .line .w { color: var(--muted); font-size: .9rem; white-space: nowrap; }
 .line .inc { grid-column: 1 / -1; color: var(--muted); font-size: .95rem; }
@@ -120,9 +120,9 @@ main { min-width: 0; }
 .cmp th, .cmp td { text-align: left; padding: 16px 28px; border-bottom: var(--hair) solid var(--rule); font-size: 1rem; }
 .cmp tr:last-child td { border-bottom: 0; }
 .cmp th { font-weight: 400; color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; }
-.cmp td.me { color: var(--red); font-weight: 600; }
+.cmp td.me { color: var(--red); font-weight: 400; }
 .cmp-intro { display: grid; gap: 16px; align-content: space-between; }
-.cmp-intro h2 { font-weight: 500; font-size: clamp(1.6rem, 3vw, 2.5rem); text-transform: uppercase; line-height: 1.02; }
+.cmp-intro h2 { font-weight: 400; font-size: clamp(1.6rem, 3vw, 2.5rem); text-transform: uppercase; line-height: 1.02; }
 .cmp-intro p { color: var(--muted); font-size: .85rem; }
 
 /* steps */
@@ -132,7 +132,7 @@ main { min-width: 0; }
 .steps li { counter-increment: s; padding: 22px 28px; border-bottom: var(--hair) solid var(--rule); display: grid; grid-template-columns: 3.2ch 1fr; gap: 4px 14px; }
 .steps li:last-child { border-bottom: 0; }
 .steps li::before { content: counter(s, decimal-leading-zero) "."; font-size: clamp(1.3rem, 2.4vw, 1.9rem); grid-row: span 2; }
-.steps li b { font-weight: 500; font-size: clamp(1.3rem, 2.4vw, 1.9rem); line-height: 1.1; }
+.steps li b { font-weight: 400; font-size: clamp(1.3rem, 2.4vw, 1.9rem); line-height: 1.1; }
 .steps li span { color: var(--muted); font-size: .98rem; }
 
 /* faq */
@@ -319,7 +319,7 @@ main { min-width: 0; }
 <script src="/assets/bot-demo.js"></script>
 <script>
 BotDemo.mount(document.getElementById("bot"), {
-  name: "Ваш бизнес · демо", avatar: "+", color: "#e1392c",
+  name: "Ваш бизнес · демо", avatar: "+", color: "#e1392c", theme: "paper",
   welcome: "Здравствуйте! Так ваш бот встретит клиента 👋\nНажмите «Записаться» — внизу увидите уведомление, которое придёт вам.",
   contacts: "Здесь будут ваш адрес, часы работы и телефон.",
   services: [{ name: "Стрижка", price: 900, min: 45 }, { name: "Маникюр", price: 1500, min: 90 }, { name: "Шиномонтаж", price: 1600, min: 40 }],
