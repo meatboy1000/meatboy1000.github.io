@@ -20,12 +20,13 @@
   --sans: "Onest", "Helvetica Neue", Arial, sans-serif;
   --hair: 1px;
   --nav-w: 64px;
+  --sheet: 1440px;
+  color-scheme: light;
 }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #121210; --ink: #f2f1ea; --muted: #a8a79d; --rule: #f2f1ea; --red: #ec5145; color-scheme: dark; } }
-:root[data-theme="dark"] { --paper: #121210; --ink: #f2f1ea; --muted: #a8a79d; --rule: #f2f1ea; --red: #ec5145; color-scheme: dark; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--paper); color: var(--ink); font: 400 18px/1.45 var(--sans); }
+html { background: #e9e9e2; }
+body { margin: 0; background: #e9e9e2; color: var(--ink); font: 400 18px/1.45 var(--sans); }
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 :focus-visible { outline: 3px solid var(--red); outline-offset: 2px; }
@@ -34,7 +35,7 @@ h1, h2, h3, p { margin: 0; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
 
 /* frame: content + vertical nav rail */
-.frame { display: grid; grid-template-columns: minmax(0, 1fr) var(--nav-w); min-height: 100vh; padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
+.frame { display: grid; grid-template-columns: minmax(0, 1fr) var(--nav-w); min-height: 100vh; max-width: var(--sheet); margin: 0 auto; background: var(--paper); box-shadow: 0 0 0 1px var(--rule); padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
 main { min-width: 0; }
 .rail { border-left: var(--hair) solid var(--rule); position: sticky; top: 0; height: 100vh; display: grid; grid-template-rows: auto 1fr auto; }
 .rail .lang { font-size: .7rem; text-align: center; padding: 14px 0; border-bottom: var(--hair) solid var(--rule); }
@@ -60,7 +61,7 @@ main { min-width: 0; }
 .hero .obj .label { color: #b9b8ae; }
 .hero .obj .bd-reset { color: #f2f1ea; }
 .hero .words { display: grid; grid-template-rows: 1fr auto; padding: 0; position: relative; }
-.hero .words .top { padding: 28px; display: grid; align-content: end; gap: 26px; min-height: 420px; }
+.hero .words .top { padding: 28px; display: grid; align-content: end; gap: 26px; min-height: 380px; padding-right: 170px; }
 .hero h1 { font-weight: 500; font-size: clamp(2.3rem, 5.4vw, 4.9rem); line-height: .98; text-transform: uppercase; letter-spacing: -.02em; text-wrap: balance; }
 .hero h1 em { font-style: normal; color: var(--red); }
 .hero .sub { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; color: var(--muted); font-size: 1rem; max-width: 760px; }
@@ -164,7 +165,8 @@ main { min-width: 0; }
   .frame { grid-template-columns: minmax(0, 1fr); }
   .rail { position: static; height: auto; border-left: 0; grid-template-rows: auto; order: -1; border-bottom: var(--hair) solid var(--rule); }
   .rail .lang { display: none; }
-  .rail nav { flex-direction: row; overflow-x: auto; }
+  .rail nav { flex-direction: row; overflow-x: auto; scrollbar-width: none; }
+  .rail nav::-webkit-scrollbar { display: none; }
   .rail nav a, .rail .go { writing-mode: horizontal-tb; padding: 12px 16px; border-bottom: 0; border-right: var(--hair) solid var(--rule); flex: none; font-size: .85rem; }
   .rail { display: flex; }
   .rail .go { margin-left: auto; }
@@ -173,7 +175,7 @@ main { min-width: 0; }
   .foot .cta p { border-top-color: rgba(255,248,242,.5); }
   .cell, .list .head, .item, .line, .steps li, .faq summary, .hero .words .top, .hero .showall, .mast .logo, .mast .side, .foot .cta a, .foot .cta p { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
   .faq p { padding-left: 16px; padding-right: 16px; }
-  .hero .words .top { min-height: 0; padding-top: 150px; }
+  .hero .words .top { min-height: 0; padding-top: 150px; padding-right: 16px; }
   .badge { top: 18px; right: 16px; width: 104px; height: 104px; }
   .hero .obj { order: 2; }
   .demos .pic { display: none; }
