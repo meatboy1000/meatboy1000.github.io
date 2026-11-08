@@ -3,7 +3,7 @@
 (function () {
   const CSS = `
   .bd{--tg-bg:#e7ebf0;--tg-head:#ffffff;--tg-in:#ffffff;--tg-out:#e1fec6;--tg-ink:#0f1419;--tg-mut:#6b7785;--tg-acc:#3390ec;--tg-btn:#ffffffd9;
-      font:15px/1.4 -apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--tg-ink);display:grid;gap:12px;width:100%;max-width:420px;margin:0 auto}
+      font:15px/1.4 -apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--tg-ink);text-transform:none;letter-spacing:normal;display:grid;gap:12px;width:100%;max-width:420px;margin:0 auto}
   .bd *{box-sizing:border-box}
   .bd-phone{border-radius:28px;background:#11161c;padding:10px;box-shadow:0 18px 50px -20px rgba(0,0,0,.45)}
   .bd-screen{border-radius:20px;overflow:hidden;background:var(--tg-bg);display:flex;flex-direction:column;height:560px}
