@@ -55,6 +55,10 @@ h1, h2, h3, p { margin: 0; }
 .hero .cta { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
 .hero .cta small { color: var(--soft); font-size: .95rem; }
 .hero .bot-cap { text-align: center; color: var(--soft); font-size: .92rem; margin-bottom: 12px; }
+.niches { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 14px; }
+.niches button { font: 600 .9rem var(--sans); color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; cursor: pointer; transition: background .15s, border-color .15s; }
+.niches button:hover { border-color: var(--ink); }
+.niches button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
 @media (max-width: 900px) { .hero { grid-template-columns: 1fr; gap: 44px; padding-bottom: 72px; } }
 
 /* three numbers on their own band */
@@ -178,7 +182,8 @@ footer .wrap { border-top: 1px solid #2c2b28; padding-block: 22px calc(22px + en
       </div>
     </div>
     <div>
-      <div class="bot-cap">Попробуйте — это работает как настоящий бот</div>
+      <div class="bot-cap">Выберите свою сферу и попробуйте записаться — это работает как настоящий бот</div>
+      <div class="niches" id="niches" role="group" aria-label="Сфера бизнеса"><button type="button" data-n="barber" aria-pressed="true">Барбершоп</button><button type="button" data-n="beauty" aria-pressed="false">Салон красоты</button><button type="button" data-n="auto" aria-pressed="false">Автосервис</button><button type="button" data-n="kids" aria-pressed="false">Детский центр</button></div>
       <div id="bot"></div>
     </div>
   </div>
@@ -286,16 +291,33 @@ footer .wrap { border-top: 1px solid #2c2b28; padding-block: 22px calc(22px + en
 </div>
 <footer><div class="wrap"><span>Сайт и Бот · Волжский и Волгоград</span><span>Демо-компании вымышленные · фото Unsplash</span></div></footer>
 
-<script src="/assets/bot-demo.js?v=3"></script>
+<script src="/assets/bot-demo.js?v=5"></script>
 <script>
-BotDemo.mount(document.getElementById("bot"), {
-  name: "Ваш бизнес · демо", avatar: "•••", color: "#e1392c", theme: "paper",
+const BASE = { avatar: "•••", color: "#e1392c", theme: "paper",
   vars: { acc: "#e1392c", "out-ink": "#ffffff", paper: "#f7f6f2", bg: "#efede6", ink: "#121212", r: "12px" },
-  welcome: "Здравствуйте! Так ваш бот встретит клиента 👋\nНажмите «Записаться» — внизу увидите уведомление, которое придёт вам.",
-  contacts: "Здесь будут ваш адрес, часы работы и телефон.",
-  services: [{ name: "Стрижка", price: 900, min: 45 }, { name: "Маникюр", price: 1500, min: 90 }, { name: "Шиномонтаж", price: 1600, min: 40 }],
-  staff: ["Анна", "Ирина"], sampleName: "Алексей"
-});
+  contacts: "Здесь будут ваш адрес, часы работы и телефон." };
+const NICHES = {
+  barber: { name: "Барбершоп · демо", welcome: "Здравствуйте! Это бот барбершопа 💈\nНажмите «Записаться» — под окном увидите уведомление, которое придёт вам.",
+    services: [{ name: "Мужская стрижка", price: 900, min: 45 }, { name: "Фейд", price: 1200, min: 60 }, { name: "Борода", price: 700, min: 30 }, { name: "Стрижка + борода", price: 1500, min: 75 }],
+    staff: ["Артём", "Илья", "Роман"], sampleName: "Алексей" },
+  beauty: { name: "Салон красоты · демо", welcome: "Здравствуйте! Это бот салона красоты 🌸\nНажмите «Записаться» — под окном увидите уведомление, которое придёт вам.",
+    services: [{ name: "Маникюр с покрытием", price: 1800, min: 90 }, { name: "Педикюр", price: 2300, min: 90 }, { name: "Брови и ресницы", price: 1200, min: 60 }, { name: "Женская стрижка", price: 1500, min: 60 }],
+    staff: ["Анна", "Ирина", "Ксения"], sampleName: "Мария" },
+  auto: { name: "Автосервис · демо", welcome: "Здравствуйте! Это бот автосервиса 🔧\nНажмите «Записаться» — под окном увидите уведомление, которое придёт вам.",
+    services: [{ name: "Шиномонтаж", price: 1600, min: 40 }, { name: "Замена масла", price: 700, min: 30 }, { name: "Диагностика", price: 1000, min: 30 }, { name: "Развал-схождение", price: 1500, min: 45 }],
+    extra: { question: "Какой у вас автомобиль?", label: "Авто", options: ["Легковой", "Кроссовер", "Внедорожник", "Минивэн"] },
+    times: ["08:00", "09:00", "10:00", "11:00", "12:00", "14:00", "15:00", "16:00", "17:00", "18:00"], sampleName: "Сергей" },
+  kids: { name: "Детский центр · демо", welcome: "Здравствуйте! Это бот детского центра 🎈\nНажмите «Записаться» — под окном увидите уведомление, которое придёт вам.",
+    services: [{ name: "Пробное занятие", price: 0 }, { name: "Абонемент на месяц", price: 4800 }, { name: "День рождения под ключ", price: 9900 }],
+    extra: { question: "Сколько лет ребёнку?", label: "Возраст", options: ["3–4 года", "5–6 лет", "7–9 лет", "10+ лет"] },
+    times: ["10:00", "12:00", "16:00", "18:00"], sampleName: "Анна", remind: "сутки" }
+};
+function showNiche(n) {
+  document.querySelectorAll("#niches button").forEach(b => b.setAttribute("aria-pressed", b.dataset.n === n ? "true" : "false"));
+  BotDemo.mount(document.getElementById("bot"), Object.assign({}, BASE, NICHES[n]));
+}
+document.getElementById("niches").addEventListener("click", e => { const b = e.target.closest("button[data-n]"); if (b) showNiche(b.dataset.n); });
+showNiche("barber");
 
 // --- receipt
 (function () {

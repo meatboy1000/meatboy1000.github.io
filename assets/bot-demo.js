@@ -59,7 +59,7 @@
   @media (max-width:420px){.bd-screen{height:520px}.bd-phone{padding:7px;border-radius:24px}}
   `;
   const WD = ["вс", "пн", "вт", "ср", "чт", "пт", "сб"];
-  const rub = (n) => n.toLocaleString("ru-RU") + " ₽";
+  const rub = (n) => (n ? n.toLocaleString("ru-RU") + " ₽" : "бесплатно");
   const pad = (n) => String(n).padStart(2, "0");
   const now = () => { const d = new Date(); return pad(d.getHours()) + ":" + pad(d.getMinutes()); };
   const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));

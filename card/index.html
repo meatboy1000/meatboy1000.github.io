@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light only">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<title>Сайт и Бот · визитка</title>
+<meta name="description" content="Сайты и Telegram-боты онлайн-записи для бизнеса Волжского и Волгограда. Бот записи 7 000 ₽, срок 1–2 дня, без абонентской платы. Демо бесплатно.">
+<meta property="og:title" content="Сайт и Бот · онлайн-запись для бизнеса Волжского">
+<meta property="og:description" content="Бот записи за 2 дня и без абонентки. Демо с вашими услугами бесплатно.">
+<meta property="og:image" content="https://meatboy1000.github.io/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://meatboy1000.github.io/card/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://meatboy1000.github.io/card/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;600&family=Comfortaa:wght@700&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+/* Визитка: один экран телефона, десять секунд внимания.
+   Порядок взгляда: заголовок → живой диалог записи (что это) → чек (сколько стоит) → красная кнопка (как написать).
+   Красный — только у действия и у штампа, который говорит то же самое, что кнопка. Тема только светлая. */
+:root {
+  --bg: #e9e6dc; --paper: #f7f6f2; --white: #fffefb; --ink: #121212; --soft: #55534d; --line: #dcd8cc; --dash: #9a978e;
+  --red: #e1392c; --red-dark: #c42d21; --ok: #12805c;
+  --night: #171614; --bubble: #2c2b27; --night-soft: #a5a299;
+  --logo: "Comfortaa", "Trebuchet MS", sans-serif;
+  --sans: "Onest", "Helvetica Neue", Arial, sans-serif;
+  --mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+  --pad: 22px;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body { margin: 0; min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; background: var(--bg); color: var(--ink); font: 400 17px/1.5 var(--sans);
+  padding: max(10px, env(safe-area-inset-top, 0px)) max(10px, env(safe-area-inset-right, 0px)) max(10px, env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left, 0px)); }
+a { color: inherit; }
+h1, p, ul { margin: 0; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+
+.card { width: 100%; max-width: 440px; background: var(--paper); border-radius: 24px; padding: var(--pad) var(--pad) 18px; display: grid; gap: 18px; overflow-x: clip;
+  box-shadow: 0 1px 0 #fff inset, 0 24px 54px -20px rgba(18,18,18,.3), 0 2px 6px rgba(18,18,18,.06); }
+
+/* появление: блоки поднимаются по очереди, сверху вниз, как взгляд */
+.card > * { animation: rise .55s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--i, 0) * 70ms); }
+.card > :nth-child(2) { --i: 1; } .card > :nth-child(3) { --i: 2; } .card > :nth-child(4) { --i: 3; }
+.card > :nth-child(5) { --i: 4; } .card > :nth-child(6) { --i: 5; } .card > :nth-child(7) { --i: 6; }
+@keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.logo { display: inline-flex; align-items: center; gap: 9px; font: 700 1.15rem/1 var(--logo); text-decoration: none; white-space: nowrap; }
+.logo svg { width: 32px; height: 28px; flex: none; }
+.logo .and { color: var(--soft); }
+.geo { font-size: .8rem; color: var(--soft); white-space: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 389px) { .geo { font-size: .72rem; } .logo { font-size: 1.08rem; gap: 7px; } }
+
+.intro { display: grid; gap: 10px; }
+h1 { font-weight: 600; font-size: clamp(1.9rem, 8.6vw, 2.45rem); line-height: 1.03; letter-spacing: -.03em; text-wrap: balance; }
+.intro p { color: var(--soft); font-size: 1rem; line-height: 1.4; max-width: 34ch; }
+
+/* живой диалог: тёмная «трубка» на светлой бумаге — главный контраст экрана */
+.chat { position: relative; background: var(--night); color: #f3f1ea; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; }
+.chat-head { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid #2a2926; }
+.ava { width: 28px; height: 28px; border-radius: 50%; background: var(--bubble); display: grid; place-items: center; flex: none; }
+.ava svg { width: 16px; height: 4px; }
+.chat-head b { font-weight: 600; font-size: .92rem; line-height: 1.1; display: block; }
+.chat-head small { color: var(--night-soft); font-size: .74rem; display: flex; align-items: center; gap: 5px; }
+.chat-head small::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #5fd3a2; }
+.chat-head .tag { margin-left: auto; font: 700 .64rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--night-soft); border: 1px solid #4a4843; border-radius: 6px; padding: 5px 7px; }
+.feed { height: 172px; flex: none; padding: 10px 12px 12px; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; overflow: hidden; transition: opacity .4s; }
+.feed.out { opacity: 0; }
+.msg { flex: none; max-width: 86%; padding: 8px 12px; border-radius: 16px; font-size: .9rem; line-height: 1.35; animation: pop .3s cubic-bezier(.2,.8,.2,1) both; }
+.msg.bot { align-self: flex-start; background: var(--bubble); border-bottom-left-radius: 5px; }
+.msg.me { align-self: flex-end; background: var(--paper); color: var(--ink); border-bottom-right-radius: 5px; }
+.msg .ok { color: #6fdcb0; font-weight: 600; }
+@keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.97); } to { opacity: 1; transform: none; } }
+.slots { display: flex; gap: 6px; margin-top: 8px; }
+.slots span { border: 1px solid #5a5852; border-radius: 999px; padding: 3px 10px; font-size: .84rem; font-variant-numeric: tabular-nums; transition: background .2s, color .2s, border-color .2s, transform .2s; }
+.slots span.on { background: var(--paper); color: var(--ink); border-color: var(--paper); transform: scale(1.07); }
+.typing { display: flex; gap: 4px; padding: 12px 13px; }
+.typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--night-soft); animation: blink 1s infinite; }
+.typing i:nth-child(2) { animation-delay: .15s; } .typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes blink { 0%, 60%, 100% { opacity: .3; transform: none; } 30% { opacity: 1; transform: translateY(-2px); } }
+/* уведомление владельцу: то, ради чего всё делается */
+.toast { position: absolute; left: 10px; right: 10px; top: 10px; background: var(--white); color: var(--ink); border-radius: 14px; padding: 9px 12px; display: flex; gap: 10px; align-items: center;
+  box-shadow: 0 10px 24px rgba(0,0,0,.45); transform: translateY(-140%); transition: transform .5s cubic-bezier(.2,.9,.25,1.1); }
+.toast.on { transform: none; }
+.toast svg { width: 20px; height: 20px; flex: none; }
+.toast small { display: block; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); font-weight: 600; line-height: 1.2; }
+.toast b { font-weight: 600; font-size: .88rem; line-height: 1.25; display: block; }
+
+/* чек с ценами: кусок кассовой ленты, чуть криво лежит на карточке */
+.bill { position: relative; transform: rotate(-.7deg); filter: drop-shadow(0 10px 16px rgba(18,18,18,.13)); margin-inline: 2px; }
+.receipt { --zz: 8px; list-style: none; background: var(--white); font: 400 13.5px/1.45 var(--mono); padding: 16px 15px calc(11px + var(--zz)); display: grid; gap: 5px;
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(var(--zz) * 2) 100%;
+          mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(var(--zz) * 2) 100%; }
+.receipt li { display: flex; align-items: baseline; gap: 6px; }
+.receipt .n { font-weight: 700; flex: none; }
+.receipt .t { color: #6d6a62; font-size: 12px; flex: none; }
+.receipt .d { flex: 1; min-width: 10px; border-bottom: 1px dotted var(--dash); transform: translateY(-4px); }
+.receipt .v { font-weight: 700; flex: none; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.receipt .sep { border-top: 1px dashed var(--dash); margin-top: 4px; padding-top: 8px; }
+.receipt .free .n { font-weight: 400; } .receipt .free .v { color: var(--ok); }
+.stamp { position: absolute; right: 10px; top: -27px; z-index: 2; border: 2px solid var(--red); color: var(--red); border-radius: 8px; padding: 4px 8px; font: 700 10.5px/1.2 var(--mono); letter-spacing: .04em; text-transform: uppercase; text-align: center;
+  background: rgba(255,254,251,.88); transform: rotate(8deg); animation: stamp .45s cubic-bezier(.3,1.4,.5,1) .95s both; }
+@keyframes stamp { from { opacity: 0; transform: rotate(8deg) scale(1.6); } to { opacity: 1; transform: rotate(8deg) scale(1); } }
+
+/* единственное действие. На низких экранах прилипает к низу, чтобы всегда быть под пальцем */
+.cta { position: sticky; bottom: max(10px, env(safe-area-inset-bottom, 0px)); z-index: 3; }
+.cta::before { content: ""; position: absolute; inset: -18px calc(var(--pad) * -1) -12px; background: linear-gradient(to top, var(--paper) 62%, rgba(247,246,242,0)); z-index: -1; pointer-events: none; }
+.btn { display: flex; justify-content: center; align-items: center; gap: 10px; background: var(--red); color: #fff; text-decoration: none; font: 600 1.08rem/1.2 var(--sans); padding: 17px 20px; border-radius: 14px;
+  box-shadow: 0 10px 22px -10px rgba(225,57,44,.75); transition: background .15s, transform .15s; }
+.btn:hover { background: var(--red-dark); transform: translateY(-1px); }
+.btn:active { transform: translateY(1px); }
+.btn .arr { transition: transform .2s; } .btn:hover .arr { transform: translateX(4px); }
+
+.more { display: grid; gap: 8px; }
+.lbl { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--soft); font-weight: 600; }
+.chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.chips a { text-decoration: none; text-align: center; white-space: nowrap; background: var(--white); border: 1px solid var(--line); border-radius: 999px; padding: 8px 2px; font-size: .82rem; font-weight: 600; transition: border-color .15s, transform .15s; }
+.chips a:hover { border-color: var(--ink); transform: translateY(-1px); }
+
+.foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: .9rem; border-top: 1px solid var(--line); padding-top: 12px; }
+.foot a { font-weight: 600; text-decoration: none; border-bottom: 2px solid var(--ink); padding-bottom: 1px; }
+.foot a:hover { border-color: var(--soft); color: var(--soft); }
+.share { display: inline-flex; align-items: center; gap: 7px; background: none; border: 0; padding: 6px 0 6px 8px; font-weight: 600; cursor: pointer; min-height: 36px; }
+.share svg { width: 17px; height: 17px; flex: none; }
+.share:hover { color: var(--soft); }
+.share.done { color: var(--ok); }
+
+@media (max-width: 359px) { :root { --pad: 16px; } .geo { display: none; } .chips { gap: 4px; } .chips a { font-size: .74rem; } .receipt { font-size: 12.5px; } .receipt .t { display: none; } }
+
+/* на компьютере: слова слева, диалог справа во всю высоту */
+@media (min-width: 880px) {
+  :root { --pad: 40px; }
+  body { padding: 24px; }
+  .card { max-width: 900px; grid-template-columns: minmax(0, 1fr) 350px; column-gap: 44px; row-gap: 20px; padding: 34px 40px 28px; border-radius: 30px; }
+  .card > * { grid-column: 1; }
+  .chat { grid-column: 2; grid-row: 1 / span 6; align-self: stretch; }
+  .feed { height: auto; flex: 1; min-height: 300px; gap: 8px; padding: 14px; }
+  .msg { font-size: .95rem; }
+  h1 { font-size: 3rem; }
+  .intro p { font-size: 1.1rem; }
+  .receipt { font-size: 14px; padding-inline: 18px; }
+  .cta { position: static; } .cta::before { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card > *, .stamp, .msg { animation: none; }
+  .typing i { animation: none; opacity: .7; }
+  * { transition: none !important; }
+}
+</style>
+</head>
+<body>
+<main class="card">
+  <header class="top">
+    <a class="logo" href="/" aria-label="Сайт и Бот — на главную"><svg viewBox="0 0 34 30" aria-hidden="true"><path d="M7 2h20a5 5 0 0 1 5 5v11a5 5 0 0 1-5 5H15l-7 6v-6H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5z" fill="#e1392c"/><circle cx="11" cy="12.5" r="2.3" fill="#fff"/><circle cx="17" cy="12.5" r="2.3" fill="#fff"/><circle cx="23" cy="12.5" r="2.3" fill="#fff"/></svg><span>сайт <span class="and">и</span> бот</span></a>
+    <span class="geo">Волжский · Волгоград</span>
+  </header>
+
+  <div class="intro">
+    <h1>Онлайн-запись для вашего бизнеса за&nbsp;2&nbsp;дня</h1>
+    <p>Telegram-бот и сайт для салонов, барбершопов и&nbsp;автосервисов.</p>
+  </div>
+
+  <!-- Диалог ниже — конечное состояние: его видят без скриптов и при отключённой анимации. Скрипт проигрывает его по шагам. -->
+  <div class="chat" role="img" aria-label="Пример работы бота: клиент за три нажатия записывается на стрижку на завтра в 15:30, а вам приходит уведомление о новой записи">
+    <div class="chat-head" aria-hidden="true">
+      <span class="ava"><svg viewBox="0 0 16 4"><circle cx="2" cy="2" r="2" fill="#f3f1ea"/><circle cx="8" cy="2" r="2" fill="#f3f1ea"/><circle cx="14" cy="2" r="2" fill="#f3f1ea"/></svg></span>
+      <span><b>Ваш бизнес</b><small>бот записи · на связи</small></span>
+      <span class="tag">демо</span>
+    </div>
+    <div class="feed" id="feed" aria-hidden="true">
+      <div class="msg bot">Здравствуйте! На что вас записать?</div>
+      <div class="msg me">Стрижка</div>
+      <div class="msg bot">На завтра свободно:<div class="slots"><span>12:00</span><span class="on">15:30</span><span>18:00</span></div></div>
+      <div class="msg bot">Записал на завтра, 15:30 <span class="ok">✓</span><br>Напомню за 2 часа.</div>
+    </div>
+    <div class="toast on" id="toast" aria-hidden="true">
+      <svg viewBox="0 0 20 20" fill="none" stroke="#121212" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8a5 5 0 0 1 10 0c0 4 1.5 5 1.5 5h-13S5 12 5 8z"/><path d="M8.3 16a1.8 1.8 0 0 0 3.4 0"/></svg>
+      <span><small>Уведомление вам</small><b>Новая запись: Алексей, стрижка, завтра в 15:30</b></span>
+    </div>
+  </div>
+
+  <div class="bill">
+    <ul class="receipt">
+      <li><span class="n">Бот записи</span><span class="t">1–2 дня</span><span class="d"></span><span class="v">7 000 ₽</span></li>
+      <li><span class="n">Сайт-визитка</span><span class="t">2–3 дня</span><span class="d"></span><span class="v">8 000 ₽</span></li>
+      <li><span class="n">Сайт + бот</span><span class="t">3–4 дня</span><span class="d"></span><span class="v">15 000 ₽</span></li>
+      <li class="free sep"><span class="n">Каждый месяц</span><span class="d"></span><span class="v">0 ₽</span></li>
+      <li class="free"><span class="n">Оплата</span><span class="d"></span><span class="v">после запуска</span></li>
+    </ul>
+    <div class="stamp" aria-hidden="true">демо<br>бесплатно</div>
+  </div>
+
+  <div class="cta">
+    <a class="btn" href="https://vk.com/id176709636" target="_blank" rel="noopener">Получить бесплатное демо <span class="arr" aria-hidden="true">→</span></a>
+  </div>
+
+  <div class="more">
+    <span class="lbl">Примеры с живым ботом</span>
+    <div class="chips">
+      <a href="/barbershop/">Барбершоп</a>
+      <a href="/autoservice/">Автосервис</a>
+      <a href="/kids/">Детский лофт</a>
+    </div>
+  </div>
+
+  <div class="foot">
+    <a href="/#prices">Собрать свой чек</a>
+    <button class="share" id="share" type="button">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13V3"/><path d="M6.5 6.2 10 2.8l3.5 3.4"/><path d="M4 10.5V16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-5.500"/></svg>
+      <span id="shareText">Поделиться</span>
+    </button>
+  </div>
+</main>
+
+<script>
+// --- живой диалог: клиент записывается, владельцу приходит уведомление; затем по кругу
+(function () {
+  var feed = document.getElementById("feed"), toast = document.getElementById("toast");
+  if (!feed || !toast || !window.Promise) return;
+  if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return; // остаётся готовый диалог из разметки
+  var wait = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
+  function add(cls, html) { var d = document.createElement("div"); d.className = "msg " + cls; d.innerHTML = html; feed.appendChild(d); return d; }
+  function typing(ms) { var t = add("bot typing", "<i></i><i></i><i></i>"); return wait(ms).then(function () { t.remove(); }); }
+  // пока вкладка скрыта, сценарий стоит на месте, чтобы не проигрываться впустую
+  function visible() { return new Promise(function (r) { if (!document.hidden) return r(); document.addEventListener("visibilitychange", function on() { if (!document.hidden) { document.removeEventListener("visibilitychange", on); r(); } }); }); }
+  async function run() {
+    for (;;) {
+      await visible();
+      feed.innerHTML = ""; toast.classList.remove("on");
+      await wait(500);
+      add("bot", "Здравствуйте! На что вас записать?");
+      await wait(1200); add("me", "Стрижка");
+      await wait(450); await typing(800);
+      var s = add("bot", 'На завтра свободно:<div class="slots"><span>12:00</span><span>15:30</span><span>18:00</span></div>');
+      await wait(1300); s.querySelectorAll(".slots span")[1].classList.add("on");
+      await wait(650); await typing(750);
+      add("bot", 'Записал на завтра, 15:30 <span class="ok">✓</span><br>Напомню за 2 часа.');
+      await wait(900); toast.classList.add("on");
+      await wait(4600);
+      feed.classList.add("out"); toast.classList.remove("on");
+      await wait(500); feed.innerHTML = ""; feed.classList.remove("out");
+    }
+  }
+  run();
+})();
+
+// --- поделиться: на телефоне системное меню, на компьютере копирование ссылки
+(function () {
+  var btn = document.getElementById("share"), txt = document.getElementById("shareText");
+  if (!btn) return;
+  var url = "https://meatboy1000.github.io/card/", timer;
+  function say(t, ok) { txt.textContent = t; btn.classList.toggle("done", !!ok); clearTimeout(timer); timer = setTimeout(function () { txt.textContent = "Поделиться"; btn.classList.remove("done"); }, 2200); }
+  function legacyCopy() {
+    var a = document.createElement("textarea"); a.value = url; a.setAttribute("readonly", ""); a.style.cssText = "position:fixed;opacity:0;top:0;left:0";
+    document.body.appendChild(a); a.select(); var ok = false; try { ok = document.execCommand("copy"); } catch (e) {} a.remove(); return ok;
+  }
+  function copy() {
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(url).then(function () { return true; }, legacyCopy);
+    return Promise.resolve(legacyCopy());
+  }
+  btn.addEventListener("click", function () {
+    var touch = window.matchMedia && matchMedia("(pointer: coarse)").matches;
+    if (touch && navigator.share) {
+      navigator.share({ title: "Сайт и Бот — онлайн-запись для бизнеса", url: url }).catch(function (e) { if (e && e.name !== "AbortError") copy().then(function (ok) { say(ok ? "Ссылка скопирована" : "Не получилось", ok); }); });
+      return;
+    }
+    copy().then(function (ok) { say(ok ? "Ссылка скопирована" : "Не получилось", ok); });
+  });
+})();
+</script>
+</body>
+</html>
