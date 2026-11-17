@@ -96,6 +96,26 @@ section { padding-block: 96px 0; }
 .book ul { margin: 18px 0 0; padding-left: 20px; color: var(--soft); display: grid; gap: 8px; }
 @media (max-width: 880px) { .book { grid-template-columns: 1fr; } }
 
+/* --- форма записи на сайте: выбор → бот в Telegram с готовой заявкой --- */
+.form { background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: clamp(20px, 4vw, 40px); display: grid; gap: 26px; max-width: 860px; }
+.form .q { display: grid; gap: 12px; }
+.form [hidden] { display: none !important; }
+.form .q > span { font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; color: var(--soft); font-weight: 600; }
+.form select { font: 500 1.05rem var(--body); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; width: 100%; max-width: 520px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips button { font: 600 .98rem var(--body); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 999px; padding: 10px 16px; cursor: pointer; min-height: 44px; }
+.chips button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.chips button:hover { border-color: var(--ink); }
+.chips .none { color: var(--soft); font-size: .95rem; padding: 10px 0; }
+.form .sum { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; border-top: 1px solid var(--line); padding-top: 22px; }
+.form .sum p { flex: 1 1 260px; font-weight: 600; }
+.form .sum p small { display: block; font-weight: 400; color: var(--soft); font-size: .9rem; margin-top: 4px; }
+.form .btn[aria-disabled="true"] { opacity: .45; pointer-events: none; }
+.reply { display: none; gap: 10px; background: var(--bg); border-radius: 16px; padding: 18px; }
+.reply.on { display: grid; }
+.reply .bubble { background: var(--card); border: 1px solid var(--line); border-radius: 4px 16px 16px 16px; padding: 12px 14px; max-width: 460px; font-size: .98rem; white-space: pre-line; }
+.reply small { color: var(--soft); }
+
 .contacts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .contacts div { display: grid; gap: 4px; }
 .contacts .lbl { font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; color: var(--soft); font-weight: 600; }
@@ -136,7 +156,7 @@ img { -webkit-user-drag: none; user-select: none; }
       <div class="eyebrow">Барбершоп · Волжский</div>
       <h1>Стрижка без очереди на Александрова</h1>
       <p>Быстро, аккуратно и недорого. Запишитесь в Telegram на свободное время — напомним за 2 часа до визита.</p>
-      <div><a class="btn" href="#book">Записаться онлайн →</a></div>
+      <div><a class="btn" href="#form">Записаться онлайн →</a></div>
     </div>
     <div class="photo"><img src="/assets/img/barber-hero.jpg" alt="" fetchpriority="high"></div>
   </div>
@@ -157,6 +177,21 @@ img { -webkit-user-drag: none; user-select: none; }
     <p class="est">Цены примерные — уточним по вашему прайсу.</p>
   </section>
 
+  <section id="form">
+    <div class="head"><h2>Записаться онлайн</h2><p>Выберите услугу и время — подтверждение придёт в Telegram, без звонков.</p></div>
+    <div class="form" id="bookform">
+      <label class="q"><span>Услуга</span><select id="f-svc"></select></label>
+      <label class="q" id="f-staff-q" hidden><span id="f-staff-lbl">Мастер</span><select id="f-staff"></select></label>
+      <div class="q"><span>День</span><div class="chips" id="f-days"></div></div>
+      <div class="q"><span>Время</span><div class="chips" id="f-times"></div></div>
+      <div class="sum">
+        <p id="f-sum">Выберите день и время<small>Бот проверит, что время свободно, и попросит имя и телефон.</small></p>
+        <a class="btn" id="f-go" href="#" aria-disabled="true" target="_blank" rel="noopener">Подтвердить в Telegram →</a>
+      </div>
+      <div class="reply" id="f-reply" aria-live="polite"></div>
+    </div>
+  </section>
+
   <section>
     <div class="gallery"><img src="/assets/img/barber-razor.jpg" alt="" loading="lazy"><img src="/assets/img/barber-dry.jpg" alt="" loading="lazy"><img src="/assets/img/barber-beard.jpg" alt="" loading="lazy"></div>
   </section>
@@ -166,7 +201,7 @@ img { -webkit-user-drag: none; user-select: none; }
   <section id="book">
     <div class="book">
       <div>
-        <div class="head" style="margin-bottom:0"><h2>Запись за минуту</h2><p>Так будет выглядеть ваш Telegram-бот. Попробуйте записаться — под окном появится уведомление, которое придёт вам.</p></div>
+        <div class="head" style="margin-bottom:0"><h2>Или прямо в Telegram</h2><p>Так будет выглядеть ваш Telegram-бот. Попробуйте записаться — под окном появится уведомление, которое придёт вам.</p></div>
         <ul><li>Клиент сам выбирает услугу и свободное время</li><li>Вам — уведомление с именем и телефоном</li><li>Клиенту — напоминание перед визитом</li></ul>
       </div>
       <div id="bot"></div>
@@ -193,6 +228,78 @@ img { -webkit-user-drag: none; user-select: none; }
 <script src="/assets/bot-demo.js?v=6"></script>
 <script>
 BotDemo.mount(document.getElementById("bot"), {"name": "Best Barber", "avatar": "B", "color": "#c8322b", "theme": "paper", "vars": {"acc": "#c8322b", "out-ink": "#ffffff", "paper": "#f4f2ee", "ink": "#141414", "r": "12px"}, "welcome": "Здравствуйте! Это бот «Best Barber» 👋\nЗапишитесь за минуту: выберите услугу и удобное время.", "contacts": "<b>Best Barber<\/b>\nул. Александрова, 20а/2\nПн–Пт 9–19, Сб–Вс 9–17\n+7 995 025-03-89", "services": [{"name": "Мужская стрижка", "price": 600, "min": 40}, {"name": "Фейд", "price": 800, "min": 50}, {"name": "Стрижка бороды", "price": 400, "min": 25}, {"name": "Стрижка + борода", "price": 950, "min": 60}, {"name": "Детская стрижка", "price": 500, "min": 30}, {"name": "Под машинку", "price": 350, "min": 20}], "times": ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00"], "sampleName": "Алексей", "sub": "демо-бот · Сайт и Бот"});
+/* Форма записи. Порядок услуг и мастеров тот же, что в config.json бота: ссылка t.me/<бот>?start=b_<услуга>_<мастер>_<ГГММДДЧЧММ> */
+(function (F) {
+  var $ = function (id) { return document.getElementById(id); };
+  var WD = ["вс", "пн", "вт", "ср", "чт", "пт", "сб"], MON = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"];
+  var st = { day: null, time: null };
+  var p2 = function (n) { return (n < 10 ? "0" : "") + n; };
+  var rub = function (n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " ₽"; };
+  F.services.forEach(function (s, i) { var o = new Option(s.n + " — " + rub(s.p), i + 1); $("f-svc").add(o); });
+  if (F.staff.length > 1) {
+    $("f-staff-q").hidden = false; $("f-staff-lbl").textContent = F.staffLabel;
+    $("f-staff").add(new Option("Любой свободный", 0));
+    F.staff.forEach(function (m, i) { $("f-staff").add(new Option(m, i + 1)); });
+  }
+  function svc() { return F.services[$("f-svc").value - 1]; }
+  function times(d) {
+    var out = [], mins = svc().m, now = new Date(Date.now() + 30 * 60000);
+    for (var t = F.hours[0] * 60; t + mins <= F.hours[1] * 60; t += F.step) {
+      var x = new Date(d.getFullYear(), d.getMonth(), d.getDate(), Math.floor(t / 60), t % 60);
+      if (x > now) out.push(x);
+    }
+    return out;
+  }
+  function chip(label, on, pressed) {
+    var b = document.createElement("button"); b.type = "button"; b.textContent = label;
+    b.setAttribute("aria-pressed", pressed ? "true" : "false"); b.onclick = on; return b;
+  }
+  function render() {
+    var days = $("f-days"), tms = $("f-times"); days.innerHTML = ""; tms.innerHTML = "";
+    var base = new Date(); base.setHours(0, 0, 0, 0);
+    var list = [];
+    for (var i = 0; i < F.days; i++) { var d = new Date(base); d.setDate(base.getDate() + i); if (times(d).length) list.push([i, d]); }
+    if (st.day && !list.some(function (x) { return x[1].getTime() === st.day.getTime(); })) st.day = null;
+    if (!st.day && list.length) st.day = list[0][1];
+    list.forEach(function (x) {
+      var i = x[0], d = x[1], lbl = i === 0 ? "Сегодня" : i === 1 ? "Завтра" : WD[d.getDay()] + " " + d.getDate() + " " + MON[d.getMonth()];
+      days.appendChild(chip(lbl, function () { st.day = d; st.time = null; render(); }, st.day && d.getTime() === st.day.getTime()));
+    });
+    var ts = st.day ? times(st.day) : [];
+    if (st.time && !ts.some(function (t) { return t.getTime() === st.time.getTime(); })) st.time = null;
+    ts.forEach(function (t) {
+      tms.appendChild(chip(p2(t.getHours()) + ":" + p2(t.getMinutes()), function () { st.time = t; render(); }, st.time && t.getTime() === st.time.getTime()));
+    });
+    if (!ts.length) tms.innerHTML = '<span class="none">Нет свободного времени — выберите другой день</span>';
+    var go = $("f-go"), s = svc();
+    if (st.time) {
+      var t = st.time, mi = F.staff.length > 1 ? +$("f-staff").value : 0;
+      var code = "b_" + $("f-svc").value + "_" + mi + "_" + String(t.getFullYear()).slice(2) + p2(t.getMonth() + 1) + p2(t.getDate()) + p2(t.getHours()) + p2(t.getMinutes());
+      var when = t.getDate() + " " + MON[t.getMonth()] + " (" + WD[t.getDay()] + ") в " + p2(t.getHours()) + ":" + p2(t.getMinutes());
+      $("f-sum").innerHTML = "";
+      $("f-sum").append(s.n + " — " + rub(s.p) + ", " + when);
+      var sm = document.createElement("small"); sm.textContent = "Бот проверит, что время свободно, и попросит имя и телефон."; $("f-sum").append(sm);
+      go.setAttribute("aria-disabled", "false");
+      go.href = F.bot ? "https://t.me/" + F.bot + "?start=" + code : "#form";
+      go.dataset.text = "Вы выбрали на сайте: " + s.n + " — " + rub(s.p) + "\n" + p2(t.getDate()) + "." + p2(t.getMonth() + 1) + " (" + WD[t.getDay()] + ") в " + p2(t.getHours()) + ":" + p2(t.getMinutes()) +
+        (mi ? ", " + F.staffLabel.toLowerCase() + " " + F.staff[mi - 1] : "") + ".\n\nВремя свободно ✅ Осталось два шага.\nКак к вам обращаться?";
+    } else {
+      go.setAttribute("aria-disabled", "true"); go.href = "#form";
+    }
+  }
+  $("f-go").addEventListener("click", function (e) {
+    if (F.bot) return;            /* настоящий сайт: открывается бот в Telegram */
+    e.preventDefault();           /* демо: показываем, что ответит бот */
+    var r = $("f-reply"); r.innerHTML = "";
+    var h = document.createElement("small"); h.textContent = "Так ответит ваш бот в Telegram:";
+    var b = document.createElement("div"); b.className = "bubble"; b.textContent = this.dataset.text;
+    var n = document.createElement("small"); n.textContent = "В рабочей версии кнопка открывает вашего бота сразу с этой записью — клиенту остаётся написать имя и телефон.";
+    r.append(h, b, n); r.classList.add("on");
+  });
+  $("f-svc").onchange = function () { $("f-reply").classList.remove("on"); render(); };
+  $("f-staff").onchange = render;
+  render();
+})({"services": [{"n": "Мужская стрижка", "p": 600, "m": 40}, {"n": "Фейд", "p": 800, "m": 50}, {"n": "Стрижка бороды", "p": 400, "m": 25}, {"n": "Стрижка + борода", "p": 950, "m": 60}, {"n": "Детская стрижка", "p": 500, "m": 30}, {"n": "Под машинку", "p": 350, "m": 20}], "staff": [], "staffLabel": "Мастер", "hours": [9, 19], "step": 30, "days": 7, "bot": ""});
 document.addEventListener("contextmenu", function (e) { if (e.target.tagName === "IMG") e.preventDefault(); });
 document.addEventListener("dragstart", function (e) { if (e.target.tagName === "IMG") e.preventDefault(); });
 </script>
