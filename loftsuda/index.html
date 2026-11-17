@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<title>Лофт СЮДА · Волгоград — демо</title>
+<meta name="description" content="Демо-макет сайта с онлайн-записью для «Лофт СЮДА», Волгоград.">
+<meta property="og:title" content="Лофт СЮДА · онлайн-запись — демо">
+<meta property="og:description" content="Попробуйте записаться через бота прямо на странице.">
+<meta property="og:image" content="https://meatboy1000.github.io/assets/img/kids-decor.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@800&family=Onest:wght@500;700&display=swap">
+<style>
+/* Шаблон «новый клиент»: один экран — одна главная вещь. Цвета и шрифты приходят из пресета ниши. */
+:root {
+  --bg: #fdf2f6; --card: #ffffff; --ink: #03594d; --soft: #3f6f66; --line: color-mix(in srgb, #03594d 14%, transparent);
+  --acc: #03594d; --acc-ink: #ffffff;
+  --display: "Unbounded", "Arial Black", sans-serif;
+  --body: "Onest", "Segoe UI", Arial, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; background: var(--bg); }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 18px/1.55 var(--body); }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--acc); outline-offset: 3px; }
+h1, h2, h3, p { margin: 0; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+.wrap { max-width: 1140px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+
+.demo-bar { background: var(--ink); color: var(--bg); font-size: .85rem; text-align: center; padding: 8px max(16px, env(safe-area-inset-left, 0px)); }
+.demo-bar b { font-weight: 600; }
+
+.top { display: flex; justify-content: space-between; align-items: center; gap: 14px; padding-block: 20px; flex-wrap: wrap; }
+.logo { font: 700 1.3rem/1 var(--display); letter-spacing: -.01em; }
+.phone { font-weight: 600; text-decoration: none; border-bottom: 2px solid var(--ink); }
+
+.btn { display: inline-flex; align-items: center; gap: 10px; background: var(--acc); color: var(--acc-ink); text-decoration: none; font: 600 1.08rem var(--body); padding: 17px 28px; border-radius: 14px; transition: transform .15s, filter .15s; }
+.btn:hover { transform: translateY(-1px); filter: brightness(.94); }
+
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: center; padding-block: 30px 80px; }
+.hero .words { display: grid; gap: 24px; }
+.eyebrow { font-size: .85rem; letter-spacing: .1em; text-transform: uppercase; color: var(--soft); font-weight: 600; }
+.hero h1 { font: 700 clamp(1.9rem, 4vw, 3.3rem)/1.08 var(--display); letter-spacing: -.02em; text-wrap: balance; overflow-wrap: break-word; hyphens: auto; }
+.hero .words { min-width: 0; }
+.hero p { font-size: 1.2rem; color: var(--soft); max-width: 36ch; }
+.hero .photo { aspect-ratio: 4 / 5; border-radius: 22px; overflow: hidden; }
+.hero .photo img { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 860px) { .hero { grid-template-columns: 1fr; gap: 32px; padding-bottom: 60px; } .hero .photo { aspect-ratio: 16 / 11; order: -1; } }
+
+.facts { background: var(--ink); color: var(--bg); }
+.facts .wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; padding-block: 40px; }
+.facts b { display: block; font: 700 clamp(1.3rem, 2.6vw, 1.9rem)/1.15 var(--display); }
+.facts span { opacity: .75; font-size: .95rem; }
+@media (max-width: 700px) { .facts .wrap { grid-template-columns: 1fr; gap: 18px; } }
+
+section { padding-block: 96px 0; }
+.head { display: grid; gap: 10px; margin-bottom: 34px; max-width: 640px; }
+.head h2 { font: 700 clamp(1.8rem, 3.6vw, 2.6rem)/1.1 var(--display); letter-spacing: -.015em; }
+.head p { color: var(--soft); }
+
+.prices { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 56px; }
+.row { display: grid; grid-template-columns: 1fr auto; gap: 2px 18px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.row b { font-weight: 600; font-size: 1.08rem; }
+.row .rub { font-weight: 600; font-size: 1.08rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.row .d { grid-column: 1 / -1; color: var(--soft); font-size: .95rem; }
+.est { color: var(--soft); font-size: .9rem; margin-top: 16px; }
+@media (max-width: 760px) { .prices { grid-template-columns: 1fr; } }
+
+.gallery { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 14px; }
+.gallery img { width: 100%; height: 300px; object-fit: cover; border-radius: 18px; }
+@media (max-width: 760px) { .gallery { grid-template-columns: 1fr 1fr; } .gallery img:first-child { grid-column: 1 / -1; } .gallery img { height: 180px; } }
+
+.staff { display: flex; flex-wrap: wrap; gap: 12px; }
+.staff span { background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 10px 18px; font-weight: 600; }
+.staff small { font-weight: 400; color: var(--soft); margin-left: 6px; }
+
+.book { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 400px); gap: 48px; align-items: start; }
+.book ul { margin: 18px 0 0; padding-left: 20px; color: var(--soft); display: grid; gap: 8px; }
+@media (max-width: 880px) { .book { grid-template-columns: 1fr; } }
+
+.contacts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.contacts div { display: grid; gap: 4px; }
+.contacts .lbl { font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; color: var(--soft); font-weight: 600; }
+.contacts .val { font-weight: 600; font-size: 1.1rem; }
+@media (max-width: 700px) { .contacts { grid-template-columns: 1fr; } }
+
+.final { margin-top: 100px; background: var(--ink); color: var(--bg); }
+.final .wrap { padding-block: 70px; display: grid; gap: 22px; justify-items: start; }
+.final h2 { font: 700 clamp(1.8rem, 4vw, 2.8rem)/1.1 var(--display); max-width: 20ch; }
+footer { background: var(--ink); color: var(--bg); opacity: .9; font-size: .82rem; }
+footer .wrap { border-top: 1px solid color-mix(in srgb, var(--bg) 18%, transparent); padding-block: 18px calc(18px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+<div class="demo-bar">Демо-макет для <b>«Лофт СЮДА»</b> от «Сайт и Бот» — не официальный сайт. Фото примерные, цены примерные.</div>
+
+<div class="wrap">
+  <header class="top">
+    <div class="logo">Лофт СЮДА</div>
+    <span class="phone">+7 906 410-47-70</span>
+  </header>
+
+  <div class="hero">
+    <div class="words">
+      <div class="eyebrow">Семейный лофт · Волгоград</div>
+      <h1>Праздники, на которые хочется вернуться</h1>
+      <p>Батут и горка для детей, уютная банкетная зона для взрослых и фотозоны. Весь лофт только для вашей семьи — можно со своей едой или праздник под ключ.</p>
+      <div><a class="btn" href="#book">Записаться онлайн →</a></div>
+    </div>
+    <div class="photo"><img src="/assets/img/kids-decor.jpg" alt="" fetchpriority="high"></div>
+  </div>
+</div>
+
+<div class="facts">
+  <div class="wrap">
+    <div><b>Ежедневно 10:00–22:00</b><span>часы работы</span></div>
+    <div><b>ул. Силикатная</b><span>Волгоград</span></div>
+    <div><b>от 3 600 ₽</b><span>аренда лофта, 2 часа</span></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section id="prices">
+    <div class="head"><h2>Услуги и цены</h2></div>
+    <div class="prices"><div class="row"><b>Аренда лофта, 2 часа</b><span class="rub">3 600 ₽</span><span class="d">весь лофт для вашей семьи · 120 мин</span></div><div class="row"><b>Аренда лофта, 3 часа</b><span class="rub">5 400 ₽</span><span class="d">оптимально для дня рождения · 180 мин</span></div><div class="row"><b>Аренда лофта, 4 часа</b><span class="rub">7 200 ₽</span><span class="d">юбилеи и семейные торжества · 240 мин</span></div><div class="row"><b>Праздник под ключ</b><span class="rub">12 000 ₽</span><span class="d">организация, оформление, программа · 180 мин</span></div></div>
+    <p class="est">Цены примерные — уточним по вашему прайсу.</p>
+  </section>
+
+  <section>
+    <div class="gallery"><img src="/assets/img/kids-candles.jpg" alt="" loading="lazy"><img src="/assets/img/kids-room.jpg" alt="" loading="lazy"><img src="/assets/img/kids-balloons.jpg" alt="" loading="lazy"></div>
+  </section>
+
+  
+
+  <section id="book">
+    <div class="book">
+      <div>
+        <div class="head" style="margin-bottom:0"><h2>Запись за минуту</h2><p>Так будет выглядеть ваш Telegram-бот. Попробуйте записаться — под окном появится уведомление, которое придёт вам.</p></div>
+        <ul><li>Клиент сам выбирает услугу и свободное время</li><li>Вам — уведомление с именем и телефоном</li><li>Клиенту — напоминание перед визитом</li></ul>
+      </div>
+      <div id="bot"></div>
+    </div>
+  </section>
+
+  <section id="contacts">
+    <div class="contacts">
+      <div><span class="lbl">Адрес</span><span class="val">ул. Силикатная, 37, 2 этаж</span><span>Волгоград</span></div>
+      <div><span class="lbl">Часы</span><span class="val">Ежедневно 10:00–22:00</span></div>
+      <div><span class="lbl">Связь</span><span class="val">+7 906 410-47-70</span><a href="https://vk.com/loftsuda" target="_blank" rel="noopener">ВКонтакте</a></div>
+    </div>
+  </section>
+</div>
+
+<div class="final">
+  <div class="wrap">
+    <h2>Хотите такую запись у себя?</h2>
+    <a class="btn" href="https://vk.com/id176709636" target="_blank" rel="noopener">Обсудить с «Сайт и Бот» →</a>
+  </div>
+</div>
+<footer><div class="wrap"><span>Демо-макет · сделано «Сайт и Бот» для «Лофт СЮДА»</span><span>Фото Unsplash</span></div></footer>
+
+<script src="/assets/bot-demo.js?v=5"></script>
+<script>
+BotDemo.mount(document.getElementById("bot"), {"name": "Лофт СЮДА", "avatar": "Л", "color": "#03594d", "theme": "paper", "vars": {"acc": "#03594d", "out-ink": "#ffffff", "paper": "#fdf2f6", "ink": "#03594d", "r": "12px"}, "welcome": "Здравствуйте! Это бот «Лофт СЮДА» 👋\nЗапишитесь за минуту: выберите услугу и удобное время.", "contacts": "<b>Лофт СЮДА<\/b>\nул. Силикатная, 37, 2 этаж\nЕжедневно 10:00–22:00\n+7 906 410-47-70", "services": [{"name": "Аренда лофта, 2 часа", "price": 3600, "min": 120}, {"name": "Аренда лофта, 3 часа", "price": 5400, "min": 180}, {"name": "Аренда лофта, 4 часа", "price": 7200, "min": 240}, {"name": "Праздник под ключ", "price": 12000, "min": 180}], "times": ["10:00", "13:00", "16:00", "19:00"], "sampleName": "Алексей", "extra": {"question": "Сколько будет детей?", "label": "Детей", "options": ["до 5", "6–10", "11–15", "16–25"]}});
+</script>
+</body>
+</html>
