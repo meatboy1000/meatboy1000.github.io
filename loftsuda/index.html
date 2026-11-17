@@ -9,7 +9,7 @@
 <meta name="description" content="Демо-макет сайта с онлайн-записью для «Лофт СЮДА», Волгоград.">
 <meta property="og:title" content="Лофт СЮДА · онлайн-запись — демо">
 <meta property="og:description" content="Попробуйте записаться через бота прямо на странице.">
-<meta property="og:image" content="https://meatboy1000.github.io/assets/img/kids-decor.jpg">
+<meta property="og:image" content="https://meatboy1000.github.io/loftsuda/img/kino.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@800&family=Onest:wght@500;700&display=swap">
@@ -36,7 +36,8 @@ h1, h2, h3, p { margin: 0; }
 .demo-bar b { font-weight: 600; }
 
 .top { display: flex; justify-content: space-between; align-items: center; gap: 14px; padding-block: 20px; flex-wrap: wrap; }
-.logo { font: 700 1.3rem/1 var(--display); letter-spacing: -.01em; }
+.logo { font: 700 1.3rem/1 var(--display); letter-spacing: -.01em; display: flex; align-items: center; gap: 12px; }
+.logo .brand { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; }
 .phone { font-weight: 600; text-decoration: none; border-bottom: 2px solid var(--ink); }
 
 .btn { display: inline-flex; align-items: center; gap: 10px; background: var(--acc); color: var(--acc-ink); text-decoration: none; font: 600 1.08rem var(--body); padding: 17px 28px; border-radius: 14px; transition: transform .15s, filter .15s; }
@@ -97,11 +98,11 @@ footer .wrap { border-top: 1px solid color-mix(in srgb, var(--bg) 18%, transpare
 </style>
 </head>
 <body>
-<div class="demo-bar">Демо-макет для <b>«Лофт СЮДА»</b> от «Сайт и Бот» — не официальный сайт. Фото примерные, цены примерные.</div>
+<div class="demo-bar">Демо-макет для <b>«Лофт СЮДА»</b> от «Сайт и Бот» — не официальный сайт. Фото из вашего ВК, цены из вашего прайса.</div>
 
 <div class="wrap">
   <header class="top">
-    <div class="logo">Лофт СЮДА</div>
+    <div class="logo"><img class="brand" src="img/logo.jpg" alt="">Лофт СЮДА</div>
     <span class="phone">+7 906 410-47-70</span>
   </header>
 
@@ -109,10 +110,10 @@ footer .wrap { border-top: 1px solid color-mix(in srgb, var(--bg) 18%, transpare
     <div class="words">
       <div class="eyebrow">Семейный лофт · Волгоград</div>
       <h1>Праздники, на которые хочется вернуться</h1>
-      <p>Батут и горка для детей, уютная банкетная зона для взрослых и фотозоны. Весь лофт только для вашей семьи — можно со своей едой или праздник под ключ.</p>
+      <p>Батут и горка для детей, уютная банкетная зона для взрослых и фотозоны. Весь лофт только для вашей семьи — до 16 взрослых и 14 детей. Можно со своей едой или праздник под ключ.</p>
       <div><a class="btn" href="#book">Записаться онлайн →</a></div>
     </div>
-    <div class="photo"><img src="/assets/img/kids-decor.jpg" alt="" fetchpriority="high"></div>
+    <div class="photo"><img src="img/kino.jpg" alt="" fetchpriority="high"></div>
   </div>
 </div>
 
@@ -120,19 +121,19 @@ footer .wrap { border-top: 1px solid color-mix(in srgb, var(--bg) 18%, transpare
   <div class="wrap">
     <div><b>Ежедневно 10:00–22:00</b><span>часы работы</span></div>
     <div><b>ул. Силикатная</b><span>Волгоград</span></div>
-    <div><b>от 3 600 ₽</b><span>аренда лофта, 2 часа</span></div>
+    <div><b>от 3 000 ₽</b><span>оформление фотозоны</span></div>
   </div>
 </div>
 
 <div class="wrap">
   <section id="prices">
     <div class="head"><h2>Услуги и цены</h2></div>
-    <div class="prices"><div class="row"><b>Аренда лофта, 2 часа</b><span class="rub">3 600 ₽</span><span class="d">весь лофт для вашей семьи · 120 мин</span></div><div class="row"><b>Аренда лофта, 3 часа</b><span class="rub">5 400 ₽</span><span class="d">оптимально для дня рождения · 180 мин</span></div><div class="row"><b>Аренда лофта, 4 часа</b><span class="rub">7 200 ₽</span><span class="d">юбилеи и семейные торжества · 240 мин</span></div><div class="row"><b>Праздник под ключ</b><span class="rub">12 000 ₽</span><span class="d">организация, оформление, программа · 180 мин</span></div></div>
-    <p class="est">Цены примерные — уточним по вашему прайсу.</p>
+    <div class="prices"><div class="row"><b>Будни, 2 часа</b><span class="rub">4 000 ₽</span><span class="d">пн–чт, весь лофт для вашей семьи · 120 мин</span></div><div class="row"><b>Будни, 3 часа</b><span class="rub">5 000 ₽</span><span class="d">пн–чт · 180 мин</span></div><div class="row"><b>Будни, 5 часов</b><span class="rub">7 500 ₽</span><span class="d">пн–чт · 300 мин</span></div><div class="row"><b>Выходные, 3 часа</b><span class="rub">7 000 ₽</span><span class="d">пт–вс и праздники · 180 мин</span></div><div class="row"><b>Выходные, 5 часов</b><span class="rub">10 000 ₽</span><span class="d">пт–вс и праздники · 300 мин</span></div><div class="row"><b>Безлимит 12:00–22:00</b><span class="rub">12 000 ₽</span><span class="d">весь день ваш · 600 мин</span></div><div class="row"><b>Оформление фотозоны</b><span class="rub">3 000 ₽</span><span class="d">от 3 000 ₽, тематика на выбор</span></div></div>
+    
   </section>
 
   <section>
-    <div class="gallery"><img src="/assets/img/kids-candles.jpg" alt="" loading="lazy"><img src="/assets/img/kids-room.jpg" alt="" loading="lazy"><img src="/assets/img/kids-balloons.jpg" alt="" loading="lazy"></div>
+    <div class="gallery"><img src="img/novyj-god.jpg" alt="" loading="lazy"><img src="img/rusalochka.jpg" alt="" loading="lazy"><img src="img/14-let.jpg" alt="" loading="lazy"></div>
   </section>
 
   
@@ -166,7 +167,7 @@ footer .wrap { border-top: 1px solid color-mix(in srgb, var(--bg) 18%, transpare
 
 <script src="/assets/bot-demo.js?v=5"></script>
 <script>
-BotDemo.mount(document.getElementById("bot"), {"name": "Лофт СЮДА", "avatar": "Л", "color": "#03594d", "theme": "paper", "vars": {"acc": "#03594d", "out-ink": "#ffffff", "paper": "#fdf2f6", "ink": "#03594d", "r": "12px"}, "welcome": "Здравствуйте! Это бот «Лофт СЮДА» 👋\nЗапишитесь за минуту: выберите услугу и удобное время.", "contacts": "<b>Лофт СЮДА<\/b>\nул. Силикатная, 37, 2 этаж\nЕжедневно 10:00–22:00\n+7 906 410-47-70", "services": [{"name": "Аренда лофта, 2 часа", "price": 3600, "min": 120}, {"name": "Аренда лофта, 3 часа", "price": 5400, "min": 180}, {"name": "Аренда лофта, 4 часа", "price": 7200, "min": 240}, {"name": "Праздник под ключ", "price": 12000, "min": 180}], "times": ["10:00", "13:00", "16:00", "19:00"], "sampleName": "Алексей", "extra": {"question": "Сколько будет детей?", "label": "Детей", "options": ["до 5", "6–10", "11–15", "16–25"]}});
+BotDemo.mount(document.getElementById("bot"), {"name": "Лофт СЮДА", "avatar": "Л", "color": "#03594d", "theme": "paper", "vars": {"acc": "#03594d", "out-ink": "#ffffff", "paper": "#fdf2f6", "ink": "#03594d", "r": "12px"}, "welcome": "Здравствуйте! Это бот «Лофт СЮДА» 👋\nЗапишитесь за минуту: выберите услугу и удобное время.", "contacts": "<b>Лофт СЮДА<\/b>\nул. Силикатная, 37, 2 этаж\nЕжедневно 10:00–22:00\n+7 906 410-47-70", "services": [{"name": "Будни, 2 часа", "price": 4000, "min": 120}, {"name": "Будни, 3 часа", "price": 5000, "min": 180}, {"name": "Будни, 5 часов", "price": 7500, "min": 300}, {"name": "Выходные, 3 часа", "price": 7000, "min": 180}, {"name": "Выходные, 5 часов", "price": 10000, "min": 300}, {"name": "Безлимит 12:00–22:00", "price": 12000, "min": 600}], "times": ["10:00", "13:00", "16:00", "19:00"], "sampleName": "Алексей", "extra": {"question": "Сколько будет детей?", "label": "Детей", "options": ["до 5", "6–10", "11–15", "16–25"]}});
 </script>
 </body>
 </html>
