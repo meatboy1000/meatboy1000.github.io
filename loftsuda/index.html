@@ -5,6 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<script>
+/* Демо работает только на сайте «Сайт и Бот». Сохранённая или перенесённая копия показывает заглушку. */
+(function () {
+  var ok = /^(meatboy1000\.github\.io|localhost|127\.0\.0\.1)$/.test(location.hostname);
+  if (ok) return;
+  document.documentElement.innerHTML = '<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Демо-макет · Сайт и Бот</title></head>' +
+    '<body style="margin:0;min-height:100vh;display:grid;place-items:center;background:#f7f6f2;color:#121212;font:18px/1.5 system-ui,Arial,sans-serif;text-align:center;padding:24px">' +
+    '<div style="max-width:520px"><div style="font-size:44px">💬</div><h1 style="font-size:26px;margin:12px 0">Это демо-макет от «Сайт и Бот»</h1>' +
+    '<p>Копия демо-сайта не работает вне нашего адреса. Хотите такой сайт и бота для своего бизнеса — напишите нам.</p>' +
+    '<p><a href="https://meatboy1000.github.io/" style="color:#e1392c;font-weight:700">meatboy1000.github.io</a> · <a href="https://vk.com/id176709636" style="color:#e1392c;font-weight:700">ВКонтакте</a></p></div></body>';
+})();
+</script>
 <title>Лофт СЮДА · Волгоград — демо</title>
 <meta name="description" content="Демо-макет сайта с онлайн-записью для «Лофт СЮДА», Волгоград.">
 <meta property="og:title" content="Лофт СЮДА · онлайн-запись — демо">
@@ -95,6 +107,19 @@ section { padding-block: 96px 0; }
 .final h2 { font: 700 clamp(1.8rem, 4vw, 2.8rem)/1.1 var(--display); max-width: 20ch; }
 footer { background: var(--ink); color: var(--bg); opacity: .9; font-size: .82rem; }
 footer .wrap { border-top: 1px solid color-mix(in srgb, var(--bg) 18%, transparent); padding-block: 18px calc(18px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+/* --- защита демо: водяной знак по всей странице, метка на главном фото, фото нельзя перетащить --- */
+body::after { content: ""; position: fixed; inset: 0; z-index: 60; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='220'%3E%3Ctext x='20' y='130' transform='rotate(-24 170 110)' font-family='Arial,sans-serif' font-size='22' font-weight='700' fill='%23121212' fill-opacity='0.08'%3E%D0%94%D0%95%D0%9C%D0%9E %C2%B7 meatboy1000%3C/text%3E%3C/svg%3E");
+  background-repeat: repeat; }
+.hero .photo { position: relative; }
+.hero .photo::after { content: "ДЕМО · meatboy1000"; position: absolute; left: 14px; bottom: 14px; background: rgba(18,18,18,.78); color: #fff;
+  font: 700 .8rem/1 var(--body); letter-spacing: .08em; padding: 8px 12px; border-radius: 999px; pointer-events: none; }
+.gallery { position: relative; }
+.gallery::after { content: "ДЕМО · meatboy1000"; position: absolute; right: 12px; top: 12px; background: rgba(18,18,18,.78); color: #fff;
+  font: 700 .75rem/1 var(--body); letter-spacing: .12em; padding: 7px 11px; border-radius: 999px; pointer-events: none; }
+img { -webkit-user-drag: none; user-select: none; }
+.legal { opacity: .75; }
 </style>
 </head>
 <body>
@@ -163,11 +188,13 @@ footer .wrap { border-top: 1px solid color-mix(in srgb, var(--bg) 18%, transpare
     <a class="btn" href="https://vk.com/id176709636" target="_blank" rel="noopener">Обсудить с «Сайт и Бот» →</a>
   </div>
 </div>
-<footer><div class="wrap"><span>Демо-макет · сделано «Сайт и Бот» для «Лофт СЮДА»</span><span>Фото Unsplash</span></div></footer>
+<footer><div class="wrap"><span>Демо-макет · сделано «Сайт и Бот» для «Лофт СЮДА»</span><span class="legal">© Сайт и Бот. Демо-версия: копирование и использование без договора запрещено.</span></div></footer>
 
-<script src="/assets/bot-demo.js?v=5"></script>
+<script src="/assets/bot-demo.js?v=6"></script>
 <script>
-BotDemo.mount(document.getElementById("bot"), {"name": "Лофт СЮДА", "avatar": "Л", "color": "#03594d", "theme": "paper", "vars": {"acc": "#03594d", "out-ink": "#ffffff", "paper": "#fdf2f6", "ink": "#03594d", "r": "12px"}, "welcome": "Здравствуйте! Это бот «Лофт СЮДА» 👋\nЗапишитесь за минуту: выберите услугу и удобное время.", "contacts": "<b>Лофт СЮДА<\/b>\nул. Силикатная, 37, 2 этаж\nЕжедневно 10:00–22:00\n+7 906 410-47-70", "services": [{"name": "Будни, 2 часа", "price": 4000, "min": 120}, {"name": "Будни, 3 часа", "price": 5000, "min": 180}, {"name": "Будни, 5 часов", "price": 7500, "min": 300}, {"name": "Выходные, 3 часа", "price": 7000, "min": 180}, {"name": "Выходные, 5 часов", "price": 10000, "min": 300}, {"name": "Безлимит 12:00–22:00", "price": 12000, "min": 600}], "times": ["10:00", "13:00", "16:00", "19:00"], "sampleName": "Алексей", "extra": {"question": "Сколько будет детей?", "label": "Детей", "options": ["до 5", "6–10", "11–15", "16–25"]}});
+BotDemo.mount(document.getElementById("bot"), {"name": "Лофт СЮДА", "avatar": "Л", "color": "#03594d", "theme": "paper", "vars": {"acc": "#03594d", "out-ink": "#ffffff", "paper": "#fdf2f6", "ink": "#03594d", "r": "12px"}, "welcome": "Здравствуйте! Это бот «Лофт СЮДА» 👋\nЗапишитесь за минуту: выберите услугу и удобное время.", "contacts": "<b>Лофт СЮДА<\/b>\nул. Силикатная, 37, 2 этаж\nЕжедневно 10:00–22:00\n+7 906 410-47-70", "services": [{"name": "Будни, 2 часа", "price": 4000, "min": 120}, {"name": "Будни, 3 часа", "price": 5000, "min": 180}, {"name": "Будни, 5 часов", "price": 7500, "min": 300}, {"name": "Выходные, 3 часа", "price": 7000, "min": 180}, {"name": "Выходные, 5 часов", "price": 10000, "min": 300}, {"name": "Безлимит 12:00–22:00", "price": 12000, "min": 600}], "times": ["10:00", "13:00", "16:00", "19:00"], "sampleName": "Алексей", "sub": "демо-бот · Сайт и Бот", "extra": {"question": "Сколько будет детей?", "label": "Детей", "options": ["до 5", "6–10", "11–15", "16–25"]}});
+document.addEventListener("contextmenu", function (e) { if (e.target.tagName === "IMG") e.preventDefault(); });
+document.addEventListener("dragstart", function (e) { if (e.target.tagName === "IMG") e.preventDefault(); });
 </script>
 </body>
 </html>

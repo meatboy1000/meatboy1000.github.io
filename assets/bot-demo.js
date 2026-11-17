@@ -75,7 +75,7 @@
       <div class="bd${cfg.theme ? " " + cfg.theme : ""}" style="${cfg.vars ? Object.entries(cfg.vars).map(([k, v]) => "--bd-" + k + ":" + v).join(";") : ""}">
         <div class="bd-phone"><div class="bd-screen">
           <div class="bd-head"><div class="bd-ava" style="background:${cfg.color || "#3390ec"}">${esc(cfg.avatar || cfg.name[0])}</div>
-            <div><div class="bd-title">${esc(cfg.name)}</div><div class="bd-sub">бот</div></div></div>
+            <div><div class="bd-title">${esc(cfg.name)}</div><div class="bd-sub">${esc(cfg.sub || "бот")}</div></div></div>
           <div class="bd-log" aria-live="polite"></div>
           <form class="bd-input"><input aria-label="Сообщение боту" placeholder="Сообщение" disabled><button class="bd-send" aria-label="Отправить" disabled>➤</button></form>
         </div></div>
