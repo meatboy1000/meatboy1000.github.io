@@ -96,7 +96,7 @@ section { padding-block: 96px 0; }
 .book ul { margin: 18px 0 0; padding-left: 20px; color: var(--soft); display: grid; gap: 8px; }
 @media (max-width: 880px) { .book { grid-template-columns: 1fr; } }
 
-/* --- форма записи на сайте: выбор → бот в Telegram с готовой заявкой --- */
+/* --- форма записи на сайте: выбор → бот в группе ВК (или Telegram) с готовой заявкой --- */
 .form { background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: clamp(20px, 4vw, 40px); display: grid; gap: 26px; max-width: 860px; }
 .form .q { display: grid; gap: 12px; }
 .form [hidden] { display: none !important; }
@@ -178,7 +178,7 @@ img { -webkit-user-drag: none; user-select: none; }
   </section>
 
   <section id="form">
-    <div class="head"><h2>Записаться онлайн</h2><p>Выберите услугу и время — подтверждение придёт в Telegram, без звонков.</p></div>
+    <div class="head"><h2>Записаться онлайн</h2><p>Выберите услугу и время — подтвердите в сообщениях нашей группы ВКонтакте, без звонков.</p></div>
     <div class="form" id="bookform">
       <label class="q"><span>Услуга</span><select id="f-svc"></select></label>
       <label class="q" id="f-staff-q" hidden><span id="f-staff-lbl">Мастер</span><select id="f-staff"></select></label>
@@ -186,7 +186,7 @@ img { -webkit-user-drag: none; user-select: none; }
       <div class="q"><span>Время</span><div class="chips" id="f-times"></div></div>
       <div class="sum">
         <p id="f-sum">Выберите день и время<small>Бот проверит, что время свободно, и попросит имя и телефон.</small></p>
-        <a class="btn" id="f-go" href="#" aria-disabled="true" target="_blank" rel="noopener">Подтвердить в Telegram →</a>
+        <a class="btn" id="f-go" href="#" aria-disabled="true" target="_blank" rel="noopener">Подтвердить во ВКонтакте →</a>
       </div>
       <div class="reply" id="f-reply" aria-live="polite"></div>
     </div>
@@ -201,7 +201,7 @@ img { -webkit-user-drag: none; user-select: none; }
   <section id="book">
     <div class="book">
       <div>
-        <div class="head" style="margin-bottom:0"><h2>Или прямо в Telegram</h2><p>Так будет выглядеть ваш Telegram-бот. Попробуйте записаться — под окном появится уведомление, которое придёт вам.</p></div>
+        <div class="head" style="margin-bottom:0"><h2>Или прямо в сообщениях группы ВК</h2><p>Так будет выглядеть бот в вашей группе ВКонтакте: клиент нажимает «Начать» и записывается кнопками. Попробуйте — под окном появится уведомление, которое придёт вам.</p></div>
         <ul><li>Клиент сам выбирает услугу и свободное время</li><li>Вам — уведомление с именем и телефоном</li><li>Клиенту — напоминание перед визитом</li></ul>
       </div>
       <div id="bot"></div>
@@ -225,10 +225,11 @@ img { -webkit-user-drag: none; user-select: none; }
 </div>
 <footer><div class="wrap"><span>Демо-макет · сделано «Сайт и Бот» для «Best Barber»</span><span class="legal">© Сайт и Бот. Демо-версия: копирование и использование без договора запрещено.</span></div></footer>
 
-<script src="/assets/bot-demo.js?v=6"></script>
+<script src="/assets/bot-demo.js?v=7"></script>
 <script>
-BotDemo.mount(document.getElementById("bot"), {"name": "Best Barber", "avatar": "B", "color": "#c8322b", "theme": "paper", "vars": {"acc": "#c8322b", "out-ink": "#ffffff", "paper": "#f4f2ee", "ink": "#141414", "r": "12px"}, "welcome": "Здравствуйте! Это бот «Best Barber» 👋\nЗапишитесь за минуту: выберите услугу и удобное время.", "contacts": "<b>Best Barber<\/b>\nул. Александрова, 20а/2\nПн–Пт 9–19, Сб–Вс 9–17\n+7 995 025-03-89", "services": [{"name": "Мужская стрижка", "price": 600, "min": 40}, {"name": "Фейд", "price": 800, "min": 50}, {"name": "Стрижка бороды", "price": 400, "min": 25}, {"name": "Стрижка + борода", "price": 950, "min": 60}, {"name": "Детская стрижка", "price": 500, "min": 30}, {"name": "Под машинку", "price": 350, "min": 20}], "times": ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00"], "sampleName": "Алексей", "sub": "демо-бот · Сайт и Бот"});
-/* Форма записи. Порядок услуг и мастеров тот же, что в config.json бота: ссылка t.me/<бот>?start=b_<услуга>_<мастер>_<ГГММДДЧЧММ> */
+BotDemo.mount(document.getElementById("bot"), {"name": "Best Barber", "avatar": "B", "color": "#c8322b", "theme": "paper", "vars": {"acc": "#c8322b", "out-ink": "#ffffff", "paper": "#f4f2ee", "ink": "#141414", "r": "12px"}, "welcome": "Здравствуйте! Это бот «Best Barber» 👋\nЗапишитесь за минуту: выберите услугу и удобное время.", "contacts": "<b>Best Barber<\/b>\nул. Александрова, 20а/2\nПн–Пт 9–19, Сб–Вс 9–17\n+7 995 025-03-89", "services": [{"name": "Мужская стрижка", "price": 600, "min": 40}, {"name": "Фейд", "price": 800, "min": 50}, {"name": "Стрижка бороды", "price": 400, "min": 25}, {"name": "Стрижка + борода", "price": 950, "min": 60}, {"name": "Детская стрижка", "price": 500, "min": 30}, {"name": "Под машинку", "price": 350, "min": 20}], "times": ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00"], "sampleName": "Алексей", "sub": "бот в группе ВК · демо", "where": "в ВКонтакте"});
+/* Форма записи. Порядок услуг и мастеров тот же, что в config.json бота.
+   ВК: vk.me/<группа>?ref=b_<услуга>_<мастер>_<ГГММДДЧЧММ>; Telegram: t.me/<бот>?start=<то же>. Нет ни того ни другого — демо-режим. */
 (function (F) {
   var $ = function (id) { return document.getElementById(id); };
   var WD = ["вс", "пн", "вт", "ср", "чт", "пт", "сб"], MON = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"];
@@ -280,7 +281,7 @@ BotDemo.mount(document.getElementById("bot"), {"name": "Best Barber", "avatar": 
       $("f-sum").append(s.n + " — " + rub(s.p) + ", " + when);
       var sm = document.createElement("small"); sm.textContent = "Бот проверит, что время свободно, и попросит имя и телефон."; $("f-sum").append(sm);
       go.setAttribute("aria-disabled", "false");
-      go.href = F.bot ? "https://t.me/" + F.bot + "?start=" + code : "#form";
+      go.href = F.vk ? "https://vk.me/" + F.vk + "?ref=" + code : F.bot ? "https://t.me/" + F.bot + "?start=" + code : "#form";
       go.dataset.text = "Вы выбрали на сайте: " + s.n + " — " + rub(s.p) + "\n" + p2(t.getDate()) + "." + p2(t.getMonth() + 1) + " (" + WD[t.getDay()] + ") в " + p2(t.getHours()) + ":" + p2(t.getMinutes()) +
         (mi ? ", " + F.staffLabel.toLowerCase() + " " + F.staff[mi - 1] : "") + ".\n\nВремя свободно ✅ Осталось два шага.\nКак к вам обращаться?";
     } else {
@@ -288,10 +289,10 @@ BotDemo.mount(document.getElementById("bot"), {"name": "Best Barber", "avatar": 
     }
   }
   $("f-go").addEventListener("click", function (e) {
-    if (F.bot) return;            /* настоящий сайт: открывается бот в Telegram */
+    if (F.vk || F.bot) return;    /* настоящий сайт: открывается бот в ВК или Telegram */
     e.preventDefault();           /* демо: показываем, что ответит бот */
     var r = $("f-reply"); r.innerHTML = "";
-    var h = document.createElement("small"); h.textContent = "Так ответит ваш бот в Telegram:";
+    var h = document.createElement("small"); h.textContent = "Так ответит бот в сообщениях вашей группы ВК:";
     var b = document.createElement("div"); b.className = "bubble"; b.textContent = this.dataset.text;
     var n = document.createElement("small"); n.textContent = "В рабочей версии кнопка открывает вашего бота сразу с этой записью — клиенту остаётся написать имя и телефон.";
     r.append(h, b, n); r.classList.add("on");
@@ -299,7 +300,7 @@ BotDemo.mount(document.getElementById("bot"), {"name": "Best Barber", "avatar": 
   $("f-svc").onchange = function () { $("f-reply").classList.remove("on"); render(); };
   $("f-staff").onchange = render;
   render();
-})({"services": [{"n": "Мужская стрижка", "p": 600, "m": 40}, {"n": "Фейд", "p": 800, "m": 50}, {"n": "Стрижка бороды", "p": 400, "m": 25}, {"n": "Стрижка + борода", "p": 950, "m": 60}, {"n": "Детская стрижка", "p": 500, "m": 30}, {"n": "Под машинку", "p": 350, "m": 20}], "staff": [], "staffLabel": "Мастер", "hours": [9, 19], "step": 30, "days": 7, "bot": ""});
+})({"services": [{"n": "Мужская стрижка", "p": 600, "m": 40}, {"n": "Фейд", "p": 800, "m": 50}, {"n": "Стрижка бороды", "p": 400, "m": 25}, {"n": "Стрижка + борода", "p": 950, "m": 60}, {"n": "Детская стрижка", "p": 500, "m": 30}, {"n": "Под машинку", "p": 350, "m": 20}], "staff": [], "staffLabel": "Мастер", "hours": [9, 19], "step": 30, "days": 7, "bot": "", "vk": ""});
 document.addEventListener("contextmenu", function (e) { if (e.target.tagName === "IMG") e.preventDefault(); });
 document.addEventListener("dragstart", function (e) { if (e.target.tagName === "IMG") e.preventDefault(); });
 </script>

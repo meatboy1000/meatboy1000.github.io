@@ -96,7 +96,7 @@ section { padding-block: 96px 0; }
 .book ul { margin: 18px 0 0; padding-left: 20px; color: var(--soft); display: grid; gap: 8px; }
 @media (max-width: 880px) { .book { grid-template-columns: 1fr; } }
 
-/* --- форма записи на сайте: выбор → бот в Telegram с готовой заявкой --- */
+/* --- форма записи на сайте: выбор → бот в группе ВК (или Telegram) с готовой заявкой --- */
 .form { background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: clamp(20px, 4vw, 40px); display: grid; gap: 26px; max-width: 860px; }
 .form .q { display: grid; gap: 12px; }
 .form [hidden] { display: none !important; }
@@ -178,7 +178,7 @@ img { -webkit-user-drag: none; user-select: none; }
   </section>
 
   <section id="form">
-    <div class="head"><h2>Записаться онлайн</h2><p>Выберите услугу и время — подтверждение придёт в Telegram, без звонков.</p></div>
+    <div class="head"><h2>Записаться онлайн</h2><p>Выберите услугу и время — подтвердите в сообщениях нашей группы ВКонтакте, без звонков.</p></div>
     <div class="form" id="bookform">
       <label class="q"><span>Услуга</span><select id="f-svc"></select></label>
       <label class="q" id="f-staff-q" hidden><span id="f-staff-lbl">Мастер</span><select id="f-staff"></select></label>
@@ -186,7 +186,7 @@ img { -webkit-user-drag: none; user-select: none; }
       <div class="q"><span>Время</span><div class="chips" id="f-times"></div></div>
       <div class="sum">
         <p id="f-sum">Выберите день и время<small>Бот проверит, что время свободно, и попросит имя и телефон.</small></p>
-        <a class="btn" id="f-go" href="#" aria-disabled="true" target="_blank" rel="noopener">Подтвердить в Telegram →</a>
+        <a class="btn" id="f-go" href="#" aria-disabled="true" target="_blank" rel="noopener">Подтвердить во ВКонтакте →</a>
       </div>
       <div class="reply" id="f-reply" aria-live="polite"></div>
     </div>
@@ -201,7 +201,7 @@ img { -webkit-user-drag: none; user-select: none; }
   <section id="book">
     <div class="book">
       <div>
-        <div class="head" style="margin-bottom:0"><h2>Или прямо в Telegram</h2><p>Так будет выглядеть ваш Telegram-бот. Попробуйте записаться — под окном появится уведомление, которое придёт вам.</p></div>
+        <div class="head" style="margin-bottom:0"><h2>Или прямо в сообщениях группы ВК</h2><p>Так будет выглядеть бот в вашей группе ВКонтакте: клиент нажимает «Начать» и записывается кнопками. Попробуйте — под окном появится уведомление, которое придёт вам.</p></div>
         <ul><li>Клиент сам выбирает услугу и свободное время</li><li>Вам — уведомление с именем и телефоном</li><li>Клиенту — напоминание перед визитом</li></ul>
       </div>
       <div id="bot"></div>
@@ -225,10 +225,11 @@ img { -webkit-user-drag: none; user-select: none; }
 </div>
 <footer><div class="wrap"><span>Демо-макет · сделано «Сайт и Бот» для «Лофт СЮДА»</span><span class="legal">© Сайт и Бот. Демо-версия: копирование и использование без договора запрещено.</span></div></footer>
 
-<script src="/assets/bot-demo.js?v=6"></script>
+<script src="/assets/bot-demo.js?v=7"></script>
 <script>
-BotDemo.mount(document.getElementById("bot"), {"name": "Лофт СЮДА", "avatar": "Л", "color": "#03594d", "theme": "paper", "vars": {"acc": "#03594d", "out-ink": "#ffffff", "paper": "#fdf2f6", "ink": "#03594d", "r": "12px"}, "welcome": "Здравствуйте! Это бот «Лофт СЮДА» 👋\nЗапишитесь за минуту: выберите услугу и удобное время.", "contacts": "<b>Лофт СЮДА<\/b>\nул. Силикатная, 37, 2 этаж\nЕжедневно 10:00–22:00\n+7 906 410-47-70", "services": [{"name": "Будни, 2 часа", "price": 4000, "min": 120}, {"name": "Будни, 3 часа", "price": 5000, "min": 180}, {"name": "Будни, 5 часов", "price": 7500, "min": 300}, {"name": "Выходные, 3 часа", "price": 7000, "min": 180}, {"name": "Выходные, 5 часов", "price": 10000, "min": 300}, {"name": "Безлимит 12:00–22:00", "price": 12000, "min": 600}], "times": ["10:00", "13:00", "16:00", "19:00"], "sampleName": "Алексей", "sub": "демо-бот · Сайт и Бот", "extra": {"question": "Сколько будет детей?", "label": "Детей", "options": ["до 5", "6–10", "11–15", "16–25"]}});
-/* Форма записи. Порядок услуг и мастеров тот же, что в config.json бота: ссылка t.me/<бот>?start=b_<услуга>_<мастер>_<ГГММДДЧЧММ> */
+BotDemo.mount(document.getElementById("bot"), {"name": "Лофт СЮДА", "avatar": "Л", "color": "#03594d", "theme": "paper", "vars": {"acc": "#03594d", "out-ink": "#ffffff", "paper": "#fdf2f6", "ink": "#03594d", "r": "12px"}, "welcome": "Здравствуйте! Это бот «Лофт СЮДА» 👋\nЗапишитесь за минуту: выберите услугу и удобное время.", "contacts": "<b>Лофт СЮДА<\/b>\nул. Силикатная, 37, 2 этаж\nЕжедневно 10:00–22:00\n+7 906 410-47-70", "services": [{"name": "Будни, 2 часа", "price": 4000, "min": 120}, {"name": "Будни, 3 часа", "price": 5000, "min": 180}, {"name": "Будни, 5 часов", "price": 7500, "min": 300}, {"name": "Выходные, 3 часа", "price": 7000, "min": 180}, {"name": "Выходные, 5 часов", "price": 10000, "min": 300}, {"name": "Безлимит 12:00–22:00", "price": 12000, "min": 600}], "times": ["10:00", "13:00", "16:00", "19:00"], "sampleName": "Алексей", "sub": "бот в группе ВК · демо", "where": "в ВКонтакте", "extra": {"question": "Сколько будет детей?", "label": "Детей", "options": ["до 5", "6–10", "11–15", "16–25"]}});
+/* Форма записи. Порядок услуг и мастеров тот же, что в config.json бота.
+   ВК: vk.me/<группа>?ref=b_<услуга>_<мастер>_<ГГММДДЧЧММ>; Telegram: t.me/<бот>?start=<то же>. Нет ни того ни другого — демо-режим. */
 (function (F) {
   var $ = function (id) { return document.getElementById(id); };
   var WD = ["вс", "пн", "вт", "ср", "чт", "пт", "сб"], MON = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"];
@@ -280,7 +281,7 @@ BotDemo.mount(document.getElementById("bot"), {"name": "Лофт СЮДА", "ava
       $("f-sum").append(s.n + " — " + rub(s.p) + ", " + when);
       var sm = document.createElement("small"); sm.textContent = "Бот проверит, что время свободно, и попросит имя и телефон."; $("f-sum").append(sm);
       go.setAttribute("aria-disabled", "false");
-      go.href = F.bot ? "https://t.me/" + F.bot + "?start=" + code : "#form";
+      go.href = F.vk ? "https://vk.me/" + F.vk + "?ref=" + code : F.bot ? "https://t.me/" + F.bot + "?start=" + code : "#form";
       go.dataset.text = "Вы выбрали на сайте: " + s.n + " — " + rub(s.p) + "\n" + p2(t.getDate()) + "." + p2(t.getMonth() + 1) + " (" + WD[t.getDay()] + ") в " + p2(t.getHours()) + ":" + p2(t.getMinutes()) +
         (mi ? ", " + F.staffLabel.toLowerCase() + " " + F.staff[mi - 1] : "") + ".\n\nВремя свободно ✅ Осталось два шага.\nКак к вам обращаться?";
     } else {
@@ -288,10 +289,10 @@ BotDemo.mount(document.getElementById("bot"), {"name": "Лофт СЮДА", "ava
     }
   }
   $("f-go").addEventListener("click", function (e) {
-    if (F.bot) return;            /* настоящий сайт: открывается бот в Telegram */
+    if (F.vk || F.bot) return;    /* настоящий сайт: открывается бот в ВК или Telegram */
     e.preventDefault();           /* демо: показываем, что ответит бот */
     var r = $("f-reply"); r.innerHTML = "";
-    var h = document.createElement("small"); h.textContent = "Так ответит ваш бот в Telegram:";
+    var h = document.createElement("small"); h.textContent = "Так ответит бот в сообщениях вашей группы ВК:";
     var b = document.createElement("div"); b.className = "bubble"; b.textContent = this.dataset.text;
     var n = document.createElement("small"); n.textContent = "В рабочей версии кнопка открывает вашего бота сразу с этой записью — клиенту остаётся написать имя и телефон.";
     r.append(h, b, n); r.classList.add("on");
@@ -299,7 +300,7 @@ BotDemo.mount(document.getElementById("bot"), {"name": "Лофт СЮДА", "ava
   $("f-svc").onchange = function () { $("f-reply").classList.remove("on"); render(); };
   $("f-staff").onchange = render;
   render();
-})({"services": [{"n": "Будни, 2 часа", "p": 4000, "m": 120}, {"n": "Будни, 3 часа", "p": 5000, "m": 180}, {"n": "Будни, 5 часов", "p": 7500, "m": 300}, {"n": "Выходные, 3 часа", "p": 7000, "m": 180}, {"n": "Выходные, 5 часов", "p": 10000, "m": 300}, {"n": "Безлимит 12:00–22:00", "p": 12000, "m": 600}, {"n": "Оформление фотозоны", "p": 3000, "m": 60}], "staff": [], "staffLabel": "Мастер", "hours": [10, 22], "step": 30, "days": 7, "bot": ""});
+})({"services": [{"n": "Будни, 2 часа", "p": 4000, "m": 120}, {"n": "Будни, 3 часа", "p": 5000, "m": 180}, {"n": "Будни, 5 часов", "p": 7500, "m": 300}, {"n": "Выходные, 3 часа", "p": 7000, "m": 180}, {"n": "Выходные, 5 часов", "p": 10000, "m": 300}, {"n": "Безлимит 12:00–22:00", "p": 12000, "m": 600}, {"n": "Оформление фотозоны", "p": 3000, "m": 60}], "staff": [], "staffLabel": "Мастер", "hours": [10, 22], "step": 30, "days": 7, "bot": "", "vk": ""});
 document.addEventListener("contextmenu", function (e) { if (e.target.tagName === "IMG") e.preventDefault(); });
 document.addEventListener("dragstart", function (e) { if (e.target.tagName === "IMG") e.preventDefault(); });
 </script>

@@ -1,4 +1,4 @@
-/* Живое демо Telegram-бота записи. Без зависимостей.
+/* Живое демо бота записи (ВКонтакте / Telegram). Без зависимостей.
    BotDemo.mount(element, config) — см. примеры в demo-страницах. */
 (function () {
   const CSS = `
@@ -79,7 +79,7 @@
           <div class="bd-log" aria-live="polite"></div>
           <form class="bd-input"><input aria-label="Сообщение боту" placeholder="Сообщение" disabled><button class="bd-send" aria-label="Отправить" disabled>➤</button></form>
         </div></div>
-        <div class="bd-owner"><div class="lbl">Что получает владелец</div><div class="bd-notes"><div class="empty">Запишитесь в боте — здесь появится уведомление, которое придёт владельцу в Telegram.</div></div></div>
+        <div class="bd-owner"><div class="lbl">Что получает владелец</div><div class="bd-notes"><div class="empty">Запишитесь в боте — здесь появится уведомление, которое придёт владельцу ${esc(cfg.where || "в ВКонтакте")}.</div></div></div>
         <button class="bd-reset" type="button">↺ Начать заново</button>
       </div>`;
     const log = root.querySelector(".bd-log");
@@ -190,7 +190,7 @@
 
     function start() {
       timers.forEach(clearTimeout); timers = []; log.innerHTML = ""; waitText = null; input.disabled = sendBtn.disabled = true;
-      notes.innerHTML = '<div class="empty">Запишитесь в боте — здесь появится уведомление, которое придёт владельцу в Telegram.</div>';
+      notes.innerHTML = '<div class="empty">Запишитесь в боте — здесь появится уведомление, которое придёт владельцу ' + esc(cfg.where || "в ВКонтакте") + '.</div>';
       msg("/start", true); menu();
     }
     root.querySelector(".bd-reset").onclick = start;
