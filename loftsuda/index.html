@@ -25,6 +25,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@800&family=Onest:wght@500;700&display=swap">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "EntertainmentBusiness", "name": "Лофт СЮДА", "url": "https://meatboy1000.github.io/loftsuda/", "address": {"@type": "PostalAddress", "streetAddress": "ул. Силикатная, 37, 2 этаж", "addressLocality": "Волгоград", "addressCountry": "RU"}, "openingHours": ["Mo-Su 10:00-22:00"], "priceRange": "от 3 000 ₽", "currenciesAccepted": "RUB", "telephone": "+79064104770", "sameAs": ["https://vk.com/loftsuda"], "image": "https://meatboy1000.github.io/loftsuda/img/kino.jpg"}</script>
 <style>
 /* Шаблон «новый клиент»: один экран — одна главная вещь. Цвета и шрифты приходят из пресета ниши. */
 :root {
@@ -37,7 +38,7 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; background: var(--bg); }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 400 18px/1.55 var(--body); }
-img { max-width: 100%; display: block; }
+img { max-width: 100%; height: auto; display: block; }
 a { color: inherit; }
 :focus-visible { outline: 3px solid var(--acc); outline-offset: 3px; }
 h1, h2, h3, p { margin: 0; }
@@ -83,6 +84,72 @@ section { padding-block: 96px 0; }
 .row .d { grid-column: 1 / -1; color: var(--soft); font-size: .95rem; }
 .est { color: var(--soft); font-size: .9rem; margin-top: 16px; }
 @media (max-width: 760px) { .prices { grid-template-columns: 1fr; } }
+
+/* --- калькулятор: плитки услуг + итог. Плитка = <label> с чекбоксом (комплекс) или радио (один пакет) --- */
+.calc { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 340px); gap: 28px; align-items: start; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
+.tile { position: relative; display: grid; grid-template-columns: 1fr auto; gap: 4px 14px; background: var(--card); border: 1.5px solid var(--line); border-radius: 16px; padding: 16px 16px 16px 48px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+.tile:hover { border-color: color-mix(in srgb, var(--ink) 40%, transparent); }
+.tile input { position: absolute; left: 16px; top: 18px; width: 20px; height: 20px; margin: 0; accent-color: var(--acc); cursor: pointer; }
+.tile b { font-weight: 600; line-height: 1.3; }
+.tile .rub { font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.tile .d { grid-column: 1 / -1; color: var(--soft); font-size: .9rem; }
+.tile .tag { grid-column: 1 / -1; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: var(--soft); }
+.tile:has(input:checked) { border-color: var(--acc); box-shadow: 0 0 0 1px var(--acc) inset; }
+.tile:has(input:focus-visible) { outline: 3px solid var(--acc); outline-offset: 2px; }
+.total { position: sticky; top: 16px; background: var(--ink); color: var(--bg); border-radius: 20px; padding: 22px; display: grid; gap: 10px; }
+.total .ln { display: flex; justify-content: space-between; gap: 12px; font-size: .95rem; opacity: .85; font-variant-numeric: tabular-nums; }
+.total .ln[hidden] { display: none; }
+.total .ln.save { opacity: 1; font-weight: 600; }
+.total .big { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-top: 1px solid color-mix(in srgb, var(--bg) 22%, transparent); padding-top: 12px; margin-top: 2px; }
+.total .big b { font: 700 clamp(1.7rem, 3.4vw, 2.2rem)/1 var(--display); font-variant-numeric: tabular-nums; }
+.total .hint { font-size: .85rem; opacity: .7; }
+.total .btn { justify-content: center; margin-top: 6px; }
+.total .btn[aria-disabled="true"] { opacity: .45; pointer-events: none; }
+@media (max-width: 860px) { .calc { grid-template-columns: 1fr; } .total { position: static; } }
+
+/* --- карточки мастеров --- */
+.team { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+.person { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 14px 14px 18px; display: grid; gap: 10px; align-content: start; }
+.person .ph { aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: color-mix(in srgb, var(--acc) 14%, var(--bg)); display: grid; place-items: center; }
+.person .ph img { width: 100%; height: 100%; object-fit: cover; }
+.person .ph span { font: 700 3.4rem/1 var(--display); color: var(--acc); }
+.person h3 { font: 700 1.25rem/1.2 var(--display); }
+.person .role { color: var(--soft); font-size: .95rem; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tags span { font-size: .8rem; font-weight: 600; border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; }
+.person .btn { justify-content: center; font-size: .98rem; padding: 13px 18px; margin-top: 4px; }
+
+/* --- отзывы с карт: только официальный виджет, ничего своего --- */
+.reviews { display: grid; gap: 18px; justify-items: start; }
+.reviews .frame { width: 100%; max-width: 760px; height: 560px; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; background: var(--card); }
+.reviews iframe { display: block; width: 100%; height: 100%; border: 0; }
+.slot { width: 100%; max-width: 760px; border: 2px dashed var(--line); border-radius: 20px; padding: 28px; display: grid; gap: 8px; color: var(--soft); }
+.slot b { color: var(--ink); font-size: 1.1rem; }
+.btn.ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
+
+/* --- как нас найти --- */
+.find { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 36px; align-items: center; }
+.find .pic { aspect-ratio: 3 / 2; border-radius: 22px; overflow: hidden; background: var(--card); border: 1px solid var(--line); }
+.find .pic img { width: 100%; height: 100%; object-fit: cover; }
+.find .pic.empty { display: grid; place-items: center; text-align: center; padding: 24px; color: var(--soft); background: repeating-linear-gradient(135deg, var(--card) 0 18px, color-mix(in srgb, var(--ink) 4%, var(--card)) 18px 36px); }
+.find .pic.empty svg { width: 44px; height: 44px; color: var(--acc); margin: 0 auto 10px; display: block; }
+.find .info { display: grid; gap: 22px; }
+.find .acts { display: flex; flex-wrap: wrap; gap: 10px; }
+@media (max-width: 860px) { .find { grid-template-columns: 1fr; } }
+
+/* --- мобильная панель снизу: ВК / звонок / маршрут (только < 768px) --- */
+.dock { display: none; }
+@media (max-width: 767.98px) {
+  .dock { display: grid; grid-auto-flow: column; grid-template-columns: 1.35fr; grid-auto-columns: 1fr; gap: 8px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 100;
+    padding: 10px max(12px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px));
+    background: color-mix(in srgb, var(--bg) 92%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-top: 1px solid var(--line); }
+  .dock a { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 50px; padding: 6px 8px; border-radius: 12px; text-decoration: none; text-align: center;
+    font: 600 .86rem/1.15 var(--body); color: var(--ink); background: var(--card); border: 1px solid var(--line); min-width: 0; }
+  .dock a svg { width: 18px; height: 18px; flex: none; }
+  .dock a.main { background: var(--acc); color: var(--acc-ink); border-color: var(--acc); }
+  body { padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)); }
+}
 
 .gallery { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 14px; }
 .gallery img { width: 100%; height: 300px; object-fit: cover; border-radius: 18px; }
@@ -148,7 +215,7 @@ img { -webkit-user-drag: none; user-select: none; }
 <div class="wrap">
   <header class="top">
     <div class="logo"><img class="brand" src="img/logo.jpg" alt="">Лофт СЮДА</div>
-    <span class="phone">+7 906 410-47-70</span>
+    <a class="phone" href="tel:+79064104770" data-goal="call">+7 906 410-47-70</a>
   </header>
 
   <div class="hero">
@@ -156,9 +223,9 @@ img { -webkit-user-drag: none; user-select: none; }
       <div class="eyebrow">Семейный лофт · Волгоград</div>
       <h1>Праздники, на которые хочется вернуться</h1>
       <p>Батут и горка для детей, уютная банкетная зона для взрослых и фотозоны. Весь лофт только для вашей семьи — до 16 взрослых и 14 детей. Можно со своей едой или праздник под ключ.</p>
-      <div><a class="btn" href="#form">Записаться онлайн →</a></div>
+      <div class="acts" style="display:flex;flex-wrap:wrap;gap:10px"><a class="btn" href="#form">Записаться онлайн →</a><a class="btn ghost" href="#prices">Рассчитать стоимость</a></div>
     </div>
-    <div class="photo"><img src="img/kino.jpg" alt="" fetchpriority="high"></div>
+    <div class="photo"><img src="img/kino.jpg" alt="Лофт СЮДА" width="1200" height="1500" fetchpriority="high"></div>
   </div>
 </div>
 
@@ -172,8 +239,19 @@ img { -webkit-user-drag: none; user-select: none; }
 
 <div class="wrap">
   <section id="prices">
-    <div class="head"><h2>Услуги и цены</h2></div>
-    <div class="prices"><div class="row"><b>Будни, 2 часа</b><span class="rub">4 000 ₽</span><span class="d">пн–чт, весь лофт для вашей семьи · 120 мин</span></div><div class="row"><b>Будни, 3 часа</b><span class="rub">5 000 ₽</span><span class="d">пн–чт · 180 мин</span></div><div class="row"><b>Будни, 5 часов</b><span class="rub">7 500 ₽</span><span class="d">пн–чт · 300 мин</span></div><div class="row"><b>Выходные, 3 часа</b><span class="rub">7 000 ₽</span><span class="d">пт–вс и праздники · 180 мин</span></div><div class="row"><b>Выходные, 5 часов</b><span class="rub">10 000 ₽</span><span class="d">пт–вс и праздники · 300 мин</span></div><div class="row"><b>Безлимит 12:00–22:00</b><span class="rub">12 000 ₽</span><span class="d">весь день ваш · 600 мин</span></div><div class="row"><b>Оформление фотозоны</b><span class="rub">3 000 ₽</span><span class="d">от 3 000 ₽, тематика на выбор</span></div></div>
+    <div class="head"><h2>Услуги и цены</h2><p>Выберите вариант и отметьте дополнительные услуги — итог посчитается сразу.</p></div>
+    <div class="calc">
+      <fieldset class="tiles" id="c-tiles" style="border:0;margin:0;padding:0;min-width:0"><legend class="sr" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Услуги</legend><label class="tile"><input type="radio" name="c-base" value="1"><b>Будни, 2 часа</b><span class="rub">4 000 ₽</span><span class="d">пн–чт, весь лофт для вашей семьи · 120 мин</span></label><label class="tile"><input type="radio" name="c-base" value="2"><b>Будни, 3 часа</b><span class="rub">5 000 ₽</span><span class="d">пн–чт · 180 мин</span></label><label class="tile"><input type="radio" name="c-base" value="3"><b>Будни, 5 часов</b><span class="rub">7 500 ₽</span><span class="d">пн–чт · 300 мин</span></label><label class="tile"><input type="radio" name="c-base" value="4"><b>Выходные, 3 часа</b><span class="rub">7 000 ₽</span><span class="d">пт–вс и праздники · 180 мин</span></label><label class="tile"><input type="radio" name="c-base" value="5"><b>Выходные, 5 часов</b><span class="rub">10 000 ₽</span><span class="d">пт–вс и праздники · 300 мин</span></label><label class="tile"><input type="radio" name="c-base" value="6"><b>Безлимит 12:00–22:00</b><span class="rub">12 000 ₽</span><span class="d">весь день ваш · 600 мин</span></label><label class="tile"><input type="checkbox" name="c-add" value="7"><b>Оформление фотозоны</b><span class="rub">3 000 ₽</span><span class="d">от 3 000 ₽, тематика на выбор</span><span class="tag">дополнительно</span></label></fieldset>
+      <aside class="total" aria-live="polite">
+        <div class="ln"><span>Выбрано</span><span id="c-count">ничего</span></div>
+        <div class="ln" id="c-time-ln" hidden><span>По времени</span><span id="c-time"></span></div>
+        <div class="ln" id="c-full-ln" hidden><span>По прайсу</span><span id="c-full"></span></div>
+        <div class="ln save" id="c-save-ln" hidden><span id="c-save-lbl">Скидка за комплекс</span><span id="c-save"></span></div>
+        <div class="big"><span>Итого</span><b id="c-sum">0 ₽</b></div>
+        <p class="hint" id="c-hint">Итог — по прайсу, без скрытых доплат.</p>
+        <a class="btn" id="c-go" href="#form" aria-disabled="true" data-goal="calc_to_form">Записаться с этим расчётом →</a>
+      </aside>
+    </div>
     
   </section>
 
@@ -186,14 +264,14 @@ img { -webkit-user-drag: none; user-select: none; }
       <div class="q"><span>Время</span><div class="chips" id="f-times"></div></div>
       <div class="sum">
         <p id="f-sum">Выберите день и время<small>Бот проверит, что время свободно, и попросит имя и телефон.</small></p>
-        <a class="btn" id="f-go" href="#" aria-disabled="true" target="_blank" rel="noopener">Подтвердить во ВКонтакте →</a>
+        <a class="btn" id="f-go" href="#" aria-disabled="true" target="_blank" rel="noopener" data-goal="vk_booking">Подтвердить во ВКонтакте →</a>
       </div>
       <div class="reply" id="f-reply" aria-live="polite"></div>
     </div>
   </section>
 
   <section>
-    <div class="gallery"><img src="img/novyj-god.jpg" alt="" loading="lazy"><img src="img/rusalochka.jpg" alt="" loading="lazy"><img src="img/14-let.jpg" alt="" loading="lazy"></div>
+    <div class="gallery"><img src="img/novyj-god.jpg" alt="" width="800" height="600" loading="lazy"><img src="img/rusalochka.jpg" alt="" width="800" height="600" loading="lazy"><img src="img/14-let.jpg" alt="" width="800" height="600" loading="lazy"></div>
   </section>
 
   
@@ -208,11 +286,26 @@ img { -webkit-user-drag: none; user-select: none; }
     </div>
   </section>
 
+  <section id="reviews">
+    <div class="head"><h2>Отзывы на картах</h2><p>Настоящие отзывы клиентов — прямо с карт, без правок с нашей стороны.</p></div>
+    <div class="reviews">
+      <div class="slot"><b>Здесь встанет виджет отзывов с Яндекс Карт</b><span>Официальный блок карт: настоящие отзывы ваших клиентов и рейтинг, обновляются сами. На сайте мы ничего не пишем от себя.</span></div>
+      <a class="btn ghost" href="https://yandex.ru/maps/?text=%D0%9B%D0%BE%D1%84%D1%82%20%D0%A1%D0%AE%D0%94%D0%90%2C%20%D0%92%D0%BE%D0%BB%D0%B3%D0%BE%D0%B3%D1%80%D0%B0%D0%B4%2C%20%D1%83%D0%BB.%20%D0%A1%D0%B8%D0%BB%D0%B8%D0%BA%D0%B0%D1%82%D0%BD%D0%B0%D1%8F%2C%2037%2C%202%20%D1%8D%D1%82%D0%B0%D0%B6" target="_blank" rel="noopener" data-goal="reviews_open">Все отзывы на картах →</a>
+    </div>
+  </section>
+
   <section id="contacts">
-    <div class="contacts">
-      <div><span class="lbl">Адрес</span><span class="val">ул. Силикатная, 37, 2 этаж</span><span>Волгоград</span></div>
-      <div><span class="lbl">Часы</span><span class="val">Ежедневно 10:00–22:00</span></div>
-      <div><span class="lbl">Связь</span><span class="val">+7 906 410-47-70</span><a href="https://vk.com/loftsuda" target="_blank" rel="noopener">ВКонтакте</a></div>
+    <div class="find">
+      <div class="pic empty"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><b style="color:var(--ink)">ул. Силикатная, 37, 2 этаж</b><br>Здесь будет фото входа, чтобы вас было легко найти</div></div>
+      <div class="info">
+        <div class="head" style="margin-bottom:0"><h2>Как нас найти</h2></div>
+        <div class="contacts" style="grid-template-columns:1fr">
+          <div><span class="lbl">Адрес</span><span class="val">ул. Силикатная, 37, 2 этаж</span><span>Волгоград</span></div>
+          <div><span class="lbl">Часы</span><span class="val">Ежедневно 10:00–22:00</span></div>
+          <div><span class="lbl">Связь</span><span class="val"><a class="phone" href="tel:+79064104770" data-goal="call">+7 906 410-47-70</a></span><a href="https://vk.com/loftsuda" target="_blank" rel="noopener">ВКонтакте</a></div>
+        </div>
+        <div class="acts"><a class="btn" href="https://yandex.ru/maps/?text=%D0%92%D0%BE%D0%BB%D0%B3%D0%BE%D0%B3%D1%80%D0%B0%D0%B4%2C%20%D1%83%D0%BB.%20%D0%A1%D0%B8%D0%BB%D0%B8%D0%BA%D0%B0%D1%82%D0%BD%D0%B0%D1%8F%2C%2037%2C%202%20%D1%8D%D1%82%D0%B0%D0%B6" target="_blank" rel="noopener" data-goal="route">Открыть в Яндекс Навигаторе →</a></div>
+      </div>
     </div>
   </section>
 </div>
@@ -225,27 +318,135 @@ img { -webkit-user-drag: none; user-select: none; }
 </div>
 <footer><div class="wrap"><span>Демо-макет · сделано «Сайт и Бот» для «Лофт СЮДА»</span><span class="legal">© Сайт и Бот. Демо-версия: копирование и использование без договора запрещено.</span></div></footer>
 
+<nav class="dock" aria-label="Быстрые действия">
+  <a class="main" href="https://vk.com/loftsuda" target="_blank" rel="noopener" data-goal="vk_click"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></svg>Записаться в ВК</a>
+  <a href="tel:+79064104770" data-goal="call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>Позвонить</a>
+  <a href="https://yandex.ru/maps/?text=%D0%92%D0%BE%D0%BB%D0%B3%D0%BE%D0%B3%D1%80%D0%B0%D0%B4%2C%20%D1%83%D0%BB.%20%D0%A1%D0%B8%D0%BB%D0%B8%D0%BA%D0%B0%D1%82%D0%BD%D0%B0%D1%8F%2C%2037%2C%202%20%D1%8D%D1%82%D0%B0%D0%B6" target="_blank" rel="noopener" data-goal="route"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Маршрут</a>
+</nav>
+
 <script src="/assets/bot-demo.js?v=7"></script>
 <script>
 BotDemo.mount(document.getElementById("bot"), {"name": "Лофт СЮДА", "avatar": "Л", "color": "#03594d", "theme": "paper", "vars": {"acc": "#03594d", "out-ink": "#ffffff", "paper": "#fdf2f6", "ink": "#03594d", "r": "12px"}, "welcome": "Здравствуйте! Это бот «Лофт СЮДА» 👋\nЗапишитесь за минуту: выберите услугу и удобное время.", "contacts": "<b>Лофт СЮДА<\/b>\nул. Силикатная, 37, 2 этаж\nЕжедневно 10:00–22:00\n+7 906 410-47-70", "services": [{"name": "Будни, 2 часа", "price": 4000, "min": 120}, {"name": "Будни, 3 часа", "price": 5000, "min": 180}, {"name": "Будни, 5 часов", "price": 7500, "min": 300}, {"name": "Выходные, 3 часа", "price": 7000, "min": 180}, {"name": "Выходные, 5 часов", "price": 10000, "min": 300}, {"name": "Безлимит 12:00–22:00", "price": 12000, "min": 600}], "times": ["10:00", "13:00", "16:00", "19:00"], "sampleName": "Алексей", "sub": "бот в группе ВК · демо", "where": "в ВКонтакте", "extra": {"question": "Сколько будет детей?", "label": "Детей", "options": ["до 5", "6–10", "11–15", "16–25"]}});
-/* Форма записи. Порядок услуг и мастеров тот же, что в config.json бота.
-   ВК: vk.me/<группа>?ref=b_<услуга>_<мастер>_<ГГММДДЧЧММ>; Telegram: t.me/<бот>?start=<то же>. Нет ни того ни другого — демо-режим. */
+
+/* ---------- Аналитика: все цели идут через trackEvent(). Номер счётчика — client.json "metrika_id" (0 — Метрики нет) ----------
+   Цели: vk_click (панель «Записаться в ВК»), vk_booking (кнопка формы), call, route, calc_to_form, staff_pick, reviews_open.
+   В Метрике: Настройки → Цели → «JavaScript-событие» с этими идентификаторами. */
+var METRIKA_ID = 0;
+if (METRIKA_ID) {
+  (function (m, e, t, r, i, k, a) { m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments); }; m[i].l = 1 * new Date();
+    k = e.createElement(t); a = e.getElementsByTagName(t)[0]; k.async = 1; k.src = r; a.parentNode.insertBefore(k, a); })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+  ym(METRIKA_ID, "init", { clickmap: true, trackLinks: true, accurateTrackBounce: true });
+}
+function trackEvent(eventName, params) {
+  try {
+    if (METRIKA_ID && typeof window.ym === "function") window.ym(METRIKA_ID, "reachGoal", eventName, params || {});
+    (window.dataLayer = window.dataLayer || []).push({ event: eventName });
+  } catch (e) {}
+  if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) console.info("[цель]", eventName, params || "");
+}
+document.addEventListener("click", function (e) {
+  var a = e.target.closest ? e.target.closest("[data-goal]") : null;
+  if (a && a.getAttribute("aria-disabled") !== "true") trackEvent(a.dataset.goal);
+});
+
+/* ---------- Откуда пришёл клиент: utm_* из адреса → sessionStorage; без utm — по сайту, с которого перешли ---------- */
+var SOURCE = (function () {
+  var u = {};
+  try { u = JSON.parse(sessionStorage.getItem("utm") || "{}") || {}; } catch (e) {}
+  try {
+    var q = new URLSearchParams(location.search), got = {};
+    ["utm_source", "utm_medium", "utm_campaign"].forEach(function (k) { var v = q.get(k); if (v) got[k] = v.slice(0, 60); });
+    if (got.utm_source) u = got;
+    else if (!u.utm_source && document.referrer) {
+      var h = new URL(document.referrer).hostname.replace(/^www\./, "");
+      if (h && h !== location.hostname) {
+        var known = [[/2gis/, "2gis"], [/yandex|(^|\.)ya\.ru$/, "yandex"], [/(^|\.)vk\.(com|me|ru)$/, "vk"], [/google/, "google"], [/avito/, "avito"], [/(^|\.)t\.me$|telegram/, "telegram"]];
+        u = { utm_source: h, utm_medium: "referral" };
+        for (var i = 0; i < known.length; i++) if (known[i][0].test(h)) { u.utm_source = known[i][1]; break; }
+      }
+    }
+    if (u.utm_source) sessionStorage.setItem("utm", JSON.stringify(u));
+  } catch (e) {}
+  var slug = String(u.utm_source || "site").toLowerCase().replace(/[^a-z0-9-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 20);
+  return {
+    label: u.utm_source ? [u.utm_source, u.utm_medium, u.utm_campaign].filter(Boolean).join(" / ") : "сайт",
+    slug: slug || "site"   /* уходит боту в ссылке: b_…_<slug> → «Источник: 2gis» в уведомлении владельцу */
+  };
+})();
+
+/* ---------- Калькулятор + форма записи. Порядок услуг и мастеров тот же, что в config.json бота ----------
+   Бот в ВК:     vk.me/<группа>?ref=b_<услуги через ->_<мастер>_<ГГММДДЧЧММ>_<источник>
+   Только чат ВК: vk.me/<группа>?text=<заявка> + копия в буфер (client.json "vk_mode": "text": бота нет, отвечает админ; ВК сам текст не подставляет)
+   Telegram:     t.me/<бот>?start=<то же, что ref>. Нет ни того ни другого — демо-режим (ответ бота на странице). */
 (function (F) {
   var $ = function (id) { return document.getElementById(id); };
   var WD = ["вс", "пн", "вт", "ср", "чт", "пт", "сб"], MON = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"];
-  var st = { day: null, time: null };
+  var st = { day: null, time: null, combo: [] };
   var p2 = function (n) { return (n < 10 ? "0" : "") + n; };
   var rub = function (n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " ₽"; };
-  F.services.forEach(function (s, i) { var o = new Option(s.n + " — " + rub(s.p), i + 1); $("f-svc").add(o); });
+  var plural = function (n, a, b, c) { var m = n % 100, k = n % 10; return m > 10 && m < 20 ? c : k === 1 ? a : k > 1 && k < 5 ? b : c; };
+  var dur = function (m) { var h = Math.floor(m / 60), r = m % 60; return (h ? h + " ч" : "") + (h && r ? " " : "") + (r ? r + " мин" : ""); };
+  var C = F.combo && F.combo.percent ? F.combo : null;
+
+  /* idx — номера услуг с 1. Скидка за комплекс та же, что считает бот: вниз до рубля. */
+  function price(idx) {
+    var full = idx.reduce(function (a, i) { return a + F.services[i - 1].p; }, 0);
+    var pay = C && idx.length >= C.min ? Math.floor(full * (100 - C.percent) / 100) : full;
+    return { full: full, pay: pay };
+  }
+  function mins(idx) { return idx.reduce(function (a, i) { return a + F.services[i - 1].m; }, 0); }
+  function names(idx) { return idx.map(function (i) { return F.services[i - 1].n; }).join(" + "); }
+
+  /* --- калькулятор --- */
+  var tiles = [].slice.call(document.querySelectorAll("#c-tiles input"));
+  function picked() {
+    return tiles.filter(function (t) { return t.checked; })
+      .sort(function (a, b) { return (a.type === "radio" ? 0 : 1) - (b.type === "radio" ? 0 : 1); })   /* основной пакет — первым */
+      .map(function (t) { return +t.value; });
+  }
+  var hint0 = $("c-hint").textContent;
+  function calc() {
+    var idx = picked(), n = idx.length, pr = price(idx), save = pr.full - pr.pay;
+    $("c-count").textContent = n ? n + " " + plural(n, "услуга", "услуги", "услуг") : "ничего";
+    $("c-time-ln").hidden = !n; $("c-time").textContent = "≈ " + dur(mins(idx));
+    $("c-full-ln").hidden = !save; $("c-full").textContent = rub(pr.full);
+    $("c-save-ln").hidden = !save; $("c-save").textContent = "−" + rub(save);
+    $("c-save-lbl").textContent = C ? "Скидка за комплекс " + C.percent + "%" : "Скидка";
+    $("c-sum").textContent = rub(pr.pay);
+    $("c-hint").textContent = C && n && n < C.min ? "Добавьте ещё " + (C.min - n) + " " + plural(C.min - n, "услугу", "услуги", "услуг") + " — и скидка " + C.percent + "% на всё"
+      : save ? "Вы экономите " + rub(save) : hint0;
+    $("c-go").setAttribute("aria-disabled", n ? "false" : "true");
+  }
+  tiles.forEach(function (t) { t.addEventListener("change", calc); });
+  $("c-go").addEventListener("click", function (e) {
+    var idx = picked();
+    if (!idx.length) { e.preventDefault(); return; }
+    useCombo(idx);       /* дальше ссылка #form сама плавно прокрутит к форме */
+  });
+
+  /* --- форма --- */
+  F.services.forEach(function (s, i) { $("f-svc").add(new Option(s.n + " — " + rub(s.p), i + 1)); });
   if (F.staff.length > 1) {
     $("f-staff-q").hidden = false; $("f-staff-lbl").textContent = F.staffLabel;
     $("f-staff").add(new Option("Любой свободный", 0));
     F.staff.forEach(function (m, i) { $("f-staff").add(new Option(m, i + 1)); });
   }
-  function svc() { return F.services[$("f-svc").value - 1]; }
+  function useCombo(idx) {
+    st.combo = idx;
+    var sel = $("f-svc"), opt = sel.querySelector('option[value="c"]');
+    if (idx.length === 1) { if (opt) opt.remove(); sel.value = String(idx[0]); }
+    else {
+      if (!opt) { opt = new Option("", "c"); sel.insertBefore(opt, sel.firstChild); }
+      opt.text = "Ваш расчёт: " + names(idx) + " — " + rub(price(idx).pay);
+      sel.value = "c";
+    }
+    $("f-reply").classList.remove("on");
+    render();
+  }
+  function svcIdx() { var v = $("f-svc").value; return v === "c" ? st.combo : [+v]; }
   function times(d) {
-    var out = [], mins = svc().m, now = new Date(Date.now() + 30 * 60000);
-    for (var t = F.hours[0] * 60; t + mins <= F.hours[1] * 60; t += F.step) {
+    var out = [], m = mins(svcIdx()), now = new Date(Date.now() + 30 * 60000);
+    for (var t = F.hours[0] * 60; t + m <= F.hours[1] * 60; t += F.step) {
       var x = new Date(d.getFullYear(), d.getMonth(), d.getDate(), Math.floor(t / 60), t % 60);
       if (x > now) out.push(x);
     }
@@ -272,35 +473,64 @@ BotDemo.mount(document.getElementById("bot"), {"name": "Лофт СЮДА", "ava
       tms.appendChild(chip(p2(t.getHours()) + ":" + p2(t.getMinutes()), function () { st.time = t; render(); }, st.time && t.getTime() === st.time.getTime()));
     });
     if (!ts.length) tms.innerHTML = '<span class="none">Нет свободного времени — выберите другой день</span>';
-    var go = $("f-go"), s = svc();
-    if (st.time) {
-      var t = st.time, mi = F.staff.length > 1 ? +$("f-staff").value : 0;
-      var code = "b_" + $("f-svc").value + "_" + mi + "_" + String(t.getFullYear()).slice(2) + p2(t.getMonth() + 1) + p2(t.getDate()) + p2(t.getHours()) + p2(t.getMinutes());
-      var when = t.getDate() + " " + MON[t.getMonth()] + " (" + WD[t.getDay()] + ") в " + p2(t.getHours()) + ":" + p2(t.getMinutes());
-      $("f-sum").innerHTML = "";
-      $("f-sum").append(s.n + " — " + rub(s.p) + ", " + when);
-      var sm = document.createElement("small"); sm.textContent = "Бот проверит, что время свободно, и попросит имя и телефон."; $("f-sum").append(sm);
-      go.setAttribute("aria-disabled", "false");
-      go.href = F.vk ? "https://vk.me/" + F.vk + "?ref=" + code : F.bot ? "https://t.me/" + F.bot + "?start=" + code : "#form";
-      go.dataset.text = "Вы выбрали на сайте: " + s.n + " — " + rub(s.p) + "\n" + p2(t.getDate()) + "." + p2(t.getMonth() + 1) + " (" + WD[t.getDay()] + ") в " + p2(t.getHours()) + ":" + p2(t.getMinutes()) +
-        (mi ? ", " + F.staffLabel.toLowerCase() + " " + F.staff[mi - 1] : "") + ".\n\nВремя свободно ✅ Осталось два шага.\nКак к вам обращаться?";
-    } else {
-      go.setAttribute("aria-disabled", "true"); go.href = "#form";
-    }
+    var go = $("f-go"), idx = svcIdx(), pr = price(idx), save = pr.full - pr.pay;
+    if (!st.time) { go.setAttribute("aria-disabled", "true"); go.href = "#form"; return; }
+    var t = st.time, mi = F.staff.length > 1 ? +$("f-staff").value : 0;
+    var hm = p2(t.getHours()) + ":" + p2(t.getMinutes()), dm = p2(t.getDate()) + "." + p2(t.getMonth() + 1) + " (" + WD[t.getDay()] + ")";
+    var code = "b_" + idx.join("-") + "_" + mi + "_" + String(t.getFullYear()).slice(2) + p2(t.getMonth() + 1) + p2(t.getDate()) + p2(t.getHours()) + p2(t.getMinutes()) + "_" + SOURCE.slug;
+    var who = F.staff.length > 1 ? F.staffLabel + ": " + (mi ? F.staff[mi - 1] : "любой свободный") : "";
+    /* готовая заявка — уходит в чат ВК (режим text) и показывается в демо */
+    var msg = ["Здравствуйте! Хочу записаться:", "Услуги: " + names(idx), who, "Когда: " + dm + " в " + hm,
+      "Стоимость: " + rub(pr.pay) + (save ? " (по прайсу " + rub(pr.full) + ", скидка за комплекс " + C.percent + "%)" : ""),
+      "", "(Источник: " + SOURCE.label + ")"].filter(function (l, k) { return l !== "" || k === 5; }).join("\n");
+    $("f-sum").innerHTML = "";
+    $("f-sum").append(names(idx) + " — " + rub(pr.pay) + ", " + t.getDate() + " " + MON[t.getMonth()] + " (" + WD[t.getDay()] + ") в " + hm);
+    var sm = document.createElement("small");
+    sm.textContent = F.vk && F.vkMode === "text" ? "Откроется чат с администратором, а текст заявки скопируется — вставьте его в сообщение и отправьте." : "Бот проверит, что время свободно, и попросит имя и телефон.";
+    $("f-sum").append(sm);
+    go.setAttribute("aria-disabled", "false");
+    go.href = F.vk ? "https://vk.me/" + F.vk + (F.vkMode === "text" ? "?text=" + encodeURIComponent(msg) : "?ref=" + code + "&ref_source=" + SOURCE.slug)
+      : F.bot ? "https://t.me/" + F.bot + "?start=" + code : "#form";
+    go.dataset.msg = msg;
+    go.dataset.text = "Вы выбрали на сайте: " + names(idx) + " — " + rub(pr.pay) + "\n" + dm + " в " + hm +
+      (mi ? ", " + F.staffLabel.toLowerCase() + " " + F.staff[mi - 1] : "") + ".\n\nВремя свободно ✅ Осталось два шага.\nКак к вам обращаться?";
+    go.dataset.admin = "🆕 Новая запись\n" + dm + " в " + hm + " — " + names(idx) + (mi ? ", " + F.staffLabel.toLowerCase() + " " + F.staff[mi - 1] : "") +
+      (idx.length > 1 ? "\nКомплекс: " + rub(pr.pay) + ", " + mins(idx) + " мин" : "") + "\nИсточник: " + SOURCE.slug + "\nАлексей, +79001234567";
   }
   $("f-go").addEventListener("click", function (e) {
-    if (F.vk || F.bot) return;    /* настоящий сайт: открывается бот в ВК или Telegram */
-    e.preventDefault();           /* демо: показываем, что ответит бот */
+    var go = this;
+    if (F.vk && F.vkMode === "text") {   /* ВК не подставляет ?text= в поле (проверено 18.11.2026) — копируем заявку в буфер */
+      try { navigator.clipboard.writeText(go.dataset.msg); } catch (x) {}
+      var r0 = $("f-reply"); r0.innerHTML = "";
+      var s0 = document.createElement("small"); s0.textContent = "Текст заявки скопирован. В открывшемся чате ВК вставьте его (долгое нажатие → «Вставить») и отправьте:";
+      var b0 = document.createElement("div"); b0.className = "bubble"; b0.textContent = go.dataset.msg;
+      r0.append(s0, b0); r0.classList.add("on");
+      return;
+    }
+    if (F.vk || F.bot) return;           /* настоящий сайт: открывается бот в ВК или Telegram */
+    e.preventDefault();                  /* демо: показываем, что ответит бот и что придёт владельцу */
     var r = $("f-reply"); r.innerHTML = "";
-    var h = document.createElement("small"); h.textContent = "Так ответит бот в сообщениях вашей группы ВК:";
-    var b = document.createElement("div"); b.className = "bubble"; b.textContent = this.dataset.text;
-    var n = document.createElement("small"); n.textContent = "В рабочей версии кнопка открывает вашего бота сразу с этой записью — клиенту остаётся написать имя и телефон.";
-    r.append(h, b, n); r.classList.add("on");
+    var add = function (tag, cls, text) { var el = document.createElement(tag); if (cls) el.className = cls; el.textContent = text; r.append(el); };
+    add("small", "", "Так ответит бот в сообщениях вашей группы ВК:");
+    add("div", "bubble", go.dataset.text);
+    add("small", "", "А так придёт уведомление вам — с меткой, откуда пришёл клиент:");
+    add("div", "bubble", go.dataset.admin);
+    add("small", "", "В рабочей версии кнопка открывает вашего бота сразу с этой записью — клиенту остаётся написать имя и телефон.");
+    r.classList.add("on");
   });
   $("f-svc").onchange = function () { $("f-reply").classList.remove("on"); render(); };
   $("f-staff").onchange = render;
+
+  /* --- карточки мастеров: «Записаться к …» выбирает мастера в форме; прокрутку делает ссылка #form --- */
+  document.querySelectorAll("[data-staff]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      if (F.staff.length > 1) { $("f-staff").value = b.dataset.staff; $("f-reply").classList.remove("on"); render(); }
+    });
+  });
+
+  calc();
   render();
-})({"services": [{"n": "Будни, 2 часа", "p": 4000, "m": 120}, {"n": "Будни, 3 часа", "p": 5000, "m": 180}, {"n": "Будни, 5 часов", "p": 7500, "m": 300}, {"n": "Выходные, 3 часа", "p": 7000, "m": 180}, {"n": "Выходные, 5 часов", "p": 10000, "m": 300}, {"n": "Безлимит 12:00–22:00", "p": 12000, "m": 600}, {"n": "Оформление фотозоны", "p": 3000, "m": 60}], "staff": [], "staffLabel": "Мастер", "hours": [10, 22], "step": 30, "days": 7, "bot": "", "vk": ""});
+})({"services": [{"n": "Будни, 2 часа", "p": 4000, "m": 120}, {"n": "Будни, 3 часа", "p": 5000, "m": 180}, {"n": "Будни, 5 часов", "p": 7500, "m": 300}, {"n": "Выходные, 3 часа", "p": 7000, "m": 180}, {"n": "Выходные, 5 часов", "p": 10000, "m": 300}, {"n": "Безлимит 12:00–22:00", "p": 12000, "m": 600}, {"n": "Оформление фотозоны", "p": 3000, "m": 60}], "staff": [], "staffLabel": "Мастер", "hours": [10, 22], "step": 30, "days": 7, "bot": "", "vk": "", "vkMode": "bot", "combo": null});
 document.addEventListener("contextmenu", function (e) { if (e.target.tagName === "IMG") e.preventDefault(); });
 document.addEventListener("dragstart", function (e) { if (e.target.tagName === "IMG") e.preventDefault(); });
 </script>
