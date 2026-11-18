@@ -128,9 +128,16 @@ section { padding-block: 96px 0; }
 footer { background: var(--ink); color: var(--bg); opacity: .9; font-size: .82rem; }
 footer .wrap { border-top: 1px solid color-mix(in srgb, var(--bg) 18%, transparent); padding-block: 18px calc(18px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 
-/* --- защита демо: одна маленькая подпись внизу, фото нельзя перетащить --- */
-body::after { content: "meatboy1000"; position: fixed; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); z-index: 60; pointer-events: none;
-  font: 600 .68rem/1 var(--body); letter-spacing: .04em; color: var(--ink); opacity: .35; }
+/* --- защита демо: водяной знак по всей странице, метка на главном фото, фото нельзя перетащить --- */
+body::after { content: ""; position: fixed; inset: 0; z-index: 60; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='220'%3E%3Ctext x='20' y='130' transform='rotate(-24 170 110)' font-family='Arial,sans-serif' font-size='22' font-weight='700' fill='%23121212' fill-opacity='0.08'%3E%D0%94%D0%95%D0%9C%D0%9E %C2%B7 meatboy1000%3C/text%3E%3C/svg%3E");
+  background-repeat: repeat; }
+.hero .photo { position: relative; }
+.hero .photo::after { content: "ДЕМО · meatboy1000"; position: absolute; left: 14px; bottom: 14px; background: rgba(18,18,18,.78); color: #fff;
+  font: 700 .8rem/1 var(--body); letter-spacing: .08em; padding: 8px 12px; border-radius: 999px; pointer-events: none; }
+.gallery { position: relative; }
+.gallery::after { content: "ДЕМО · meatboy1000"; position: absolute; right: 12px; top: 12px; background: rgba(18,18,18,.78); color: #fff;
+  font: 700 .75rem/1 var(--body); letter-spacing: .12em; padding: 7px 11px; border-radius: 999px; pointer-events: none; }
 img { -webkit-user-drag: none; user-select: none; }
 .legal { opacity: .75; }
 </style>
