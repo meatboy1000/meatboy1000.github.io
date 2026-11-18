@@ -184,6 +184,39 @@
         notes.appendChild(n);
       }, 1100);
       later(() => bot(`⏰ <i>Так выглядит напоминание, которое клиент получит за ${cfg.remind || "2 часа"}:</i>\n\nНапоминаем о записи: ${esc(draft.service.name)}, ${draft.time}. Ждём вас!`, null, 500), 3200);
+      if (cfg.followups !== false) later(afterVisit, 5600);
+    }
+    /* После визита: оценка → ссылка на отзывы в картах (всем, кто оценил) и жалоба владельцу; потом «пора снова к нам». */
+    function note(text) {
+      const e = notes.querySelector(".empty"); if (e) e.remove();
+      const n = document.createElement("div"); n.className = "note"; n.textContent = text; notes.prepend(n);
+    }
+    function afterVisit() {
+      const who = esc(draft.name || cfg.sampleName || "Алексей");
+      bot(`⭐ <i>Через 2 часа после визита бот сам спросит:</i>\n\nЗдравствуйте, ${who}! Как вам визит — ${esc(draft.service.name.toLowerCase())}? Оцените от 1 до 5.`,
+        [[1, 2, 3, 4, 5].map((n) => [n + " ⭐", () => rate(n)])], 600);
+    }
+    function rate(n) {
+      note(`${"⭐".repeat(n)} Оценка ${n}/5\n${draft.service.name}, ${draft.time} — ${draft.name || cfg.sampleName || "Алексей"}`);
+      const maps = `\n\n<u>ссылка на ваши отзывы в Яндекс Картах / 2ГИС</u>`;
+      if (n >= 4) {
+        bot(`Спасибо! Рады, что понравилось 🙌\nЕсли не сложно, напишите пару слов на картах — это очень помогает нам:${maps}`);
+        later(comeBack, 1800);
+      } else {
+        bot("Спасибо за честную оценку. Что нам исправить? Напишите — передадим владельцу лично.");
+        later(() => ask("Что не понравилось", "Пришлось подождать 15 минут", (v) => {
+          note(`💬 Отзыв к оценке ${n}/5\n«${v}»`);
+          bot(`Спасибо, передали владельцу — разберёмся.\nЕсли захотите, отзыв можно оставить и на картах:${maps}`);
+          later(comeBack, 1800);
+        }), 700);
+      }
+    }
+    function comeBack() {
+      const days = cfg.returnDays;
+      if (!days) return later(() => bot("<i>Готово: так бот собирает оценки и отзывы на картах. Нажмите «Заново», чтобы пройти ещё раз.</i>", null, 400), 600);
+      const per = days % 7 === 0 ? (days / 7) + " " + ((days / 7) === 1 ? "неделя" : (days / 7) < 5 ? "недели" : "недель") : days + " дн.";
+      bot(`🔁 <i>А через ${per} бот сам позовёт клиента снова:</i>\n\n${esc(draft.name || cfg.sampleName || "Алексей")}, с прошлого визита прошло ${per} — самое время записаться снова. Подобрать удобное время${draft.staff && draft.staff !== "любой свободный" ? " к " + esc(draft.staff) : ""}?`,
+        [[["📅 Выбрать время", pickDay]], [["Не напоминать", () => bot("Хорошо, больше не будем напоминать 🙂", null, 400)]]], 600);
     }
     function mine() { bot("<b>Ваши записи</b>\n1. " + summary().split("\nИмя")[0], [[["Отменить запись", () => { bot("Запись отменена. Владелец получил уведомление."); const n = document.createElement("div"); n.className = "note"; n.textContent = "❌ Отмена записи\n" + draft.service.name + ", " + draft.time; notes.prepend(n); later(menu, 900); }]]]); }
     function chunk(a, n) { const r = []; for (let i = 0; i < a.length; i += n) r.push(a.slice(i, i + n)); return r; }
