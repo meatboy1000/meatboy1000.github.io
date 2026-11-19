@@ -1,0 +1,976 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TalentPulse AI — скоринг вакансий и гайд интервью</title>
+<meta name="description" content="R&D-прототип AI-инструмента для HR-команд: скоринг соответствия кандидата вакансии и генерация персонализированного гайда интервью.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Cpath d='M6 17h5l3-7 4 13 3-6h5' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-subtle: #f7f7f9;
+    --surface: #ffffff;
+    --border: #e6e6eb;
+    --border-strong: #d4d4dc;
+    --text: #1d1d24;
+    --text-2: #4a4a57;
+    --text-3: #7b7b88;
+    --accent: #4f46e5;
+    --accent-hover: #4338ca;
+    --accent-soft: #eef0ff;
+    --accent-ring: rgba(79, 70, 229, .22);
+    --green: #0f7a4a;
+    --green-bg: #e9f8f0;
+    --green-border: #bfe8d2;
+    --amber: #92560a;
+    --amber-bg: #fff6e6;
+    --amber-border: #f5dcab;
+    --red: #b42318;
+    --radius: 10px;
+    --radius-lg: 14px;
+    --shadow: 0 1px 2px rgba(20, 20, 40, .04), 0 4px 16px rgba(20, 20, 40, .05);
+    --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  /* Top bar */
+  .topbar {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(255,255,255,.86);
+    backdrop-filter: saturate(180%) blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar .wrap { display: flex; align-items: center; gap: 16px; min-height: 60px; flex-wrap: wrap; padding-top: 10px; padding-bottom: 10px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: -.01em; margin-right: auto; }
+  .brand-mark { width: 28px; height: 28px; border-radius: 8px; background: var(--accent); display: grid; place-items: center; flex: none; }
+  .brand small { font-weight: 500; color: var(--text-3); font-size: 12px; padding: 2px 8px; border: 1px solid var(--border); border-radius: 99px; }
+
+  .seg {
+    display: inline-flex; background: var(--bg-subtle); border: 1px solid var(--border);
+    border-radius: 9px; padding: 3px; gap: 2px;
+  }
+  .seg button {
+    border: 0; background: transparent; font: inherit; font-size: 13px; font-weight: 500;
+    color: var(--text-2); padding: 6px 12px; border-radius: 6px; cursor: pointer; white-space: nowrap;
+  }
+  .seg button[aria-pressed="true"] { background: #fff; color: var(--text); box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 0 0 1px var(--border); }
+  .seg button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    font: inherit; font-size: 14px; font-weight: 500; cursor: pointer;
+    border-radius: 8px; padding: 8px 14px; border: 1px solid var(--border-strong);
+    background: #fff; color: var(--text); transition: background .15s, border-color .15s, box-shadow .15s, transform .05s;
+  }
+  .btn:hover { background: var(--bg-subtle); }
+  .btn:active { transform: translateY(1px); }
+  .btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--accent-ring); }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+  .btn-lg { padding: 12px 20px; font-size: 15px; font-weight: 600; border-radius: 10px; }
+  .btn[disabled] { opacity: .6; cursor: progress; }
+  .btn svg { flex: none; }
+
+  /* Hero */
+  .hero { padding: 40px 0 8px; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 4px 10px; border-radius: 99px; letter-spacing: .01em; }
+  h1 { font-size: clamp(26px, 4vw, 36px); line-height: 1.15; letter-spacing: -.025em; margin: 14px 0 8px; font-weight: 700; }
+  .lead { color: var(--text-2); margin: 0; max-width: 720px; }
+
+  /* LLM settings */
+  .llm-panel {
+    margin-top: 20px; border: 1px solid var(--border); border-radius: var(--radius-lg);
+    background: var(--bg-subtle); padding: 16px; display: none;
+  }
+  .llm-panel.open { display: block; animation: fadeUp .25s ease; }
+  .llm-grid { display: grid; grid-template-columns: 180px 1fr 1fr; gap: 12px; }
+  .field label { display: block; font-size: 12px; font-weight: 600; color: var(--text-2); margin-bottom: 6px; }
+  .field input, .field select {
+    width: 100%; font: inherit; font-size: 14px; color: var(--text); background: #fff;
+    border: 1px solid var(--border-strong); border-radius: 8px; padding: 8px 10px;
+  }
+  .field input:focus, .field select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-ring); }
+  .hint { font-size: 12px; color: var(--text-3); margin: 10px 0 0; }
+
+  /* Inputs */
+  .inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 28px; }
+  .panel-label { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+  .panel-label label { font-weight: 600; font-size: 14px; }
+  .counter { font-size: 12px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+  textarea {
+    width: 100%; min-height: 300px; resize: vertical; font: inherit; font-size: 14px; line-height: 1.55;
+    color: var(--text); background: #fff; border: 1px solid var(--border-strong); border-radius: var(--radius-lg);
+    padding: 14px 16px; box-shadow: var(--shadow);
+  }
+  textarea::placeholder { color: #a3a3ae; }
+
+  .actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 20px 0 8px; }
+  .actions .meta { font-size: 13px; color: var(--text-3); }
+  .error-msg { color: var(--red); font-size: 13px; }
+
+  /* Results */
+  #results { margin: 28px 0 0; display: none; }
+  #results.show { display: block; animation: fadeUp .45s cubic-bezier(.2,.7,.2,1); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  .res-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .res-head h2 { font-size: 20px; margin: 0; letter-spacing: -.015em; }
+  .engine-tag { font-size: 12px; color: var(--text-2); border: 1px solid var(--border); border-radius: 99px; padding: 3px 10px; background: var(--bg-subtle); }
+
+  .grid { display: grid; grid-template-columns: 320px 1fr; gap: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow); }
+  .card h3 { font-size: 14px; margin: 0 0 12px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .card h3 .count { font-size: 12px; color: var(--text-3); font-weight: 500; }
+  .stack { display: grid; gap: 16px; }
+
+  .score-card { display: flex; flex-direction: column; }
+  .score-num { font-size: 56px; font-weight: 700; letter-spacing: -.04em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .score-num span { font-size: 24px; color: var(--text-3); font-weight: 600; margin-left: 2px; }
+  .verdict { display: inline-block; margin-top: 10px; font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 99px; align-self: flex-start; }
+  .v-high { color: var(--green); background: var(--green-bg); }
+  .v-mid { color: var(--amber); background: var(--amber-bg); }
+  .v-low { color: var(--red); background: #fdeceb; }
+  .bar { height: 8px; background: #ececf2; border-radius: 99px; overflow: hidden; margin: 18px 0 6px; }
+  .bar i { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #6366f1, var(--accent)); transition: width 1s cubic-bezier(.2,.7,.2,1); }
+  .bar-scale { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-3); }
+  .score-breakdown { margin: 18px 0 0; padding: 14px 0 0; border-top: 1px solid var(--border); display: grid; gap: 8px; font-size: 13px; }
+  .score-breakdown div { display: flex; justify-content: space-between; gap: 10px; color: var(--text-2); }
+  .score-breakdown b { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .summary { font-size: 13px; color: var(--text-2); margin: 14px 0 0; }
+
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; }
+  .badge { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; padding: 5px 10px; border-radius: 7px; border: 1px solid; line-height: 1.3; }
+  .badge-green { color: var(--green); background: var(--green-bg); border-color: var(--green-border); }
+  .badge-amber { color: var(--amber); background: var(--amber-bg); border-color: var(--amber-border); }
+  .badge .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: none; }
+  .empty { font-size: 13px; color: var(--text-3); margin: 0; }
+
+  .questions { list-style: none; margin: 0; padding: 0; counter-reset: q; display: grid; gap: 10px; }
+  .questions li { counter-increment: q; display: grid; grid-template-columns: 28px 1fr; gap: 12px; padding: 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-subtle); }
+  .questions li::before { content: counter(q); width: 28px; height: 28px; border-radius: 8px; background: #fff; border: 1px solid var(--border); display: grid; place-items: center; font-size: 13px; font-weight: 600; color: var(--accent); }
+  .q-text { font-weight: 500; }
+  .q-meta { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; margin-top: 6px; font-size: 12px; color: var(--text-3); }
+  .q-tag { font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 1px 7px; border-radius: 5px; }
+  .q-listen { margin-top: 6px; font-size: 13px; color: var(--text-2); }
+  .q-listen b { font-weight: 600; color: var(--text); }
+
+  .copy-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+  .copy-row p { margin: 0; font-size: 13px; color: var(--text-3); }
+
+  /* Product card */
+  .product { margin: 48px 0 32px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--bg-subtle); }
+  .product summary { cursor: pointer; list-style: none; padding: 16px 20px; display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 15px; }
+  .product summary::-webkit-details-marker { display: none; }
+  .product summary .chev { margin-left: auto; transition: transform .2s; color: var(--text-3); }
+  .product[open] summary .chev { transform: rotate(180deg); }
+  .product summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: var(--radius-lg); }
+  .product-body { padding: 0 20px 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .pcard { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+  .pcard h4 { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); font-weight: 600; }
+  .pcard p { margin: 0 0 8px; font-size: 14px; color: var(--text-2); }
+  .pcard p:last-child { margin-bottom: 0; }
+  .pcard strong { color: var(--text); }
+  .metric { display: grid; gap: 2px; padding: 8px 0; border-top: 1px dashed var(--border); font-size: 13px; color: var(--text-2); }
+  .metric:first-of-type { border-top: 0; padding-top: 0; }
+  .metric b { color: var(--text); font-size: 14px; }
+
+  footer { border-top: 1px solid var(--border); padding: 20px 0 32px; font-size: 13px; color: var(--text-3); }
+
+  /* Toast */
+  .toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0;
+    background: var(--text); color: #fff; font-size: 14px; font-weight: 500; padding: 10px 16px; border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18); pointer-events: none; transition: opacity .2s, transform .2s; z-index: 50; max-width: calc(100% - 32px);
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+  .toast.warn { background: #7a4a06; }
+
+  .spin { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: rot .7s linear infinite; }
+  @keyframes rot { to { transform: rotate(360deg); } }
+
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; }
+    .product-body { grid-template-columns: 1fr; }
+    .llm-grid { grid-template-columns: 1fr 1fr; }
+    .llm-grid .field:first-child { grid-column: 1 / -1; }
+  }
+  @media (max-width: 720px) {
+    .wrap { padding: 0 16px; }
+    .inputs { grid-template-columns: 1fr; }
+    textarea { min-height: 220px; }
+    .topbar .wrap { gap: 10px; }
+    .brand small { display: none; }
+    .seg { width: 100%; }
+    .seg button { flex: 1; white-space: normal; line-height: 1.25; }
+    #demoBtn { width: 100%; }
+    .llm-grid { grid-template-columns: 1fr; }
+    .btn-lg { width: 100%; }
+    .hero { padding-top: 24px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 32 32"><path d="M4 17h6l3-8 5 15 3-7h7" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      TalentPulse AI
+      <small>MVP · R&amp;D</small>
+    </div>
+    <div class="seg" role="group" aria-label="Режим анализа">
+      <button type="button" id="modeLocal" aria-pressed="true">Быстрый локальный анализ (без API-ключа)</button>
+      <button type="button" id="modeLlm" aria-pressed="false">Live LLM API (OpenAI / OpenRouter compatible)</button>
+    </div>
+    <button type="button" class="btn" id="demoBtn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>
+      Заполнить демо-данными
+    </button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <span class="eyebrow">HR-tech · B2B SaaS</span>
+    <h1>TalentPulse AI — Скоринг вакансий и генератор гайда интервью</h1>
+    <p class="lead">R&amp;D-прототип AI-инструмента для HR-команд и нанимающих менеджеров (собрано с помощью Claude Code)</p>
+
+    <div class="llm-panel" id="llmPanel" aria-hidden="true">
+      <div class="llm-grid">
+        <div class="field">
+          <label for="provider">Провайдер</label>
+          <select id="provider">
+            <option value="https://openrouter.ai/api/v1">OpenRouter</option>
+            <option value="https://api.openai.com/v1">OpenAI</option>
+            <option value="custom">Свой endpoint</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="model">Модель</label>
+          <input id="model" list="modelList" value="anthropic/claude-sonnet-4.5" autocomplete="off" spellcheck="false">
+          <datalist id="modelList"></datalist>
+        </div>
+        <div class="field">
+          <label for="apiKey">API-ключ (необязательно)</label>
+          <input id="apiKey" type="password" placeholder="sk-…" autocomplete="off" spellcheck="false">
+        </div>
+        <div class="field" id="baseUrlField" style="display:none; grid-column: 1 / -1;">
+          <label for="baseUrl">Base URL (OpenAI-совместимый, без /chat/completions)</label>
+          <input id="baseUrl" placeholder="https://your-gateway.example.com/v1" spellcheck="false">
+        </div>
+      </div>
+      <p class="hint">Ключ хранится только в памяти вкладки и отправляется напрямую провайдеру. Без ключа или при ошибке API анализ автоматически выполнит локальный движок.</p>
+    </div>
+  </section>
+
+  <section class="inputs" aria-label="Входные данные">
+    <div>
+      <div class="panel-label">
+        <label for="vacancy">Описание вакансии (требования и задачи)</label>
+        <span class="counter" id="vacCount">0 симв.</span>
+      </div>
+      <textarea id="vacancy" placeholder="Вставьте текст вакансии: обязанности, требования, стек, условия…"></textarea>
+    </div>
+    <div>
+      <div class="panel-label">
+        <label for="resume">Резюме / опыт кандидата</label>
+        <span class="counter" id="resCount">0 симв.</span>
+      </div>
+      <textarea id="resume" placeholder="Вставьте резюме или сопроводительное письмо кандидата: опыт, проекты, навыки, результаты…"></textarea>
+    </div>
+  </section>
+
+  <div class="actions">
+    <button type="button" class="btn btn-primary btn-lg" id="analyzeBtn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>
+      <span>Проанализировать соответствие и собрать гайд интервью</span>
+    </button>
+    <span class="meta" id="actionMeta">Локальный режим: результат за доли секунды, данные не покидают браузер.</span>
+  </div>
+  <div class="error-msg" id="errorMsg" role="alert"></div>
+
+  <section id="results" aria-live="polite">
+    <div class="res-head">
+      <h2>Результат скрининга</h2>
+      <span class="engine-tag" id="engineTag"></span>
+    </div>
+    <div class="grid">
+      <div class="card score-card">
+        <h3>Match Score</h3>
+        <div class="score-num" id="scoreNum">0<span>%</span></div>
+        <span class="verdict" id="verdict"></span>
+        <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="bar"><i id="barFill"></i></div>
+        <div class="bar-scale"><span>0</span><span>50</span><span>100</span></div>
+        <div class="score-breakdown" id="breakdown"></div>
+        <p class="summary" id="summary"></p>
+      </div>
+      <div class="stack">
+        <div class="card">
+          <h3>Сильные совпадения (найденные ключевые компетенции) <span class="count" id="strCount"></span></h3>
+          <div class="badges" id="strengths"></div>
+        </div>
+        <div class="card">
+          <h3>Зоны риска / что проверить на интервью <span class="count" id="riskCount"></span></h3>
+          <div class="badges" id="risks"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3>Персонализированные вопросы для интервью (5 шт.)</h3>
+      <ol class="questions" id="questions"></ol>
+      <div class="copy-row">
+        <button type="button" class="btn" id="copyBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+          Скопировать готовый промпт для глубокого разбора в Claude
+        </button>
+        <p>Системный промпт с подставленными текстами вакансии, резюме и результатами первичного скрининга.</p>
+      </div>
+    </div>
+  </section>
+
+  <details class="product" id="productCard">
+    <summary>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>
+      Продуктовая карточка (Product Discovery &amp; Metrics)
+      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+    </summary>
+    <div class="product-body">
+      <div class="pcard">
+        <h4>Проблема B2B-клиента</h4>
+        <p>HR-специалисты и нанимающие лиды тратят <strong>15–20 минут</strong> на первичный разбор каждого отклика: сверяют резюме с требованиями вручную и каждый раз заново придумывают вопросы.</p>
+        <p>На 100 откликов это 25–33 часа рекрутера, а качество скрининга зависит от того, кто и в каком состоянии его делает.</p>
+      </div>
+      <div class="pcard">
+        <h4>Гипотеза MVP</h4>
+        <p>Если дать рекрутеру автоматический скоринг соответствия и готовый гайд интервью по выявленным пробелам, то время скрининга сократится <strong>до 2 минут</strong> на отклик, а вопросы интервью станут стандартизированными и сравнимыми между кандидатами.</p>
+        <p>Критерий успеха пилота: −80% времени скрининга без падения доли релевантных интервью.</p>
+      </div>
+      <div class="pcard">
+        <h4>Ключевые метрики проверки</h4>
+        <div class="metric"><b>Time-to-Screen</b>Медианное время от открытия отклика до решения «звать / не звать». Цель: ≤ 2 мин.</div>
+        <div class="metric"><b>Share of Relevant Interviews</b>Доля интервью, после которых кандидат прошёл на следующий этап. Цель: не ниже базовой линии, рост на 10–15 п.п.</div>
+        <div class="metric"><b>Retention рекрутера</b>Доля рекрутеров, использующих инструмент на W4 после онбординга (WAU / активированные). Цель: ≥ 40%.</div>
+      </div>
+    </div>
+  </details>
+</main>
+
+<footer>
+  <div class="wrap">TalentPulse AI · R&amp;D-прототип, собран с помощью Claude Code. Скоринг носит рекомендательный характер: финальное решение о найме принимает человек.</div>
+</footer>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(() => {
+  'use strict';
+
+  /* ---------------- Demo data ---------------- */
+  const DEMO_VACANCY = `Junior Product Manager — HR-tech SaaS (B2B)
+
+Мы делаем платформу для автоматизации найма: ATS, онлайн-тестирование и аналитика воронки подбора для 400+ компаний. Ищем Junior PM в команду продукта «Оценка кандидатов».
+
+Задачи:
+• Проводить custdev и интервью с пользователями (рекрутеры, нанимающие менеджеры), формулировать гипотезы по JTBD
+• Вести бэклог команды и приоритизировать задачи по RICE вместе с Senior PM
+• Писать PRD и user stories для разработки, принимать фичи
+• Запускать A/B-тесты и считать их результаты
+• Следить за продуктовыми метриками и воронкой активации в Amplitude, собирать дашборды
+• Работать с кросс-функциональной командой: разработка, дизайн, продажи, Customer Success
+
+Требования:
+• Опыт от 1 года в продукте, аналитике или проектном управлении в IT
+• SQL на уровне самостоятельных выгрузок (JOIN, оконные функции)
+• Понимание юнит-экономики B2B SaaS: LTV, CAC, churn
+• Опыт работы по Scrum, Jira, Confluence
+• Умение собрать прототип в Figma для проверки гипотез
+• Английский от B1 (документация, общение с партнёрами)
+
+Будет плюсом:
+• Опыт с LLM / AI-фичами в продукте
+• Python (pandas) для анализа данных
+• Понимание процессов рекрутмента`;
+
+  const DEMO_RESUME = `Анна Смирнова — продуктовый аналитик
+
+Опыт работы:
+Продуктовый аналитик, EdTech-стартап «Учи.Код» — 03.2023 – н.в.
+• Построила дашборды активации и удержания в Amplitude и DataLens для 3 продуктовых команд
+• Пишу SQL-запросы в ClickHouse и PostgreSQL: когорты, воронки, оконные функции
+• Провела 25+ интервью с учителями и родителями, по итогам сформулировала 6 гипотез; 2 из них дошли до релиза и подняли конверсию в оплату на 12%
+• Работаю в Scrum-команде, веду задачи в Jira, документацию в Confluence
+• Помогала PM приоритизировать бэклог, готовила оценки влияния фич
+
+Ассистент проектного менеджера, digital-агентство «Пиксель» — 09.2021 – 02.2023
+• Координировала 5 проектов по разработке сайтов и мобильных приложений для клиентов
+• Собирала требования у заказчиков, писала ТЗ, вела коммуникацию между клиентом и разработкой
+
+Навыки: SQL, Amplitude, DataLens, Excel / Google Sheets, Jira, Confluence, Miro, основы Figma, Python (базовый)
+Образование: НИУ ВШЭ, бизнес-информатика, 2021
+Курсы: «Продакт-менеджмент» (Яндекс Практикум, 2024)
+Языки: английский — A2`;
+
+  /* ---------------- Competency dictionary ----------------
+     re: regex for detection (lowercased text). Cyrillic words avoid \b (not Unicode-aware without u flag).
+     weight: importance for score. gap / deep: interview question templates. listen: what to listen for. */
+  const L = '(?:^|[^a-zа-яё0-9])'; // left boundary for short tokens
+  const R = '(?=$|[^a-zа-яё0-9])'; // right boundary
+  const C = [
+    { id: 'custdev', label: 'Custdev / интервью с пользователями', w: 3,
+      re: new RegExp(`custdev|кастдев|customer development|интервью с (?:пользовател|клиент|учител|родител|рекрутер)|\\d+\\+?\\s*интервью|глубинн\\S* интервью|${L}jtbd${R}|jobs to be done|проблемн\\S* интервью`),
+      gap: 'Расскажите, как бы вы спланировали серию из 8–10 проблемных интервью с {domain}: кого отберёте, какие вопросы зададите и как поймёте, что гипотеза не подтвердилась?',
+      deep: 'Вы упоминаете интервью с пользователями. Возьмите одно конкретное интервью: какую гипотезу проверяли, что услышали неожиданного и какое продуктовое решение приняли по итогам?',
+      listen: 'открытые вопросы без подсказок, работа с прошлым опытом пользователя, связь инсайта с решением' },
+    { id: 'prior', label: 'Приоритизация бэклога (RICE / ICE)', w: 3,
+      re: new RegExp(`приоритиз|${L}rice${R}|${L}ice${R}|moscow|бэклог|backlog|kano`),
+      gap: 'Перед вами 12 запросов от продаж, поддержки и CEO, а у команды ресурс на 3. Как вы решите, что брать в спринт, и как объясните отказ остальным?',
+      deep: 'Вспомните случай, когда ваша приоритизация не совпала с мнением руководителя или стейкхолдера. Какие аргументы и данные вы использовали и чем закончилось?',
+      listen: 'фреймворк + здравый смысл, опора на данные и цели, умение говорить «нет» без конфликта' },
+    { id: 'prd', label: 'PRD / требования / user stories', w: 2,
+      re: new RegExp(`${L}prd${R}|user stor|юзер.?стори|${L}тз${R}|техническ\\S* задани|требовани\\S* (?:к|у|от)|сбор\\S* требовани|собирал\\S* требовани|спецификац|acceptance criteria|критери\\S* приёмки|критери\\S* приемки`),
+      gap: 'Опишите, из каких разделов будет состоять ваш PRD на небольшую фичу и как вы поймёте, что разработка поняла требования одинаково с вами?',
+      deep: 'Покажите на примере: как выглядело последнее ТЗ / user story, которое вы писали, и что пришлось уточнять уже в процессе разработки?',
+      listen: 'проблема и цель → метрика успеха → сценарии → критерии приёмки → не-цели' },
+    { id: 'ab', label: 'A/B-тестирование', w: 3,
+      re: new RegExp(`a\\/b|а\\/б|${L}ab.?тест|сплит.?тест|split.?test|эксперимент\\S*|статзначим|стат\\. ?значим|p-value`),
+      gap: 'Как бы вы запустили A/B-тест новой формы отклика: какую метрику выберете, как оцените нужный размер выборки и что сделаете, если результат будет на грани значимости?',
+      deep: 'Расскажите про A/B-тест, который вы запускали: дизайн эксперимента, результат и было ли решение по нему очевидным?',
+      listen: 'первичная и guardrail-метрики, размер выборки/длительность, понимание статзначимости и peeking' },
+    { id: 'analytics', label: 'Продуктовая аналитика (Amplitude / Mixpanel)', w: 3,
+      re: new RegExp(`amplitude|mixpanel|google analytics|яндекс.?метрик|appmetrica|продуктов\\S* метрик|продуктов\\S* аналитик|когорт|retention|удержани|активаци|воронк`),
+      gap: 'Какие 3–4 метрики вы бы поставили на дашборд продукта «Оценка кандидатов» в первую неделю и как отличите реальную проблему от шума?',
+      deep: 'Вы строили дашборды и воронки. Расскажите про случай, когда метрика внезапно просела: как вы искали причину и что оказалось на самом деле?',
+      listen: 'north star и вспомогательные метрики, сегментация, гипотезы о причинах, проверка данных' },
+    { id: 'sql', label: 'SQL', w: 3,
+      re: new RegExp(`${L}sql${R}|postgres|clickhouse|mysql|bigquery|greenplum|оконн\\S* функци`),
+      gap: 'Вживую: есть таблицы applications(candidate_id, vacancy_id, created_at) и stages(application_id, stage, moved_at). Как посчитать конверсию из отклика в интервью по неделям?',
+      deep: 'Опишите самый сложный SQL-запрос, который вы писали сами: какую задачу он решал, какие JOIN и оконные функции использовали, как проверяли корректность?',
+      listen: 'JOIN, GROUP BY, оконные функции, проверка дублей и NULL, sanity-check результата' },
+    { id: 'unit', label: 'Юнит-экономика (LTV / CAC / churn)', w: 2,
+      re: new RegExp(`юнит.?экономик|unit.?econom|${L}ltv${R}|${L}cac${R}|${L}arpu${R}|${L}arppu${R}|${L}churn${R}|отток|${L}mrr${R}|${L}arr${R}|окупаемост|payback`),
+      gap: 'B2B SaaS: средний чек 40 000 ₽/мес, отток 3% в месяц, CAC 300 000 ₽. Окупается ли клиент и какой рычаг вы бы тянули первым?',
+      deep: 'Как вы связывали продуктовые изменения с юнит-экономикой в прошлых задачах? Приведите пример с цифрами.',
+      listen: 'LTV ≈ ARPU / churn, сравнение с CAC, срок окупаемости, понимание рычагов' },
+    { id: 'agile', label: 'Scrum / Agile', w: 1,
+      re: new RegExp(`scrum|скрам|agile|аджайл|kanban|канбан|спринт`),
+      gap: 'Что в Scrum-процессе, на ваш взгляд, чаще всего превращается в формальность и как продакт может вернуть ему смысл?',
+      deep: 'Какую роль вы играли на планировании и ретро в своей команде? Что вы предложили изменить в процессе и прижилось ли это?',
+      listen: 'понимание целей церемоний, а не только их названий; инициативность' },
+    { id: 'jira', label: 'Jira / Confluence', w: 1,
+      re: new RegExp(`jira|джир|confluence|конфлюенс|youtrack|notion|linear`),
+      gap: 'Как вы организуете бэклог в трекере, чтобы через месяц в нём можно было быстро найти, почему было принято то или иное решение?',
+      deep: 'Как была устроена ваша работа в Jira/Confluence: кто заводил задачи, как вы следили за их статусом и документировали решения?',
+      listen: 'структура эпиков/задач, связь с документацией, гигиена бэклога' },
+    { id: 'figma', label: 'Прототипирование (Figma)', w: 2,
+      re: new RegExp(`figma|фигм|прототип|wireframe|вайрфрейм|${L}cjm${R}|user flow|${L}ux${R}|${L}ui${R}|miro`),
+      gap: 'Нужно проверить гипотезу «рекрутеру нужен экран сравнения двух кандидатов». Как бы вы сделали и протестировали прототип за 2 дня без дизайнера?',
+      deep: 'Покажите или опишите прототип, который вы собирали: что именно проверяли на нём и что поменялось после тестов?',
+      listen: 'низкая детализация ради скорости, сценарий теста, критерий успеха' },
+    { id: 'stake', label: 'Работа со стейкхолдерами', w: 2,
+      re: new RegExp(`стейкхолдер|stakeholder|кросс.?функц|cross.?functional|коммуникац\\S* (?:между|с)|координир|заказчик|продаж\\S*.{0,40}(?:поддерж|customer success)`),
+      gap: 'Продажи обещали крупному клиенту фичу к концу месяца, а команда её не планировала. Ваши действия в первые 24 часа?',
+      deep: 'Расскажите о самом сложном стейкхолдере, с которым вы работали. Как выстроили коммуникацию и чего удалось добиться?',
+      listen: 'прозрачность, работа с ожиданиями, поиск компромисса, эскалация по делу' },
+    { id: 'english', label: 'Английский язык', w: 1,
+      re: new RegExp(`английск|english|${L}(?:a2|b1|b2|c1|c2)${R}|intermediate|advanced|ielts|toefl`),
+      gap: 'Небольшая часть интервью на английском: расскажите о своём последнем проекте и одной ошибке, которую вы бы не повторили.',
+      deep: 'Переключимся на английский на пару минут: опишите ваш текущий продукт и его главную метрику.',
+      listen: 'способность объяснить продуктовую задачу, а не грамматику' },
+    { id: 'python', label: 'Python / pandas', w: 1,
+      re: new RegExp(`python|питон|pandas|jupyter|numpy`),
+      gap: 'Для каких аналитических задач вы бы выбрали Python, а не SQL или Excel? Приведите пример.',
+      deep: 'Какую задачу вы решали на Python последней: что делал скрипт или ноутбук и как вы проверили результат?',
+      listen: 'осознанный выбор инструмента, базовые операции pandas' },
+    { id: 'bi', label: 'BI и дашборды', w: 1,
+      re: new RegExp(`tableau|power ?bi|datalens|superset|metabase|looker|redash|дашборд|dashboard`),
+      gap: 'Каким должен быть дашборд, которым руководитель найма реально пользуется каждую неделю, а не открывает один раз?',
+      deep: 'Каким дашбордом, который вы сделали, пользуются чаще всего? Почему именно им, и какие решения на его основе принимались?',
+      listen: 'фокус на решениях, а не на графиках; минимум метрик, понятные срезы' },
+    { id: 'ai', label: 'AI / LLM-фичи', w: 2,
+      re: new RegExp(`${L}llm${R}|${L}ml${R}|machine learning|машинн\\S* обучен|нейросет|${L}gpt${R}|chatgpt|${L}ai${R}|${L}ии${R}|искусственн\\S* интеллект|генеративн|claude`),
+      gap: 'Мы хотим добавить в продукт AI-оценку резюме. Какие риски (качество, предвзятость, доверие рекрутеров) вы видите и как бы проверили ценность фичи до полной разработки?',
+      deep: 'Какую AI-функцию вы запускали или использовали в работе? Как измеряли её качество и что делали с ошибками модели?',
+      listen: 'метрики качества, human-in-the-loop, этика и bias, MVP через ручной процесс' },
+    { id: 'domain', label: 'Понимание HR-tech / рекрутмента', w: 1,
+      re: new RegExp(`рекрут|${L}hr${R}|hr-tech|${L}ats${R}|подбор\\S* персонал|найм|hiring|recruit`),
+      gap: 'Как, по-вашему, выглядит рабочий день рекрутера и в какой момент его воронки теряется больше всего времени?',
+      deep: 'Что из вашего опыта в HR / рекрутменте вы бы сразу применили к продукту для рекрутеров?',
+      listen: 'эмпатия к пользователю, знание этапов воронки найма' },
+    { id: 'b2b', label: 'B2B / SaaS-контекст', w: 1,
+      re: new RegExp(`${L}b2b${R}|saas|корпоративн\\S* клиент|enterprise|агентств\\S*|для клиентов`),
+      gap: 'Чем, на ваш взгляд, продуктовая работа в B2B SaaS отличается от B2C? Что меняется в custdev и метриках?',
+      deep: 'Вы работали с бизнес-клиентами. Как вы учитывали разницу между тем, кто покупает продукт, и тем, кто им пользуется?',
+      listen: 'покупатель ≠ пользователь, длинный цикл сделки, меньше данных для A/B' },
+    { id: 'roadmap', label: 'Роадмап и продуктовая стратегия', w: 1,
+      re: new RegExp(`роадмап|roadmap|дорожн\\S* карт|продуктов\\S* стратег|okr|${L}north star${R}`),
+      gap: 'Как бы вы связали квартальные OKR команды с конкретными задачами в бэклоге?',
+      deep: 'Участвовали ли вы в формировании роадмапа? Какие инициативы вы предложили и как защищали их?',
+      listen: 'связь цели → метрики → инициативы, умение отказаться от лишнего' }
+  ];
+
+  const DOMAIN_HINTS = [
+    [/рекрут|hr|найм|ats|кандидат/, 'рекрутерами и нанимающими менеджерами'],
+    [/edtech|образован|учител|школ/, 'учителями и учениками'],
+    [/финтех|fintech|банк/, 'клиентами банка'],
+    [/e-?commerce|маркетплейс|ритейл/, 'покупателями и продавцами'],
+  ];
+
+  /* ---------------- Helpers ---------------- */
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const norm = (s) => ' ' + s.toLowerCase().replace(/ё/g, 'е').replace(/\s+/g, ' ') + ' ';
+  const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+  const plural = (n, f) => { const m10 = n % 10, m100 = n % 100; return f[(m10 === 1 && m100 !== 11) ? 0 : (m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20)) ? 1 : 2]; };
+  const yearsWord = (n) => Number.isInteger(n) ? plural(n, ['год', 'года', 'лет']) : 'года';
+
+  function requiredYears(text) {
+    const m = text.match(/(?:опыт\S*[^.\n]{0,40}?)?(?:от|не менее|minimum|min\.?)\s*(\d+(?:[.,]\d)?)\s*(?:\+\s*)?(?:год|лет|years?)/)
+      || text.match(/(\d+)\s*\+\s*(?:год|лет|years?)/);
+    return m ? parseFloat(m[1].replace(',', '.')) : null;
+  }
+
+  function candidateYears(text) {
+    const now = new Date();
+    const cur = now.getFullYear() + now.getMonth() / 12;
+    const toNum = (mm, yy) => parseInt(yy, 10) + (mm ? (parseInt(mm, 10) - 1) / 12 : 0);
+    const re = /(?:(\d{1,2})[./])?((?:19|20)\d{2})\s*(?:–|—|-|по)\s*(?:(?:(\d{1,2})[./])?((?:19|20)\d{2})|(н\.?\s?в\.?|наст|сейчас|по настоящ|present|now|текущ))/g;
+    const spans = [];
+    let m;
+    while ((m = re.exec(text))) {
+      const start = toNum(m[1], m[2]);
+      const end = m[4] ? toNum(m[3], m[4]) : cur;
+      if (end > start && end - start < 40) spans.push([start, end]);
+    }
+    if (spans.length) {
+      spans.sort((a, b) => a[0] - b[0]);
+      let total = 0, [s, e] = spans[0];
+      for (const [a, b] of spans.slice(1)) { if (a <= e) e = Math.max(e, b); else { total += e - s; s = a; e = b; } }
+      total += e - s;
+      return { years: Math.round(total * 10) / 10, jobs: spans.length, shortest: Math.min(...spans.map(([a, b]) => b - a)) };
+    }
+    const y = text.match(/(\d+(?:[.,]\d)?)\s*\+?\s*(?:год|лет|years?)\s*(?:опыт|experience|в )/);
+    return y ? { years: parseFloat(y[1].replace(',', '.')), jobs: 0, shortest: null } : null;
+  }
+
+  function englishLevel(text) {
+    const order = ['a1', 'a2', 'b1', 'b2', 'c1', 'c2'];
+    const m = text.match(new RegExp(`${L}(a1|a2|b1|b2|c1|c2)${R}`));
+    if (m) return order.indexOf(m[1]);
+    if (/upper.?intermediate/.test(text)) return 3;
+    if (/pre.?intermediate/.test(text)) return 1;
+    if (/intermediate/.test(text)) return 2;
+    if (/advanced|fluent|свободн/.test(text)) return 4;
+    return null;
+  }
+
+  function detectDomain(vac) {
+    for (const [re, label] of DOMAIN_HINTS) if (re.test(vac)) return label;
+    return 'целевыми пользователями продукта';
+  }
+
+  /* ---------------- Local engine ---------------- */
+  function analyzeLocal(vacRaw, resRaw) {
+    const vac = norm(vacRaw), res = norm(resRaw);
+
+    // Split vacancy into "required" vs "nice to have" zones
+    const plusIdx = vac.search(/будет плюсом|плюсом будет|nice to have|желательно|преимуществ/);
+    const vacMain = plusIdx > 0 ? vac.slice(0, plusIdx) : vac;
+    const vacPlus = plusIdx > 0 ? vac.slice(plusIdx) : '';
+
+    const required = [], optional = [];
+    for (const c of C) {
+      if (c.re.test(vacMain)) required.push(c);
+      else if (vacPlus && c.re.test(vacPlus)) optional.push(c);
+    }
+
+    const matched = required.filter((c) => c.re.test(res));
+    const gaps = required.filter((c) => !c.re.test(res));
+    const optMatched = optional.filter((c) => c.re.test(res));
+    const optGaps = optional.filter((c) => !c.re.test(res));
+    const extras = C.filter((c) => !required.includes(c) && !optional.includes(c) && c.re.test(res));
+
+    const totalW = required.reduce((s, c) => s + c.w, 0) || 1;
+    const gotW = matched.reduce((s, c) => s + c.w, 0);
+    const skillPart = required.length ? (gotW / totalW) * 75 : 40;
+
+    // Experience
+    const needY = requiredYears(vac);
+    const cand = candidateYears(resRaw.toLowerCase());
+    let expPart = 10, expNote = 'не указан в вакансии';
+    if (needY != null && cand) {
+      const ratio = cand.years / needY;
+      expPart = ratio >= 1 ? 15 : Math.round(15 * ratio);
+      expNote = `${cand.years} ${yearsWord(cand.years)} из ${needY} треб.`;
+    } else if (cand) {
+      expPart = clamp(Math.round(cand.years * 5), 5, 15);
+      expNote = `${cand.years} ${yearsWord(cand.years)}`;
+    } else if (needY != null) {
+      expPart = 5; expNote = 'стаж не найден в резюме';
+    }
+
+    // Bonus: nice-to-haves and measurable results
+    const hasNumbers = /\d+\s*%|\d+\s*(?:раз|x|×)|рост|увелич|сократ|снизил|снизила|поднял|подняла|выросл/.test(res);
+    const bonusPart = Math.min(10, optMatched.length * 3 + (hasNumbers ? 4 : 0));
+
+    // Penalty for clear language gap
+    const needEn = englishLevel(vacMain), haveEn = englishLevel(res);
+    let enPenalty = 0;
+    const risks = gaps.map((c) => ({ label: `Нет подтверждения: ${c.label}`, c, kind: 'gap' }));
+    if (needEn != null && haveEn != null && haveEn < needEn) {
+      enPenalty = 4;
+      const lv = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+      const enIdx = risks.findIndex((r) => r.c && r.c.id === 'english');
+      const r = { label: `Английский ${lv[haveEn]} ниже требуемого ${lv[needEn]}`, c: C.find((x) => x.id === 'english'), kind: 'gap' };
+      if (enIdx >= 0) risks[enIdx] = r; else risks.push(r);
+    }
+
+    let score = Math.round(skillPart + expPart + bonusPart - enPenalty);
+    if (resRaw.trim().length < 150) score = Math.min(score, 35);
+    score = clamp(score, 0, 100);
+
+    // Additional risk heuristics
+    if (needY != null && cand && cand.years < needY) risks.push({ label: `Стаж ${cand.years} ${yearsWord(cand.years)} при требовании от ${needY}`, kind: 'exp' });
+    if (needY != null && !cand) risks.push({ label: 'Стаж в резюме не указан явно', kind: 'exp' });
+    if (!hasNumbers) risks.push({ label: 'Нет измеримых результатов (цифр, %) в резюме', kind: 'impact' });
+    if (cand && cand.jobs >= 3 && cand.shortest != null && cand.shortest < 0.75) risks.push({ label: 'Короткие периоды работы (< 9 мес.)', kind: 'hop' });
+    if (/базов|основы|начальн|basic/.test(res)) {
+      const weak = [];
+      const basicRe = /(основы|базов\S*|начальн\S*|basic)\s*\(?\s*([a-zа-я+#.]+)|([a-zа-я+#.]+)\s*\((?:базов|основы|начальн|basic)/g;
+      let m; while ((m = basicRe.exec(res))) weak.push((m[2] || m[3] || '').replace(/[()]/g, ''));
+      const uniq = [...new Set(weak.filter((w) => w && w.length > 1))].slice(0, 3);
+      if (uniq.length) risks.push({ label: `Уровень «базовый»: ${uniq.map((w) => w[0].toUpperCase() + w.slice(1)).join(', ')} — проверить глубину`, kind: 'depth' });
+    }
+    for (const c of optGaps.slice(0, 2)) risks.push({ label: `Плюсом, но не найдено: ${c.label}`, c, kind: 'opt' });
+
+    const strengths = [
+      ...matched.filter((c) => !(c.id === 'english' && enPenalty)).map((c) => ({ label: c.label, c })),
+      ...optMatched.map((c) => ({ label: `${c.label} (плюс)`, c })),
+      ...extras.slice(0, 3).map((c) => ({ label: `${c.label} (сверх требований)`, c })),
+    ];
+    if (hasNumbers) strengths.push({ label: 'Измеримые результаты в резюме' });
+
+    // Questions: up to 3 gap questions (by weight), 1 deep-dive on top strength, 1 stack/situational
+    const domain = detectDomain(vac);
+    const fill = (t) => t.replace('{domain}', domain);
+    const questions = [];
+    const used = new Set();
+    const push = (c, text, type, listen) => { if (questions.length < 5 && !used.has(text)) { used.add(text); questions.push({ q: fill(text), type, listen, topic: c ? c.label : '' }); } };
+
+    const gapSorted = [...gaps].sort((a, b) => b.w - a.w);
+    const enRisk = risks.find((r) => r.c && r.c.id === 'english');
+    if (enRisk && !gapSorted.includes(enRisk.c)) gapSorted.push(enRisk.c);
+    for (const c of gapSorted.slice(0, 3)) push(c, c.gap, 'Проверка пробела', c.listen);
+
+    const strongSorted = [...matched].sort((a, b) => b.w - a.w);
+    for (const c of strongSorted) { if (questions.length >= 4) break; push(c, c.deep, 'Глубина опыта', c.listen); }
+
+    if (!hasNumbers) push(null, 'Назовите результат, которым вы гордитесь больше всего, в цифрах: какая метрика, было → стало, и какой вклад именно ваш?', 'Влияние на результат', 'конкретные числа, личный вклад vs команда, честность про неудачи');
+    if (cand && needY != null && cand.years < needY) push(null, `Ваш опыт немного меньше требуемого. Какие задачи из этой вакансии вы готовы взять с первого дня, а где понадобится поддержка?`, 'Опыт', 'самооценка, план онбординга, обучаемость');
+    for (const c of optGaps) push(c, c.gap, 'Будет плюсом', c.listen);
+    for (const c of gapSorted.slice(3)) push(c, c.gap, 'Проверка пробела', c.listen);
+    push(null, 'Представьте свои первые 30 дней в этой роли: с кем поговорите, какие данные изучите и что покажете руководителю в конце месяца?', 'Ситуационный', 'структура, проактивность, фокус на пользователе и метриках');
+    push(null, 'Расскажите о решении, которое оказалось ошибочным. Как вы это поняли и что изменили в своём подходе?', 'Поведенческий', 'рефлексия, ответственность, выводы');
+
+    const verdict = score >= 75 ? 'Сильное совпадение — звать на интервью'
+      : score >= 55 ? 'Частичное совпадение — интервью с фокусом на рисках'
+      : 'Слабое совпадение — нужна дополнительная проверка';
+
+    const summary = required.length
+      ? `Из ${required.length} ключевых ${plural(required.length, ['компетенции', 'компетенций', 'компетенций'])} вакансии в резюме подтверждено ${matched.length}. ` +
+        (gaps.length ? `На интервью стоит проверить: ${gaps.slice(0, 3).map((c) => c.label.split(' (')[0].toLowerCase()).join(', ')}.` : 'Все ключевые требования подтверждены — фокус на глубине опыта.')
+      : 'В тексте вакансии не нашлось типовых компетенций из словаря — скоринг приблизительный. Попробуйте режим Live LLM для нестандартных ролей.';
+
+    return {
+      score, verdict, summary,
+      strengths: strengths.map((s) => s.label),
+      risks: risks.map((r) => r.label),
+      questions,
+      breakdown: [
+        ['Ключевые компетенции', `${matched.length} / ${required.length}`],
+        ['Опыт', expNote],
+        ['Будет плюсом', optional.length ? `${optMatched.length} / ${optional.length}` : '—'],
+        ['Измеримые результаты', hasNumbers ? 'есть' : 'нет'],
+      ],
+    };
+  }
+
+  /* ---------------- LLM engine ---------------- */
+  const MODELS = {
+    'https://openrouter.ai/api/v1': ['anthropic/claude-sonnet-4.5', 'anthropic/claude-haiku-4.5', 'openai/gpt-4o-mini', 'google/gemini-2.5-flash'],
+    'https://api.openai.com/v1': ['gpt-4o-mini', 'gpt-4.1-mini', 'gpt-4o'],
+    custom: [],
+  };
+
+  const SYSTEM_PROMPT = `Ты — опытный tech-рекрутер и hiring manager. Сравни вакансию и резюме кандидата.
+Верни СТРОГО JSON без markdown и пояснений в формате:
+{"score": <целое 0-100>, "verdict": "<одна фраза-рекомендация>", "summary": "<2 предложения>",
+ "strengths": ["<совпавшая компетенция, до 6 слов>", ...],
+ "risks": ["<что проверить на интервью, до 8 слов>", ...],
+ "questions": [{"q": "<вопрос интервьюера>", "type": "<Проверка пробела|Глубина опыта|Ситуационный|Поведенческий>", "listen": "<на что обратить внимание в ответе>"}]}
+Ровно 5 вопросов, персонализированных под пробелы кандидата и стек из вакансии. Пиши по-русски.`;
+
+  async function analyzeLLM(vac, res, cfg) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 45000);
+    try {
+      const headers = { 'Content-Type': 'application/json', Authorization: `Bearer ${cfg.key}` };
+      if (cfg.base.includes('openrouter.ai')) { headers['HTTP-Referer'] = location.origin || 'https://localhost'; headers['X-Title'] = 'TalentPulse AI'; }
+      const body = {
+        model: cfg.model,
+        temperature: 0.2,
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          { role: 'user', content: `ВАКАНСИЯ:\n${vac}\n\nРЕЗЮМЕ:\n${res}` },
+        ],
+      };
+      if (!cfg.base.includes('openrouter.ai') || cfg.model.startsWith('openai/')) body.response_format = { type: 'json_object' };
+      const r = await fetch(cfg.base.replace(/\/+$/, '') + '/chat/completions', { method: 'POST', headers, body: JSON.stringify(body), signal: ctrl.signal });
+      if (!r.ok) {
+        let detail = '';
+        try { const j = await r.json(); detail = j.error?.message || j.message || ''; } catch (_) {}
+        throw new Error(`HTTP ${r.status}${detail ? ': ' + detail : ''}`);
+      }
+      const data = await r.json();
+      const content = data?.choices?.[0]?.message?.content;
+      if (!content) throw new Error('пустой ответ модели');
+      const jsonStr = (content.match(/\{[\s\S]*\}/) || [])[0];
+      if (!jsonStr) throw new Error('модель вернула не JSON');
+      const p = JSON.parse(jsonStr);
+      const score = clamp(Math.round(Number(p.score)), 0, 100);
+      if (Number.isNaN(score)) throw new Error('нет поля score');
+      const qs = (Array.isArray(p.questions) ? p.questions : []).slice(0, 5).map((q) => typeof q === 'string' ? { q, type: 'Вопрос', listen: '' } : { q: String(q.q || q.question || ''), type: String(q.type || 'Вопрос'), listen: String(q.listen || '') }).filter((q) => q.q);
+      if (qs.length < 3) throw new Error('модель вернула слишком мало вопросов');
+      const arr = (a) => (Array.isArray(a) ? a : []).map(String).filter(Boolean).slice(0, 12);
+      return {
+        score,
+        verdict: String(p.verdict || (score >= 75 ? 'Сильное совпадение' : score >= 55 ? 'Частичное совпадение' : 'Слабое совпадение')),
+        summary: String(p.summary || ''),
+        strengths: arr(p.strengths), risks: arr(p.risks), questions: qs,
+        breakdown: [['Модель', cfg.model], ['Провайдер', new URL(cfg.base).host]],
+      };
+    } finally { clearTimeout(timer); }
+  }
+
+  /* ---------------- Claude prompt ---------------- */
+  function buildClaudePrompt(vac, res, result) {
+    return `<system>
+Ты — Senior Talent Partner и нанимающий менеджер с 10+ годами опыта в найме продуктовых и технических специалистов в B2B SaaS. Твоя задача — провести глубокий, честный и непредвзятый разбор соответствия кандидата вакансии и подготовить структурированный гайд интервью.
+
+Принципы:
+- Опирайся только на факты из текстов ниже; отделяй подтверждённое от предположений.
+- Не оценивай кандидата по полу, возрасту, внешности, национальности и другим защищённым признакам.
+- Будь конкретен: каждая оценка — со ссылкой на фразу из резюме или вакансии.
+</system>
+
+<vacancy>
+${vac.trim()}
+</vacancy>
+
+<resume>
+${res.trim()}
+</resume>
+
+<prescreening source="TalentPulse AI">
+Match Score: ${result.score}%
+Вердикт: ${result.verdict}
+Сильные совпадения: ${result.strengths.join('; ') || '—'}
+Зоны риска: ${result.risks.join('; ') || '—'}
+</prescreening>
+
+<task>
+1. Матрица соответствия: таблица «требование вакансии → доказательство в резюме → оценка (подтверждено / частично / нет)».
+2. Скорректируй Match Score (0–100) и объясни, с чем в первичном скрининге ты согласен, а с чем нет.
+3. Топ-3 риска найма и как каждый проверить за 45-минутное интервью.
+4. Гайд интервью: 8 вопросов (поведенческие STAR + кейсовые по стеку вакансии), для каждого — что считается сильным, средним и слабым ответом.
+5. Одно небольшое тестовое задание на 2–3 часа, релевантное реальным задачам роли, с критериями оценки.
+6. Итоговая рекомендация: звать / звать с оговорками / не звать — и почему, в 3 предложениях.
+</task>
+
+Ответь на русском языке, используя заголовки и таблицы Markdown.`;
+  }
+
+  /* ---------------- UI ---------------- */
+  const state = { mode: 'local', last: null };
+  const els = {
+    vac: $('vacancy'), res: $('resume'), btn: $('analyzeBtn'), err: $('errorMsg'),
+    results: $('results'), toast: $('toast'), meta: $('actionMeta'),
+  };
+
+  function toast(msg, warn = false) {
+    els.toast.textContent = msg;
+    els.toast.classList.toggle('warn', warn);
+    els.toast.classList.add('show');
+    clearTimeout(toast.t);
+    toast.t = setTimeout(() => els.toast.classList.remove('show'), warn ? 4200 : 2000);
+  }
+
+  function updateCounters() {
+    $('vacCount').textContent = `${els.vac.value.length.toLocaleString('ru-RU')} симв.`;
+    $('resCount').textContent = `${els.res.value.length.toLocaleString('ru-RU')} симв.`;
+  }
+
+  function setMode(mode) {
+    state.mode = mode;
+    $('modeLocal').setAttribute('aria-pressed', String(mode === 'local'));
+    $('modeLlm').setAttribute('aria-pressed', String(mode === 'llm'));
+    const panel = $('llmPanel');
+    panel.classList.toggle('open', mode === 'llm');
+    panel.setAttribute('aria-hidden', String(mode !== 'llm'));
+    els.meta.textContent = mode === 'local'
+      ? 'Локальный режим: результат за доли секунды, данные не покидают браузер.'
+      : 'Live LLM: запрос уйдёт выбранному провайдеру; при ошибке — автоматический fallback на локальный движок.';
+  }
+
+  function fillModels() {
+    const prov = $('provider').value;
+    $('modelList').innerHTML = (MODELS[prov] || []).map((m) => `<option value="${esc(m)}">`).join('');
+    if (MODELS[prov] && MODELS[prov].length && !MODELS[prov].includes($('model').value)) $('model').value = MODELS[prov][0];
+    $('baseUrlField').style.display = prov === 'custom' ? '' : 'none';
+  }
+
+  function render(result, engineLabel, ms) {
+    const s = result.score;
+    $('scoreNum').innerHTML = `0<span>%</span>`;
+    const v = $('verdict');
+    v.textContent = result.verdict;
+    v.className = 'verdict ' + (s >= 75 ? 'v-high' : s >= 55 ? 'v-mid' : 'v-low');
+    $('bar').setAttribute('aria-valuenow', String(s));
+    $('barFill').style.width = '0';
+    $('breakdown').innerHTML = result.breakdown.map(([k, val]) => `<div><span>${esc(k)}</span><b>${esc(val)}</b></div>`).join('');
+    $('summary').textContent = result.summary;
+
+    const badges = (items, cls) => items.length
+      ? items.map((t) => `<span class="badge ${cls}"><span class="dot"></span>${esc(t)}</span>`).join('')
+      : '<p class="empty">Ничего не найдено</p>';
+    $('strengths').innerHTML = badges(result.strengths, 'badge-green');
+    $('risks').innerHTML = result.risks.length ? badges(result.risks, 'badge-amber') : '<p class="empty">Явных рисков не обнаружено — сфокусируйтесь на глубине опыта.</p>';
+    $('strCount').textContent = result.strengths.length ? `· ${result.strengths.length}` : '';
+    $('riskCount').textContent = result.risks.length ? `· ${result.risks.length}` : '';
+
+    $('questions').innerHTML = result.questions.map((q) => `
+      <li><div>
+        <div class="q-text">${esc(q.q)}</div>
+        <div class="q-meta"><span class="q-tag">${esc(q.type)}</span>${q.topic ? `<span>${esc(q.topic)}</span>` : ''}</div>
+        ${q.listen ? `<div class="q-listen"><b>Что слушать:</b> ${esc(q.listen)}</div>` : ''}
+      </div></li>`).join('');
+
+    $('engineTag').textContent = `${engineLabel} · ${ms < 1000 ? ms.toFixed(0) + ' мс' : (ms / 1000).toFixed(1) + ' с'}`;
+
+    els.results.classList.remove('show');
+    void els.results.offsetWidth; // restart animation
+    els.results.classList.add('show');
+
+    requestAnimationFrame(() => requestAnimationFrame(() => { $('barFill').style.width = s + '%'; }));
+    const t0 = performance.now(), dur = 900;
+    const step = (t) => {
+      const k = Math.min(1, (t - t0) / dur), eased = 1 - Math.pow(1 - k, 3);
+      $('scoreNum').innerHTML = `${Math.round(s * eased)}<span>%</span>`;
+      if (k < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+    // Guarantee final state even if rAF is throttled (background tab)
+    setTimeout(() => { $('scoreNum').innerHTML = `${s}<span>%</span>`; $('barFill').style.width = s + '%'; }, dur + 150);
+  }
+
+  async function analyze() {
+    els.err.textContent = '';
+    const vac = els.vac.value, res = els.res.value;
+    if (vac.trim().length < 40 || res.trim().length < 40) {
+      els.err.textContent = 'Добавьте текст вакансии и резюме (хотя бы пару предложений в каждое поле) — или нажмите «Заполнить демо-данными».';
+      (vac.trim().length < 40 ? els.vac : els.res).focus();
+      return;
+    }
+
+    const t0 = performance.now();
+    let result, label = 'Локальный движок';
+
+    if (state.mode === 'llm') {
+      const prov = $('provider').value;
+      const cfg = { key: $('apiKey').value.trim(), model: $('model').value.trim(), base: prov === 'custom' ? $('baseUrl').value.trim() : prov };
+      if (!cfg.key) {
+        toast('API-ключ не указан — выполнен локальный анализ', true);
+      } else if (!/^https?:\/\//.test(cfg.base) || !cfg.model) {
+        toast('Проверьте Base URL и модель — выполнен локальный анализ', true);
+      } else {
+        const btnHtml = els.btn.innerHTML;
+        els.btn.disabled = true;
+        els.btn.innerHTML = '<span class="spin" aria-hidden="true"></span><span>Модель анализирует…</span>';
+        try {
+          result = await analyzeLLM(vac, res, cfg);
+          label = `LLM · ${cfg.model}`;
+        } catch (e) {
+          const msg = e.name === 'AbortError' ? 'таймаут 45 с' : (e.message || 'сетевая ошибка');
+          toast(`LLM API: ${msg}. Показан локальный анализ.`, true);
+          label = 'Локальный движок (fallback)';
+        } finally {
+          els.btn.disabled = false;
+          els.btn.innerHTML = btnHtml;
+        }
+      }
+    }
+
+    if (!result) result = analyzeLocal(vac, res);
+    state.last = result;
+    render(result, label, performance.now() - t0);
+    setTimeout(() => els.results.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
+  }
+
+  async function copyPrompt() {
+    if (!state.last) return;
+    const text = buildClaudePrompt(els.vac.value, els.res.value, state.last);
+    let ok = false;
+    try { await navigator.clipboard.writeText(text); ok = true; } catch (_) {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { ok = document.execCommand('copy'); } catch (__) { ok = false; }
+      ta.remove();
+    }
+    toast(ok ? 'Скопировано! Вставьте промпт в Claude' : 'Не удалось скопировать — разрешите доступ к буферу обмена', !ok);
+  }
+
+  // Wire up
+  $('modeLocal').addEventListener('click', () => setMode('local'));
+  $('modeLlm').addEventListener('click', () => setMode('llm'));
+  $('provider').addEventListener('change', fillModels);
+  $('demoBtn').addEventListener('click', () => {
+    els.vac.value = DEMO_VACANCY; els.res.value = DEMO_RESUME; updateCounters();
+    toast('Демо-данные подставлены: Junior Product Manager');
+    els.btn.focus({ preventScroll: true });
+  });
+  els.btn.addEventListener('click', analyze);
+  $('copyBtn').addEventListener('click', copyPrompt);
+  els.vac.addEventListener('input', updateCounters);
+  els.res.addEventListener('input', updateCounters);
+  [els.vac, els.res].forEach((t) => t.addEventListener('keydown', (e) => { if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') analyze(); }));
+
+  fillModels();
+  updateCounters();
+
+  // Expose for testing / console use
+  window.TalentPulse = { analyzeLocal, buildClaudePrompt };
+})();
+</script>
+</body>
+</html>
