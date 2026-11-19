@@ -84,6 +84,25 @@ section { padding-block: 110px 0; }
 .demo .go { font-weight: 600; color: var(--red); }
 @media (max-width: 860px) { .demos { grid-template-columns: 1fr; } .demo .ph { aspect-ratio: 16 / 10; } }
 
+/* product case studies */
+.case { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 0; text-decoration: none; background: var(--card); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; transition: border-color .15s, transform .15s; }
+.case:hover { border-color: var(--ink); transform: translateY(-2px); }
+.case .vis { background: #0d1311; padding: 28px; display: grid; gap: 10px; align-content: center; min-height: 260px; }
+.case .vis .k { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.case .vis .k span { border: 1px solid #24302b; border-radius: 10px; padding: 10px; color: #8b958f; font: 400 .72rem/1.3 "JetBrains Mono", monospace; }
+.case .vis .k b { display: block; color: #eef3f0; font: 600 1.05rem var(--sans); margin-bottom: 2px; }
+.case .vis .row { display: grid; grid-template-columns: 1fr 84px; white-space: nowrap; gap: 10px; align-items: center; color: #c3ccc7; font-size: .8rem; }
+.case .vis .row i { height: 6px; border-radius: 4px; background: #24302b; overflow: hidden; display: block; }
+.case .vis .row i::after { content: ""; display: block; height: 100%; width: var(--w); background: var(--c, #3fcf8e); }
+.case .txt { padding: 32px; display: grid; gap: 14px; align-content: center; }
+.case .tag { font: 400 .8rem "JetBrains Mono", monospace; color: var(--soft); }
+.case h3 { font-weight: 600; font-size: 1.6rem; line-height: 1.15; letter-spacing: -.015em; }
+.case p { color: var(--soft); font-size: 1rem; }
+.case ul { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.case li { font-size: .85rem; border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; }
+.case .go { font-weight: 600; color: var(--red); }
+@media (max-width: 860px) { .case { grid-template-columns: 1fr; } .case .vis { min-height: 0; } .case .txt { padding: 24px 20px; } }
+
 /* steps */
 .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; counter-reset: s; }
 .step { display: grid; gap: 8px; align-content: start; }
@@ -205,6 +224,25 @@ footer .wrap { border-top: 1px solid #2c2b28; padding-block: 22px calc(22px + en
       <a class="demo" href="/autoservice/"><div class="ph"><img src="/assets/img/auto-hero.jpg" alt="Мастерская автосервиса" loading="lazy"></div><h3>Автосервис</h3><p>Калькулятор шиномонтажа, запись в бокс</p><span class="go">Открыть →</span></a>
       <a class="demo" href="/kids/"><div class="ph"><img src="/assets/img/kids-decor.jpg" alt="Зал, украшенный к празднику" loading="lazy"></div><h3>Детский лофт</h3><p>Пакеты праздников, бронь свободных дат</p><span class="go">Открыть →</span></a>
     </div>
+  </section>
+
+  <section id="cases">
+    <div class="head"><h2>Продуктовые кейсы</h2><p>Как я думаю о продукте: от болей клиента до требований и экономики.</p></div>
+    <a class="case" href="leafzen.html">
+      <div class="vis" aria-hidden="true">
+        <div class="k"><span><b>4</b>этапа CJM</span><span><b>6</b>User Stories</span><span><b>8</b>SKU в модели</span></div>
+        <div class="row"><i style="--w:86%"></i><span>маржа 52%</span></div>
+        <div class="row"><i style="--w:64%"></i><span>маржа 41%</span></div>
+        <div class="row"><i style="--w:18%;--c:#f26d6d"></i><span>риск 14%</span></div>
+      </div>
+      <div class="txt">
+        <span class="tag">E-commerce · чай и матча · концепт</span>
+        <h3>LeafZen — интернет-магазин с нуля</h3>
+        <p>Сегменты и их барьеры, User Flow с гипотезами роста конверсии, бэклог User Stories с критериями приёмки, JSON-контракт заказа и живой калькулятор маржинальности товарной матрицы.</p>
+        <ul><li>CJM</li><li>User Flow</li><li>User Stories + AC</li><li>API-контракт</li><li>Юнит-экономика</li></ul>
+        <span class="go">Открыть кейс →</span>
+      </div>
+    </a>
   </section>
 
   <section id="how">
